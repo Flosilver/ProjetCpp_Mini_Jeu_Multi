@@ -1,0 +1,766 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>5</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1050</x>
+      <y>0</y>
+      <w>105</w>
+      <h>95</h>
+    </coordinates>
+    <panel_attributes>/Equipe/
+--
+- couleur : sf::Color
+- bourse : int
+- elements : std::vector&lt;Elements&gt;
+- listeAttente : std::list&lt;Unite&gt;
+--
++ Equipe( joueur : std::string, c : sf::Color )
+--
++ getBatiment() : std::vector&lt;Batiment&gt;
++ update() : void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1050</x>
+      <y>155</y>
+      <w>105</w>
+      <h>95</h>
+    </coordinates>
+    <panel_attributes>/Element/
+--
+# position : sf::Vector2
+# couleur : sf::Color
+--
++ Element( pos : sf::Vector2, col : sf::Color )
+--
+/+ affiche() : void/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>730</x>
+      <y>550</y>
+      <w>105</w>
+      <h>95</h>
+    </coordinates>
+    <panel_attributes>/Unite/
+--
+# hp : int
+# dmg : int
+# prix : int
+# range : double
+--
++ Unite( col : sf::Color )
+--
+/+ move() : void/
+/+ attaque( cible : Unite ) : void/
+/+ meurt( t : equipe ) : int/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>120</x>
+      <y>710</y>
+      <w>105</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>/ACombattant/
+--
++ ACombattant( col : sf::Color )
+-
+/+ move() : void/
+/+ attaque( cible : Unite ) : void/
+/+ meurt( t : Equipe ) : int/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>795</y>
+      <w>105</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Paysan
+--
++ Paysan( col : sf::Color )
+--
++ move() : void
++ attaque( cible : Unite ) : void
++ meurt( t : Equipe ) : int
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>120</x>
+      <y>795</y>
+      <w>105</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Soldat
+--
++ Soldat( col : sf::Color )
+--
++ move() : void
++ attaque( cible : Unite ) : void
++ meurt( t : Equipe ) : int
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>240</x>
+      <y>795</y>
+      <w>105</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Cyborg
+--
++ Cyborg( col : sf::Color )
+--
++ move() : void
++ attaque( cible : Unite ) : void
++ meurt( t : Equipe ) : int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>940</x>
+      <y>710</y>
+      <w>105</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>/ATank/
+--
++ ATank( col : sf::Color )
+--
+/+ move() : void/
+/+ attaque( cible : Unite ) : void/
+/+ meurt( t : Equipe ) : int/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>820</x>
+      <y>795</y>
+      <w>105</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Chevalier
+--
++ Chevalier( col : sf::Color )
+--
++ move() : void
++ attaque( cible : Unite ) : void
++ meurt( t : Equipe ) : int
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>940</x>
+      <y>795</y>
+      <w>105</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Tank
+--
++ Tank( col : sf::Color )
+--
++ move() : void
++ attaque( cible : Unite ) : void
++ meurt( t : Equipe ) : int
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1060</x>
+      <y>795</y>
+      <w>105</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>ExoArmure
+--
++ ExoArmure( col : sf::Color )
+--
++ move() : void
++ attaque( cible : Unite ) : void
++ meurt( t : Equipe ) : int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1305</x>
+      <y>705</y>
+      <w>105</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>/ADistance/
+--
++ ADistance( col : sf::Color )
+--
+/+ move() : void/
+/+ attaque( cible : Unite ) : void/
+/+ meurt( t : Equipe ) : int/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1185</x>
+      <y>795</y>
+      <w>105</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>Archer
+--
++ Archer( col : sf::Color )
+--
++ move() : void
++ attaque( cible : Unite ) : void
++ meurt( t : Equipe ) : int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1305</x>
+      <y>795</y>
+      <w>105</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>Artillerie
+--
++ Artillerie( col : sf::Color )
+--
++ move() : void
++ attaque( cible : Unite ) : void
++ meurt( t : Equipe ) : int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1425</x>
+      <y>795</y>
+      <w>105</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>DroneSniper
+--
++ DroneSniper( col : sf::Color )
+--
++ move() : void
++ attaque( cible : Unite ) : void
++ meurt( t : Equipe ) : int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>530</x>
+      <y>700</y>
+      <w>105</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>/ASoin/
+--
++ ASoin( col : sf::Color )
+--
+/+ move() : void/
+/+ attaque( cible : Unite ) : void/
+/+ meurt( t : Equipe ) : int/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>405</x>
+      <y>795</y>
+      <w>105</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Pretre
+--
++ Pretre( col :sf::Color )
+--
++ move() : void
++ attaque( cible : Unite ) : void
++ meurt( t : Equipe ) : int
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>530</x>
+      <y>795</y>
+      <w>105</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Infirmier
+--
++ Infirmier( col : sf::Color )
+--
++ move() : void
++ attaque( cible : Unite ) : void
++ meurt( t : Equipe ) : int
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1210</x>
+      <y>445</y>
+      <w>105</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Habitation
+--
++ Habitation( col : sf::Color )
+--
++ genereUnite() : Unite
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>660</x>
+      <y>795</y>
+      <w>105</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Medic
+--
++ Medic( col : sf::Color )
+--
++ move() : void
++ attaque( cible : Unite ) : void
++ meurt( t : Equipe ) : int
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1050</x>
+      <y>320</y>
+      <w>105</w>
+      <h>65</h>
+    </coordinates>
+    <panel_attributes>/Batiment/
+--
+# niveau : int
+# coolDown : int
+--
++ Batiment( col : sf::Color )
+--
+/+ genereUnite() : Unite/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>880</x>
+      <y>445</y>
+      <w>105</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Caserne
+--
++ Caserne( col : sf::Color )
+--
++ genereUnite() : Unite
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>990</x>
+      <y>445</y>
+      <w>105</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Archerie
+--
++ Archerie( col : sf::Color )
+--
++ genereUnite() : Unite
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1100</x>
+      <y>445</y>
+      <w>105</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Eglise
+--
++ Eglise( col : sf::Color )
+--
++ genereUnite() : Unite</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1500</x>
+      <y>310</y>
+      <w>105</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Tour
+--
+# tour : Tour
+# hp : int
+--
++ Tour( col : sf::Color )
+--
++ defend() : void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1500</x>
+      <y>415</y>
+      <w>105</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Tourelle
+--
+- dmg : int
+- range : int
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1100</x>
+      <y>90</y>
+      <w>25</w>
+      <h>75</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=0..n
+bg=black</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1095</x>
+      <y>245</y>
+      <w>15</w>
+      <h>85</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1115</x>
+      <y>245</y>
+      <w>450</w>
+      <h>75</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;880.0;60.0;880.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>780</x>
+      <y>245</y>
+      <w>310</w>
+      <h>315</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>600.0;10.0;600.0;60.0;10.0;60.0;10.0;610.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1135</x>
+      <y>380</y>
+      <w>150</w>
+      <h>75</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0;280.0;70.0;280.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1115</x>
+      <y>380</y>
+      <w>50</w>
+      <h>75</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0;80.0;80.0;80.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1035</x>
+      <y>380</y>
+      <w>65</w>
+      <h>75</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>110.0;10.0;110.0;80.0;10.0;80.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>925</x>
+      <y>380</y>
+      <w>160</w>
+      <h>75</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>300.0;10.0;300.0;70.0;10.0;70.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1545</x>
+      <y>375</y>
+      <w>15</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>580</x>
+      <y>640</y>
+      <w>205</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>390.0;10.0;390.0;110.0;10.0;110.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>640</y>
+      <w>565</w>
+      <h>75</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0;1110.0;90.0;1110.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>640</y>
+      <w>590</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1160.0;10.0;1160.0;90.0;10.0;90.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>765</y>
+      <w>15</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>195</x>
+      <y>765</y>
+      <w>105</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;30.0;190.0;30.0;190.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>45</x>
+      <y>765</y>
+      <w>115</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>210.0;10.0;210.0;30.0;10.0;30.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>580</x>
+      <y>755</y>
+      <w>15</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>605</x>
+      <y>755</y>
+      <w>120</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;220.0;40.0;220.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>450</x>
+      <y>755</y>
+      <w>120</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>220.0;10.0;220.0;40.0;10.0;40.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>985</x>
+      <y>765</y>
+      <w>15</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1010</x>
+      <y>765</y>
+      <w>115</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;210.0;40.0;210.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>865</x>
+      <y>765</y>
+      <w>115</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>210.0;10.0;210.0;40.0;10.0;40.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1230</x>
+      <y>760</y>
+      <w>115</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>210.0;10.0;210.0;30.0;10.0;30.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1355</x>
+      <y>760</y>
+      <w>15</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1380</x>
+      <y>760</y>
+      <w>110</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;30.0;200.0;30.0;200.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>785</x>
+      <y>640</y>
+      <w>215</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0;410.0;110.0;410.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>195</x>
+      <y>500</y>
+      <w>740</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;420.0;10.0;50.0;1460.0;50.0;1460.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1030</x>
+      <y>500</y>
+      <w>370</w>
+      <h>215</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>720.0;410.0;720.0;50.0;10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>
