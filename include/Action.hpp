@@ -1,4 +1,3 @@
-#pragma once
 #ifndef ACTION_HPP
 #define ACTION_HPP
 
@@ -10,19 +9,20 @@
 class Action
 {
 protected:
-	Unite *unite;
+	Unite* unite;
 
 public:
 	Action(Unite* u);
+	virtual ~Action() {std::cout << "dest_action" << std::endl;}
 	virtual void gereAction() = 0;
 };
 
 
 Action::Action(Unite* u) {
-	if (u == nullptr) {
+	if (u == nullptr)
 		throw std::string("***ERROR: Action(Unite* u): pointeur null");
-	}
-	unite = u;
+	else
+		unite = u;
 }
 
 #endif

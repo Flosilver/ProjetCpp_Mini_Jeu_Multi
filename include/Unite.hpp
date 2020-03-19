@@ -3,6 +3,7 @@
 
 #include "Element.hpp"
 #include "Action.hpp"
+#include <SFML/Graphics.hpp>
 
 class Unite : public Element
 {
@@ -13,10 +14,15 @@ protected:
 	int portee;	// la distance à laquelle l'unité peut attaquer/soigner
 
 public:
-	Unite(sf::Color c) : Element(c), hp(0), dmg(0), prix(0), portee(0) {}
+	Unite(Equipe& e) : Element(e), hp(0), dmg(0), prix(0), portee(0) {}
 	virtual ~Unite() { std::cout << "dest_Unite" << std::endl; }
 
-	virtual *Action agit() = 0;
+	virtual Action* agit() = 0;
+	const int getHP() const {return hp;}
+	int& getHP() {return hp;}
+	const int getDmg() const {return dmg;}
+	const int getPrix() const {return prix;}
+	const int getPortee() const {return portee;}
 };
 
 #endif
