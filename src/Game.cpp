@@ -1,4 +1,6 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
 #include <iostream>
 #include <string>
 
@@ -13,7 +15,10 @@ sf::Vector2i anim(0,WalkR);
 int cpt_sprites = 0;
 int spriteW = 24;
 int spriteH = 32;
-sf::Vector2f deplacement(5,0);
+sf::Vector2f deplacement(2,0);
+sf::Clock timer;
+sf::Color red_color(250,50,50);
+sf::Color blue_color(sf::Color::Cyan);
 
 sf::Sprite& generePaysan(sf::Texture texture);
 void gestion_clavier();
@@ -50,6 +55,10 @@ int main()
 	sprite_paysan.setTexture(tx_paysan);
 	sprite_paysan.scale(3,3);
 	sprite_paysan.setPosition(10, window.getSize().y-tx_ground.getSize().y-spriteH*3);	// récupération de la bonne partie de la texture
+	sprite_paysan.setColor(sf::Color(250, 50, 50));
+	
+	
+	timer.restart();
 	
 	// Gestion de la fenêtre
 	while (window.isOpen())
@@ -78,12 +87,15 @@ int main()
 		sprite_paysan.setTextureRect(sf::IntRect(anim.x * spriteW, anim.y * spriteH, spriteW, spriteH));
 		
 		// Deplacement
-		if (sprite_paysan.getPosition().x <= window.getSize().x-100){
+		if (sprite_paysan.getPosition().x <= window.getSize().x-1000){
 			sprite_paysan.move(deplacement);
 			// Animation
-			anim.x++;
-			if (anim.x * spriteW >= tx_paysan.getSize().x){
-				anim.x = 0;
+			if (timer.getElapsedTime().asMilliseconds() >= 20){
+				anim.x++;
+				if (anim.x * spriteW >= tx_paysan.getSize().x){
+					anim.x = 0;
+				}
+				timer.restart();
 			}
 		}else{
 			anim.x = 0;
