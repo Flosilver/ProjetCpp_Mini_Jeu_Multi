@@ -13,6 +13,7 @@ sf::Vector2i anim(0,WalkR);
 int cpt_sprites = 0;
 int spriteW = 24;
 int spriteH = 32;
+sf::Vector2f deplacement(5,0);
 
 sf::Sprite& generePaysan(sf::Texture texture);
 void gestion_clavier();
@@ -48,8 +49,7 @@ int main()
 	sf::Sprite sprite_paysan;
 	sprite_paysan.setTexture(tx_paysan);
 	sprite_paysan.scale(3,3);
-	sprite_paysan.setTextureRect(sf::IntRect(anim.x * spriteW, anim.y * spriteH, spriteW, spriteH));
-	sprite_paysan.setPosition(10, window.getSize().y-tx_ground.getSize().y-spriteH*3);
+	sprite_paysan.setPosition(10, window.getSize().y-tx_ground.getSize().y-spriteH*3);	// récupération de la bonne partie de la texture
 	
 	// Gestion de la fenêtre
 	while (window.isOpen())
@@ -73,6 +73,21 @@ int main()
 			}
 			if ()
 		}*/
+		
+		
+		sprite_paysan.setTextureRect(sf::IntRect(anim.x * spriteW, anim.y * spriteH, spriteW, spriteH));
+		
+		// Deplacement
+		if (sprite_paysan.getPosition().x <= window.getSize().x-100){
+			sprite_paysan.move(deplacement);
+			// Animation
+			anim.x++;
+			if (anim.x * spriteW >= tx_paysan.getSize().x){
+				anim.x = 0;
+			}
+		}else{
+			anim.x = 0;
+		}
 
 		// Nettoyage de la fenêtre
 		window.clear();
@@ -81,7 +96,12 @@ int main()
 		window.draw(sprite_background);
 		window.draw(sprite_ground);
 		
-		window.draw(sprite_paysan);
+		
+		if (anim.x == 3 && anim.y >= DieR){
+			delete &sprite_paysan;
+		}else{
+			window.draw(sprite_paysan);
+		}
 		
 		// Affiche du contenu de la fenêntre
 		window.display();
