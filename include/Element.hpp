@@ -1,4 +1,3 @@
-#pragma once
 #ifndef ELEMENT_HPP
 #define ELEMENT_HPP
 
