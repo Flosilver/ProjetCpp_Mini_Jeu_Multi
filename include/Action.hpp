@@ -13,15 +13,8 @@ protected:
 
 public:
 	Action(Unite* u);
+	virtual ~Action(){ std::cout << "dest_Action" << std::endl; }
 	virtual void gereAction() = 0;
 };
-
-
-Action::Action(Unite* u) {
-	if (u == nullptr) {
-		throw std::string("***ERROR: Action(Unite* u): pointeur null");
-	}
-	unite = u;
-}
 
 #endif

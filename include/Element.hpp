@@ -13,7 +13,7 @@ protected:
 	sf::Color couleur;
 
 public:
-	Element(sf::Color c) : couleur(c), pos(-1, -1) {}
+	Element(sf::Color c) : couleur(c), pos(-1, -1) {}	// A faire: modifier la position en fonction de la couleur
 	virtual ~Element() { std::cout << "dest_elem" << std::endl; }
 };
 

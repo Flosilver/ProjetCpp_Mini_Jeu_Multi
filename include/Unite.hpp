@@ -2,7 +2,7 @@
 #define UNITE_HPP
 
 #include "Element.hpp"
-#include "Action.hpp"
+//#include "Action.hpp"
 
 class Unite : public Element
 {
@@ -16,7 +16,7 @@ public:
 	Unite(sf::Color c) : Element(c), hp(0), dmg(0), prix(0), portee(0) {}
 	virtual ~Unite() { std::cout << "dest_Unite" << std::endl; }
 
-	virtual *Action agit() = 0;
+	//virtual *Action agit() = 0;
 };
 
 #endif
