@@ -1,20 +1,40 @@
 #ifndef ACTION_HPP
 #define ACTION_HPP
 
-#include "Unite.hpp"
 #include <iostream>
-#include <cstdlib>
-#include <string>
+//#include <cstdlib>
+//#include <string>
+
+#include "Unite.hpp"
 
 class Action
 {
 protected:
-	Unite *unite;
+	Unite* unite;	// unite qui fait l'action
 
 public:
 	Action(Unite* u);
-	virtual ~Action(){ std::cout << "dest_Action" << std::endl; }
-	virtual void gereAction() = 0;
+	virtual ~Action(){ 
+		delete unite;
+		std::cout << "\tdest_Action" << std::endl; 
+	}
+	Action& operator=(const Action& a){
+		unite = a.unite;
+		return *this;
+	}
+	
+	virtual int gereAction() = 0;
+	
+	/* accesseur */
+	Unite* getUnite() {return unite;}
 };
+
+
+Action::Action(Unite* u) {
+	if (u == nullptr) {
+		throw std::string("***ERROR: Action(Unite* u): pointeur null");
+	}
+	unite = u;
+}
 
 #endif

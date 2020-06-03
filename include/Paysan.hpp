@@ -1,0 +1,28 @@
+#ifndef PAYSAN_HPP
+#define PAYSAN_HPP
+
+#include <SFML/Graphics.hpp>
+#include <iostream>
+
+#include "ACombattant.hpp"
+
+class Paysan : public ACombattant
+{
+public:
+	Paysan(sf::Color c, int eq, int id) : ACombattant(c, eq, id, 10, 1, 6){}		// couleur, n° equipe, id dans vector<sprites>, vie, dmg, prix rapportée si tuée
+	~Paysan() { std::cout << "\tdest_Paysan"; }
+	Paysan& operator=(const Paysan& p){
+		pos = p.pos;
+		couleur = p.couleur;
+		equipe = p.equipe;
+		indice = p.indice;
+		hp = p.hp;
+		dmg = p.dmg;
+		prix = p.prix;
+		portee = p.portee;
+		return *this;
+	}
+	//virtual *Action agit() = 0;
+};
+
+#endif

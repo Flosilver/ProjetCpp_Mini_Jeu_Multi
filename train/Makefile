@@ -9,5 +9,7 @@ Main.o :
 clean:
 	rm -rf *.o
 	
-rmproper: clean
+mrproper: clean
 	rm -rf main
+
+remake: mrproper main
