@@ -30,5 +30,7 @@ $(OBJ_DIR):
 clean:
 	rm -rf $(OBJ)
 	
-rmproper: clean
+mrproper: clean
 	rm -rf $(EXE)
+
+remake: mrproper all

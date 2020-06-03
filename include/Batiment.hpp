@@ -1,0 +1,41 @@
+#ifndef BATIMENT_HPP
+#define BATIMENT_HPP
+
+#include <SFML/Graphics.hpp>
+#include <string>
+#include <iostream>
+
+#include "Element.hpp"
+#include "Unite.hpp"
+
+class Batiment : public Element
+{
+	public:
+		Batiment(int eq, int id, int lvl, int cd): Element(eq,id), coolDown(cd), niveau(lvl){}
+		Batiment(){}
+		Batiment(sf::Color aCol, int eq, int id, int lvl, int cd): Element(aCol,eq,id), coolDown(cd), niveau(lvl){}
+		virtual ~Batiment() {std::cout << "\tdest_Batiment"; }
+		Batiment& operator=(const Batiment& b){
+			pos = b.pos;
+			couleur = b.couleur;
+			equipe = b.equipe;
+			indice = b.indice;
+			coolDown = b.coolDown;
+			niveau = b.niveau;
+			return *this;
+		}
+		virtual Unite* genereUnite(int id) = 0;
+		
+		/* méthodes du jeu */
+		void levelUp() { niveau++; }
+		
+		/* getter */
+		const int getNiveau() const {return niveau;}
+		const int getCoolDown() const {return coolDown;}
+	
+	protected:
+		int coolDown;	// temps avant de pouvoir regénérer une unité
+		int niveau;		// définit le niveau de l'unité générée
+	
+};
+#endif
