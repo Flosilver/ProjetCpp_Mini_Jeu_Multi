@@ -10,7 +10,7 @@
 class Habitation : public Batiment
 {
 	public:
-	Habitation(int eq, int id): Batiment(eq, id, 1, 10){}
+	Habitation(int eq, int id): Batiment(eq, id, 1, 10){}//std::cout << "hab créée: " << eq << "\tid: " << id << std::endl;}
 	Habitation() {}
 	~Habitation() { std::cout << "\tdest_Habitation"; }
 	Habitation& operator=(const Habitation& h){

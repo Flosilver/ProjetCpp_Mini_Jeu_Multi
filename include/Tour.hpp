@@ -13,7 +13,7 @@
 class Tour : public Element
 {
 	public:
-		Tour(int eq, int id): Element(eq,id), hp(HP_MAX), lvl(1), tourelle(eq,id+1){}
+		Tour(int eq, int id): Element(eq,id), hp(HP_MAX), lvl(1), tourelle(eq,id+1){}//std::cout << "tour créée: " << eq << "\tid: " << id << std::endl;}
 		Tour() {}
 		~Tour() { std::cout << "\tdest_Tour"; }
 		Tour& operator=(const Tour& t){
@@ -27,15 +27,15 @@ class Tour : public Element
 		}
 		
 		/* méthodes du jeu */
-		const int levelUp(){		// equipe la tour d'une tourelle
-			 if (lvl < 2){
+		void levelUp(){ lvl++; }		// equipe la tour d'une tourelle  ----const int
+			 /*if (lvl < 2){
 				 lvl++;
 				 return 1;	// SUCCESS
 			 }else{
 				 std::cout << "MESSAGE: Equipe " << equipe << ": Tour déjà lvl max!" << std::endl;
 				 return 0;	// FAIL
 			 }
-		}
+		}*/
 		
 		Unite* tire(int id){ return tourelle.genereUnite(id); }	// demande à la tourelle de générer une Fleche
 		
@@ -50,7 +50,8 @@ class Tour : public Element
 			couleur = c;
 			tourelle.setColor(c);
 		}
-			
+		
+		void positionneTourelle(const sf::Vector2f& aPos) {tourelle.setPosition(aPos);}
 	
 	protected:
 		int hp;

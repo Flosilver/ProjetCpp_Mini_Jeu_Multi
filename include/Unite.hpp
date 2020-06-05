@@ -18,7 +18,7 @@ protected:
 
 public:
 	Unite(): Element(sf::Color(),0,0), hp(0), dmg(0), prix(0), portee(0) {}
-	Unite(sf::Color c, int eq, int id, int aHp, int aDmg, int aPrix, int aPortee) : Element(c, eq, id), hp(aHp), dmg(aDmg), prix(aPrix), portee(aPortee) {}
+	Unite(const sf::Color& c, int eq, int id, int aHp, int aDmg, int aPrix, int aPortee) : Element(c, eq, id), hp(aHp), dmg(aDmg), prix(aPrix), portee(aPortee) {}
 	virtual ~Unite() { std::cout << "\tdest_Unite" << std::endl; }
 	Unite& operator=(const Unite& u){
 		pos = u.pos;

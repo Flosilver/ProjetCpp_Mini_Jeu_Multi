@@ -58,17 +58,73 @@ Equipe& Equipe::operator=(const Equipe& e){
 
 /* Ajoute une somme d'argent spécifée en argument à la bourse de l'équipe */
 void Equipe::ajoutMonaie(int argent){
-	bourse += argent;
+	//bourse += argent;
+	bourse = (bourse + argent) < ARGENT_MAX ? (bourse + argent) : ARGENT_MAX;
 }
 
 /* Améliore le batiment Habitation */
 const int Equipe::habitationUp(){
 	if( hab.getNiveau() < 3 ){
-		hab.levelUp();
-		return 1;		// SUCCESS
+		if( hab.getNiveau() == 1 && (bourse-HAB_1TO2) >= 0 ){
+			ajoutMonaie(-HAB_1TO2);
+			hab.levelUp();
+			return 1;		// SUCCESS
+		}
+		if( hab.getNiveau() == 2 && (bourse-HAB_2TO3) >= 0 ){
+			ajoutMonaie(-HAB_2TO3);
+			hab.levelUp();
+			return 1;		// SUCCESS
+		}
+		std::cout << "***MESSAGE: Equipe " << numero << ": pas assez d'argent pour habitationUp" << std::endl;
+		return 0;
 	}
 	else{
-		std::cout << "***MESSAGE: habitation déjà lvl max" << std::endl;
+		std::cout << "***MESSAGE: Equipe " << numero << ": habitation déjà lvl max" << std::endl;
+		return 0;		// FAIL
+	}
+}
+
+/* Améliore le niveau de la tour */
+const int Equipe::tourLvlUp(){
+	if ( tour.getLvl() == 1){
+		if ( (bourse-TOUR_1TO2) >= 0 ){
+			ajoutMonaie(-TOUR_1TO2);
+			tour.levelUp();
+			return 1; 		// SUCCESS
+		}
+		std::cout << "***MESSAGE: Equipe " << numero << ": pas assez d'argent pour tourLvlUp" << std::endl;
+		return 0;
+	}
+	else{
+		std::cout << "***MESSAGE: Equipe " << numero << ": tour déjà lvl max" << std::endl;
+		return 0;		// FAIL
+	}
+}
+
+/* augmente les dégats de la tourelle */
+const int Equipe::tourDomageUp(){
+	if ( tour.getLvl() == 2){
+		if ( (bourse-TOUR_DMG_1TO2) >= 0 ){
+			ajoutMonaie(-TOUR_DMG_1TO2);
+			return tour.damageUp();
+		}
+	}
+	else{
+		std::cout << "***MESSAGE: Equipe " << numero << ": tourelle non débloquée" << std::endl;
+		return 0;		// FAIL
+	}
+}
+
+/* Augmente la portee de la tourelle */
+const int Equipe::tourPorteeUp(){
+	if ( tour.getLvl() == 2){
+		if ( (bourse-TOUR_PORTEE_1TO2) >= 0 ){
+			ajoutMonaie(-TOUR_PORTEE_1TO2);
+			return tour.porteeUp();
+		}
+	}
+	else{
+		std::cout << "***MESSAGE: Equipe " << numero << ": tourelle non débloquée" << std::endl;
 		return 0;		// FAIL
 	}
 }
@@ -136,4 +192,14 @@ void Equipe::setColor(sf::Color c){
 	this->couleur = c;
 	this->hab.setColor(c);
 	this->tour.setColor(c);
+}
+
+
+void Equipe::positionneHab(const sf::Vector2f& aPos){
+	hab.setPosition(aPos);
+}
+
+void Equipe::positionneTour(const sf::Vector2f& aPos, const sf::Vector2f& tourellePos){
+	tour.setPosition(aPos);
+	tour.positionneTourelle(tourellePos);
 }

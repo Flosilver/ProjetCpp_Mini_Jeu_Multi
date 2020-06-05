@@ -4,7 +4,7 @@
 
 Jeu::Jeu(tx_map& textures, sp_map& sprites){
 	// Fenetre
-	window.create(sf::VideoMode::getDesktopMode(), "BATTEZ-VOUS.EXE");
+	window.create(sf::VideoMode(RW_W, RW_H) /*::getDesktopMode()*/, "BATTEZ-VOUS.EXE", sf::Style::Close);
 	window.setFramerateLimit(60);
 	window.setKeyRepeatEnabled(false);
 	
@@ -13,30 +13,25 @@ Jeu::Jeu(tx_map& textures, sp_map& sprites){
 	win_W = size.x;
 	win_H = size.y;
 	
-	eq1 = Equipe(1, bat_id);//, sprites, bat_sp);
+	std::cout << "win_W: " << win_H << "\twin_H: " << win_H << std::endl;
+	
+	//eq1 = Equipe(1, bat_id);//, sprites, bat_sp);
 	bat_id += 3;
 	std::cout << bat_id << std::endl;
+	std::cout << eq1.getTourHp() << std::endl;
 	
-	eq2 = Equipe(2, bat_id);
+	//eq2 = Equipe(2, bat_id);
 	bat_id += 3;
 	std::cout << bat_id << std::endl;
-	
-	/* Ajout au jeu des sprites des habitations, des tours et des tourelles */
-	// Equipe 1
-	bat_sp.push_back(sprites["habitation"]);
-	bat_sp.push_back(sprites["tourG"]);
-	bat_sp.push_back(sprites["tourelle"]);
-	// Equipe 2
-	bat_sp.push_back(sprites["habitation"]);
-	bat_sp.push_back(sprites["tourD"]);
-	bat_sp.push_back(sprites["tourelle"]);
-	bat_sp[(bat_sp.size())-1].rotate(180.f);
 	
 	tourG_W = textures["tourG"].getSize().x;
 	tourG_H = textures["tourG"].getSize().y;
 	
-	tourG_W = textures["tourG"].getSize().x;
-	tourG_H = textures["tourG"].getSize().y;
+	tourD_W = textures["tourD"].getSize().x;
+	tourD_H = textures["tourD"].getSize().y;
+	
+	tourelle_W = textures["tourelle"].getSize().x;
+	tourelle_H = textures["tourelle"].getSize().y;
 	
 	casqueG_W = textures["casqueG"].getSize().x;
 	casqueG_H = textures["casqueG"].getSize().y;
@@ -49,6 +44,11 @@ Jeu::Jeu(tx_map& textures, sp_map& sprites){
 	bk_menu_W = textures["bk_menu"].getSize().x;
 	bk_menu_H = textures["bk_menu"].getSize().y;
 	
+	vie_jg = sf::Sprite(textures["vie"], rect_vie_jg);
+	vie_jd = sf::Sprite(textures["vie"], rect_vie_jd);
+	
+	vie_jg.setPosition(0, win_H - GROUND_H + 5);
+	vie_jd.setPosition(1500-VIE_W, win_H - GROUND_H + 5);
 }
 
 Jeu::~Jeu(){
@@ -59,15 +59,20 @@ Jeu::~Jeu(){
 	sprites.clear();
 	std::cout << "dest sprites\t";*/
 	
+	menu_sp.clear();
+	menu_txt.clear();
+	
+	bandeau_sp.clear();
+	bandeau_txt.clear();
+	
+	terrain_sp.clear();
+	
 	bat_sp.clear();
 	std::cout << "dest sprites de batiment\t";
 	unite_sp.clear();
 	std::cout << "dest sprites des unites\t";
 	anim_sp.clear();
 	std::cout << "dest vecteurs d'animation des sprites\tdest_Jeu" << std::endl;
-	
-	menu_sp.clear();
-	menu_txt.clear();
 }
 
 Jeu& Jeu::operator=(const Jeu& j){
@@ -76,7 +81,7 @@ Jeu& Jeu::operator=(const Jeu& j){
 	win_W = size.x;
 	win_H = size.y;
 	
-	window.create(sf::VideoMode(win_W,win_H), "BATTEZ-VOUS.EXE");
+	window.create(sf::VideoMode(RW_W, RW_H), "BATTEZ-VOUS.EXE", sf::Style::Close);
 	window.setFramerateLimit(60);
 	window.setKeyRepeatEnabled(false);
 	
@@ -227,8 +232,7 @@ void Jeu::menu_setup(sp_map& sprites, const sf::Font& font){
 	menu_sp[3].scale(SCA_SELECT,SCA_SELECT);
 	menu_sp[3].setPosition(3 * win_W / 4 - (casqueD_W / 4), 5 * win_H / 8);
 	menu_sp[3].setColor(couleurs_joueurs[col_jd]);
-	
-	std::cout << font.getInfo().family << std::endl;
+
 	
 	// bouton play txt: indice 0
 	menu_txt.push_back(sf::Text());//"JOUER!", font, 130));
@@ -258,7 +262,7 @@ void Jeu::menu_setup(sp_map& sprites, const sf::Font& font){
 }
 
 /* gère les event dans le menu */
-void Jeu::menu_Event(sf::Event& event){
+void Jeu::menu_Event(sf::Event& event, sp_map& sprites, const sf::Font& font){
 	if (event.type == sf::Event::Closed){
 		window.close();
 	}
@@ -269,22 +273,22 @@ void Jeu::menu_Event(sf::Event& event){
 		
 		/* Choix des couleurs des joueurs */		
 		if(event.key.code == sf::Keyboard::Space){
-			if((col_jg + 1)%4 != col_jd){
-				col_jg = (col_jg + 1)%4;
+			if((col_jg + 1)%NB_COL != col_jd){
+				col_jg = (col_jg + 1)%NB_COL;
 			}
 			else{
-				col_jg = (col_jg + 2)%4;
+				col_jg = (col_jg + 2)%NB_COL;
 			}
 			menu_sp[2].setColor(couleurs_joueurs[col_jg]);
 			menu_txt[1].setFillColor(couleurs_joueurs[col_jg]);
 		}
 		
 		if(event.key.code == sf::Keyboard::Up){
-			if((col_jd + 1)%4 != col_jg){
-				col_jd = (col_jd + 1)%4;
+			if((col_jd + 1)%NB_COL != col_jg){
+				col_jd = (col_jd + 1)%NB_COL;
 			}
 			else{
-				col_jd = (col_jd + 2)%4;
+				col_jd = (col_jd + 2)%NB_COL;
 			}
 			menu_sp[3].setColor(couleurs_joueurs[col_jd]);
 			menu_txt[2].setFillColor(couleurs_joueurs[col_jd]);
@@ -295,10 +299,14 @@ void Jeu::menu_Event(sf::Event& event){
 			if (event.mouseButton.x > menu_sp[1].getPosition().x && event.mouseButton.x < (menu_sp[1].getPosition().x + play_but_W) && event.mouseButton.y > menu_sp[1].getPosition().y && event.mouseButton.y < (menu_sp[1].getPosition().y + play_but_H) ){
 				//sprite_bouton.setTexture(tx_bouton_enf);
 				//std::cout << "bouton cliqué!" << std::endl;
-				
+				std::cout << "on passe au jeu" << std::endl;
 				// Libération de l'espace mémoire
 				menu_sp.clear();
 				menu_txt.clear();
+				
+				
+				
+				game_setup(sprites, font);
 				
 				// Passage à l'état de jeu
 				etat = 1;
@@ -309,6 +317,9 @@ void Jeu::menu_Event(sf::Event& event){
 
 void Jeu::menu_update(){
 	// Gestion du défilement du background
+	if(menu_sp.size() == 0 || menu_txt.size() == 0){
+		return;
+	}
 	int a = (bk_menu_W - (rect_menu.left + rect_menu.width));
 	if ( a <= 0 || rect_menu.left < 0 ){
 		increment = -increment;
@@ -395,11 +406,371 @@ void Jeu::show_menu(){
 	window.display();
 }
 
+/* Méthodes du menu */
+
+/* Initialise le bandeau de commande du jeu */
+void Jeu::bandeau_setup(sp_map& sprites, const sf::Font& font){
+	// metal bar: indice 0
+	bandeau_sp.push_back(sprites["metal_bar"]);
+	sf::IntRect rect_gestion(0,0,win_W,BANDEAU_H);
+	bandeau_sp[0].setTextureRect(rect_gestion);
+	
+	// argent eq1: indice 1
+	bandeau_sp.push_back(sprites["argent"]);
+	bandeau_sp[1].setPosition(D_BUT,D_BUT);
+	
+	// tourUp eq1: indice 2
+	bandeau_sp.push_back(sprites["tour_upG"]);
+	bandeau_sp[2].setPosition(bandeau_sp[1].getPosition().x + ARG_W + D_BUT, D_BUT);
+	
+	// tourDmgUp eq1: indice 3
+	bandeau_sp.push_back(sprites["tour_dmg_upG"]);
+	bandeau_sp[3].setPosition(bandeau_sp[2].getPosition().x + COMM_W + D_BUT, D_BUT);
+	
+	// tourPorteeUp eq1: indice 4
+	bandeau_sp.push_back(sprites["tour_portee_upG"]);
+	bandeau_sp[4].setPosition(bandeau_sp[3].getPosition().x + COMM_W + D_BUT, D_BUT);
+	
+	// habUp eq1: indice 5
+	bandeau_sp.push_back(sprites["hab_upG"]);
+	bandeau_sp[5].setPosition(bandeau_sp[4].getPosition().x + COMM_W + D_BUT, D_BUT);
+	
+	// unite+ eq1: indice 6
+	bandeau_sp.push_back(sprites["unite_plusG"]);
+	bandeau_sp[6].setPosition(bandeau_sp[5].getPosition().x + COMM_W + D_BUT, D_BUT);
+	
+	// argent eq2: indice 7
+	bandeau_sp.push_back(sprites["argent"]);
+	bandeau_sp[7].setPosition(win_W/2 + D_BUT,D_BUT);
+	
+	// tourUp eq2: indice 8
+	bandeau_sp.push_back(sprites["tour_upD"]);
+	bandeau_sp[8].setPosition(bandeau_sp[7].getPosition().x + ARG_W + D_BUT, D_BUT);
+	
+	// tourDmgUp eq2: indice 9
+	bandeau_sp.push_back(sprites["tour_dmg_upD"]);
+	bandeau_sp[9].setPosition(bandeau_sp[8].getPosition().x + COMM_W + D_BUT, D_BUT);
+	
+	// tourPorteeUp eq2: indice 10
+	bandeau_sp.push_back(sprites["tour_portee_upD"]);
+	bandeau_sp[10].setPosition(bandeau_sp[9].getPosition().x + COMM_W + D_BUT, D_BUT);
+	
+	// habUp eq2: indice 11
+	bandeau_sp.push_back(sprites["hab_upD"]);
+	bandeau_sp[11].setPosition(bandeau_sp[10].getPosition().x + COMM_W + D_BUT, D_BUT);
+	
+	// unite+ eq2: indice 12
+	bandeau_sp.push_back(sprites["unite_plusD"]);
+	bandeau_sp[12].setPosition(bandeau_sp[11].getPosition().x + COMM_W + D_BUT, D_BUT);
+	
+	for (int i=0 ; i<=6 ; i=i+6){
+		// argent : indice 0 ou 6
+		bandeau_txt.push_back(sf::Text());
+		bandeau_txt[i].setFont(font);
+		bandeau_txt[i].setString(std::to_string(eq1.getBourse()));
+		bandeau_txt[i].setFillColor(MONNAIE_COL);
+		bandeau_txt[i].setCharacterSize(MONNAIE_SIZE);
+		bandeau_txt[i].setPosition(bandeau_sp[i+1].getPosition().x + MONNAIE_POSX, bandeau_sp[i+1].getPosition().y + MONNAIE_POSY);//sprite_argent.getPosition().x + 10,sprite_argent.getPosition().y + 35
+		
+		// prix tourUp : indice 1 ou 7
+		bandeau_txt.push_back(sf::Text());
+		bandeau_txt[i+1].setFont(font);
+		bandeau_txt[i+1].setString(std::to_string(TOUR_1TO2));
+		bandeau_txt[i+1].setFillColor(MONNAIE_COL);
+		bandeau_txt[i+1].setCharacterSize(PRIX_SIZE);
+		bandeau_txt[i+1].setPosition(bandeau_sp[i+2].getPosition().x + PRIX_POSX, bandeau_sp[i+2].getPosition().y + PRIX_POSY);
+		
+		// prix tourDmgUp : indice 2 ou 8
+		bandeau_txt.push_back(sf::Text());
+		bandeau_txt[i+2].setFont(font);
+		bandeau_txt[i+2].setString(std::to_string(TOUR_DMG_1TO2));
+		bandeau_txt[i+2].setFillColor(MONNAIE_COL);
+		bandeau_txt[i+2].setCharacterSize(PRIX_SIZE);
+		bandeau_txt[i+2].setPosition(bandeau_sp[i+3].getPosition().x + PRIX_POSX, bandeau_sp[i+3].getPosition().y + PRIX_POSY);
+		
+		// prix tourPorteeUp : indice 3 ou 9
+		bandeau_txt.push_back(sf::Text());
+		bandeau_txt[i+3].setFont(font);
+		bandeau_txt[i+3].setString(std::to_string(TOUR_PORTEE_1TO2));
+		bandeau_txt[i+3].setFillColor(MONNAIE_COL);
+		bandeau_txt[i+3].setCharacterSize(PRIX_SIZE);
+		bandeau_txt[i+3].setPosition(bandeau_sp[i+4].getPosition().x + PRIX_POSX, bandeau_sp[i+4].getPosition().y + PRIX_POSY);
+		
+		// prix habUp : indice 4 ou 10
+		bandeau_txt.push_back(sf::Text());
+		bandeau_txt[i+4].setFont(font);
+		bandeau_txt[i+4].setString(std::to_string(HAB_1TO2));
+		bandeau_txt[i+4].setFillColor(MONNAIE_COL);
+		bandeau_txt[i+4].setCharacterSize(PRIX_SIZE);
+		bandeau_txt[i+4].setPosition(bandeau_sp[i+5].getPosition().x + PRIX_POSX, bandeau_sp[i+5].getPosition().y + PRIX_POSY);
+		
+		// prix unitePlus : indice 5 ou 11
+		bandeau_txt.push_back(sf::Text());
+		bandeau_txt[i+5].setFont(font);
+		bandeau_txt[i+5].setString(std::to_string(PAYSAN_PRIX));
+		bandeau_txt[i+5].setFillColor(MONNAIE_COL);
+		bandeau_txt[i+5].setCharacterSize(PRIX_SIZE);
+		bandeau_txt[i+5].setPosition(bandeau_sp[i+6].getPosition().x + PRIX_POSX, bandeau_sp[i+6].getPosition().y + PRIX_POSY);
+	}
+}
+
+void Jeu::terrain_setup(sp_map& sprites){
+	// background: indice 0
+	terrain_sp.push_back(sprites["background"]);
+	
+	// ground: indice 1
+	terrain_sp.push_back(sprites["ground"]);
+	terrain_sp[1].setPosition(0, win_H - GROUND_H);
+}
+
+/* Permet d'initialiser la fenetre de jeu avant le passage à l'état 1 */
+void Jeu::game_setup(sp_map& sprites, const sf::Font& font){
+	
+	/* Initialisation du terrain */
+	this->terrain_setup(sprites);
+	
+	/* Initialisation du bandeau de commande */
+	this->bandeau_setup(sprites, font);
+	
+	
+	/* Initialisation des couleurs des Equipes*/
+	eq1.setColor(couleurs_joueurs[col_jg]);
+	eq2.setColor(couleurs_joueurs[col_jd]);
+	
+	/* Ajout au jeu des sprites des habitations, des tours et des tourelles */
+	// Equipe 1
+	// Habitaion eq1: indice 0
+	bat_sp.push_back(sprites["habitation"]);
+	bat_sp[0].setPosition(500, 500);
+	bat_sp[0].setColor(eq1.getCol());
+	eq1.positionneHab(bat_sp[0].getPosition());	// on position l'habitation de l'équipe 1
+	
+	// Tour eq1: indice 1
+	bat_sp.push_back(sprites["tourG"]);
+	bat_sp[1].setPosition(TOUR_POSX - tourG_W, win_H - GROUND_H - tourG_H);
+	bat_sp[1].setColor(eq1.getCol());
+	
+	// Tourelle eq1: indice 2
+	bat_sp.push_back(sprites["tourelle"]);
+	bat_sp[2].setPosition(TOUR_POSX - tourG_W, TOURELLE_POSY);
+	eq1.positionneTour(bat_sp[1].getPosition(), bat_sp[2].getPosition());	// on positionne la tour et la tourelle de l'équipe 1 dans le jeu
+	
+	
+	// Equipe 2
+	// Habitation eq2: indice 3
+	bat_sp.push_back(sprites["habitation"]);
+	bat_sp[3].setPosition(1000, 550);
+	bat_sp[3].setColor(eq2.getCol());
+	eq2.positionneHab(bat_sp[3].getPosition());	// on position l'habitation de l'équipe 2
+	
+	// Tour eq2: indice 4
+	bat_sp.push_back(sprites["tourD"]);
+	bat_sp[4].setPosition( win_W - TOUR_POSX, win_H - GROUND_H - tourD_H);
+	bat_sp[4].setColor(eq2.getCol());
+	
+	// Tourelle eq1: indice 5
+	bat_sp.push_back(sprites["tourelle"]);
+	bat_sp[5].rotate(180.f);
+	bat_sp[5].setPosition(win_W - TOUR_POSX - (tourelle_W - tourD_W) + tourelle_W, TOURELLE_POSY + tourelle_H);
+	eq2.positionneTour(bat_sp[4].getPosition(), bat_sp[5].getPosition());	// on positionne la tour et la tourelle de l'équipe 2 dans le jeu
+	
+	
+	// Initialisation de la barre de vie des Equipes
+	// vie eq1: indice 6
+	
+	
+	
+	/*bat_sp.push_back(sprites["habitation"]);
+	bat_sp.push_back(sprites["tourG"]);
+	bat_sp.push_back(sprites["tourelle"]);
+	// Equipe 2
+	bat_sp.push_back(sprites["habitation"]);
+	bat_sp.push_back(sprites["tourD"]);
+	bat_sp.push_back(sprites["tourelle"]);
+	bat_sp[(bat_sp.size())-1].rotate(180.f);*/
+	
+	tour_timer.restart();
+}
+
+/* Gestion des evenement de la fenêtre lors du jeu */
+void Jeu::game_Event(sf::Event& event){
+	if (event.type == sf::Event::Closed){
+		window.close();
+	}
+	if (event.type == sf::Event::KeyPressed){
+		if (event.key.code == sf::Keyboard::Escape){
+			window.close();
+		}
+		
+		// evenement claviers de l'équipe 1
+		if (event.key.code == sf::Keyboard::A){
+			eq1.tourLvlUp();
+		}
+		if (event.key.code == sf::Keyboard::Q){
+			eq1.tourDomageUp();
+		}
+		if (event.key.code == sf::Keyboard::S){
+			eq1.tourPorteeUp();
+		}
+		if (event.key.code == sf::Keyboard::Z){
+			if(eq1.habitationUp()){		// on test si on peut effectivement monter le niveau de l'habitaion
+				int h1 = eq1.getHabLvl();
+				if (h1 == 2){
+					bandeau_txt[4].setString(std::to_string(HAB_2TO3));
+					bandeau_txt[5].setString(std::to_string(SOLDAT_PRIX));
+				}
+				if (h1 == 3){
+					bandeau_txt[5].setString(std::to_string(CYBORG_PRIX));
+				}
+			}
+		}
+		
+		// evenement claviers de l'équipe 2
+		if (event.key.code == sf::Keyboard::Numpad1){
+			eq2.tourLvlUp();
+		}
+		if (event.key.code == sf::Keyboard::Numpad4){
+			eq2.tourDomageUp();
+		}
+		if (event.key.code == sf::Keyboard::Numpad5){
+			eq2.tourPorteeUp();
+		}
+		if (event.key.code == sf::Keyboard::Numpad2){
+			if(eq2.habitationUp()){		// on test si on peut effectivement monter le niveau de l'habitaion
+				int h2 = eq2.getHabLvl();
+				if (h2 == 2){
+					bandeau_txt[10].setString(std::to_string(HAB_2TO3));
+					bandeau_txt[11].setString(std::to_string(SOLDAT_PRIX));
+				}
+				if (h2 == 3){
+					bandeau_txt[11].setString(std::to_string(CYBORG_PRIX));
+				}
+			}
+		}
+	}
+}
+
+/* méthode d'update du bandeau de commande du jeu */
+void Jeu::bandeau_update(){
+	bandeau_txt[0].setString(std::to_string(eq1.getBourse()));
+	bandeau_txt[6].setString(std::to_string(eq2.getBourse()));
+}
+
+/* méthode d'update du jeu à chaque itération de la boucle while */
+void Jeu::game_update(){
+	// update de la vie
+	rect_vie_jg.top = VIE_H * 100 - VIE_H * (eq1.getTourHp() / HP_MAX) * 100;
+	rect_vie_jd.top = VIE_H * 100 - VIE_H * (eq2.getTourHp() / HP_MAX) * 100;
+	
+	vie_jg.setTextureRect(rect_vie_jg);
+	vie_jd.setTextureRect(rect_vie_jd);
+	
+	int t1 = eq1.getTourLvl();
+	int t2 = eq2.getTourLvl();
+	
+	sf::Time time = tour_timer.getElapsedTime();
+	float sec = time.asSeconds();
+	if (sec >= MONEY_TIME){
+		if (t1 == 1){
+			eq1.ajoutMonaie(TOUR1_MONNAIE);
+		}else{
+			eq1.ajoutMonaie(TOUR2_MONNAIE);
+		}
+		if (t2 == 1){
+			eq2.ajoutMonaie(TOUR1_MONNAIE);
+		}else{
+			eq2.ajoutMonaie(TOUR2_MONNAIE);
+		}
+		
+		tour_timer.restart();
+	}
+	
+	this->bandeau_update();
+	
+}
+
+/* Dessine sur la fenetre du jeu les éléments du terrain */
+void Jeu::show_terrain(){
+	for (int i=0 ; i<terrain_sp.size() ; i++){
+		window.draw(terrain_sp[i]);
+	}
+	//window.display();
+}
+
+/* Dessine sur la fenetre du jeu les éléments du bandeau de commande */
+void Jeu::show_bandeau(){
+	int t1 = eq1.getTourLvl();	// niveau de la tour de l'équipe 1
+	int t2 = eq2.getTourLvl();	// niveau de la tour de l'équipe 2
+	
+	int h1 = eq1.getHabLvl();
+	int h2 = eq2.getHabLvl();
+	
+	for (int i=0 ; i<bandeau_sp.size() ; i++){
+		if ( i == 2 && t1 > 1){
+			continue;
+		}
+		if ( (i == 3 || i == 4) && t1 < 2 ){
+			continue;
+		}
+		if( i == 5 && h1 == 3){
+			continue;
+		}
+		if ( i == 8 && t2 > 1){
+			continue;
+		}
+		if ( (i == 9 || i == 10) && t2 < 2 ){
+			continue;
+		}
+		if( i == 11 && h2 == 3){
+			continue;
+		}
+		window.draw(bandeau_sp[i]);
+	}
+	for (int i=0 ; i<bandeau_txt.size() ; i++){
+		if ( i == 1 && t1 > 1){
+			continue;
+		}
+		if ( (i == 2 || i == 3) && t1 < 2 ){
+			continue;
+		}
+		if ( i == 7 && t2 > 1){
+			continue;
+		}
+		if ( (i == 8 || i == 9) && t2 < 2 ){
+			continue;
+		}
+		window.draw(bandeau_txt[i]);
+	}
+	//window.display();
+}
+
+/* Dessine les éléments du jeu et les affiche sur la fenetre */
+void Jeu::show_game(){
+	this->show_terrain();
+	this->show_bandeau();
+	
+	window.draw(vie_jg);
+	window.draw(vie_jd);
+	
+	int t1 = eq1.getTourLvl();
+	int t2 = eq2.getTourLvl();
+	
+	for (int i=0 ; i<bat_sp.size() ; ++i){
+		if ( i == 2 && t1 < 2 ){
+			continue;
+		}
+		if ( i == 5 && t2 < 2 ){
+			continue;
+		}
+		window.draw(bat_sp[i]);
+	}
+	
+	window.display();
+}
 
 
 
-
-
+/*------------------------------------------------MAIN------------------------------------------------------*/
 int main(void){
 	/* Initialisation du random */
 	srand(time(NULL));
@@ -424,13 +795,13 @@ int main(void){
 	
 	/* Initialisation des fonts */
 	sf::Font menu_font;
-	sf::Font monnaie_font;
+	sf::Font jeu_font;
 	
 	if (!menu_font.loadFromFile("tiles/Pixel Digivolve.otf")){
 		std::cerr << "***ERROR: menu_font.loadFromFile(tiles/Pixel Digivolve.otf): failed" << std::endl;
 		return EXIT_FAILURE;
 	}
-	if (!monnaie_font.loadFromFile("tiles/Pixelmania.ttf")){
+	if (!jeu_font.loadFromFile("tiles/Pixelmania.ttf")){
 		std::cerr << "***ERROR: monnaie_font.loadFromFile(tiles/Pixelmania.ttf): failed" << std::endl;
 		return EXIT_FAILURE;
 	}
@@ -443,20 +814,24 @@ int main(void){
 		return 0;
 	}
 	
+	std::cout << "menu initialisé" << std::endl;
+	
+	//jeu.etat = 1;
+	//jeu.game_setup(sprites, jeu_font);
+	
 	/* Boucle du jeu */
 	while(jeu.window.isOpen()){
 		sf::Event event;
 		
 		// Nettoyage de la fenêtre
 		jeu.window.clear();
-		jeu.getWinSize();
 		
 		switch (jeu.etat){
 			/* Menu */
 			case 0:
 				while (jeu.window.pollEvent(event))
 				{
-					jeu.menu_Event(event);
+					jeu.menu_Event(event,sprites,jeu_font);
 				}
 				jeu.menu_update();
 				jeu.show_menu();
@@ -464,9 +839,11 @@ int main(void){
 			
 			/* Jeu */
 			case 1:
-				textures.clear();
-				sprites.clear();
-				exit(1);
+				while (jeu.window.pollEvent(event)){
+					jeu.game_Event(event);
+				}
+				jeu.game_update();
+				jeu.show_game();
 				break;
 			
 			/* Ecran de victoire */

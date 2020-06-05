@@ -9,7 +9,7 @@
 class ACombattant : public Unite
 {
 public:
-	ACombattant(sf::Color c, int eq, int id, int aHp, int aDmg, int aPrix) : Unite(c, eq, id, aHp, aDmg, aPrix, 3) {}
+	ACombattant(const sf::Color& c, int eq, int id, int aHp, int aDmg, int aPrix) : Unite(c, eq, id, aHp, aDmg, aPrix, 3) {}
 	virtual ~ACombattant() { std::cout << "\tdest_ACombattant"; }
 	ACombattant& operator=(const ACombattant& ac){
 		pos = ac.pos;
