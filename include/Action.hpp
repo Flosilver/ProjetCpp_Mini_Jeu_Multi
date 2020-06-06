@@ -29,12 +29,4 @@ public:
 	Unite* getUnite() {return unite;}
 };
 
-
-Action::Action(Unite* u) {
-	if (u == nullptr) {
-		throw std::string("***ERROR: Action(Unite* u): pointeur null");
-	}
-	unite = u;
-}
-
 #endif

@@ -22,9 +22,4 @@ class Mort : public Action
 		int gereAction();
 };
 
-int gereAction(){
-	unite->meurt();	
-	return 1;		// SUCCESS
-}
-
 #endif
