@@ -9,7 +9,7 @@
 
 
 /* Factory d'Unite: ACombattant */
-Unite* Habitation::genereUnite(int id){
+Unite* Habitation::genereUnite(int id, const sf::Vector2f& posU){
 		//gérer le prix que coûte 1 unité
 		Unite* pu;
 		switch(niveau){
@@ -22,7 +22,7 @@ Unite* Habitation::genereUnite(int id){
 				//int aCout = 3;*/
 				//std::cout << "je genere un paysan" << std::endl;
 				
-				pu = new Paysan(couleur, equipe, id);
+				pu = new Paysan(couleur, equipe, id, posU);
 				break;
 				
 			case 2://Level 2->Soldat
@@ -33,7 +33,7 @@ Unite* Habitation::genereUnite(int id){
 				int aCout = 5;*/
 				//std::cout << "je genere un soldat" << std::endl;
 				
-				pu = new Soldat(couleur, equipe, id);
+				pu = new Soldat(couleur, equipe, id, posU);
 				break;
 				
 			case 3://Level 3->Cyborg
@@ -45,7 +45,7 @@ Unite* Habitation::genereUnite(int id){
 				int aCout = 10;*/
 				//std::cout << "je genere un cyborg" << std::endl;
 				
-				pu = new Cyborg(couleur, equipe, id);
+				pu = new Cyborg(couleur, equipe, id, posU);
 				break;
 		}
 		return pu;

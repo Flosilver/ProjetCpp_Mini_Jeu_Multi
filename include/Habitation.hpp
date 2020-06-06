@@ -23,7 +23,7 @@ class Habitation : public Batiment
 		return *this;
 	}
 	
-	Unite* genereUnite(int id);	// Factory d'Unite: ACombattant
+	Unite* genereUnite(int id, const sf::Vector2f& posU);	// Factory d'Unite: ACombattant
 };
 
 #endif

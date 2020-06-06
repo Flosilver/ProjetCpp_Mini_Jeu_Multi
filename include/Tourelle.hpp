@@ -7,8 +7,7 @@
 #include "config.hpp"
 
 #include "Batiment.hpp"
-#include "Unite.hpp"
-#include "Fleche.hpp"
+//#include "Unite.hpp"
 
 class Tourelle: public Batiment
 {
@@ -18,10 +17,13 @@ class Tourelle: public Batiment
 		~Tourelle() { std::cout << "\tdest_Tourelle"; }
 		Tourelle& operator=(const Tourelle& t);
 		
-		Unite* genereUnite(int id);	// Factory d'Unite: Fleche
+		Unite* genereUnite(int id, const sf::Vector2f& posU);	// Factory d'Unite: Fleche
 		
 		const int damageUp();		// augmente les dégats des flèches tirées par la tourelle
 		const int porteeUp();		// augmente la portée de la tourelle
+		
+		const int getDegats() const {return degats;}
+		const int getPortee() const {return portee;}
 	
 	protected:
 		int degats;

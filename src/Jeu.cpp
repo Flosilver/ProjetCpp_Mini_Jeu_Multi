@@ -15,15 +15,6 @@ Jeu::Jeu(tx_map& textures, sp_map& sprites){
 	
 	std::cout << "win_W: " << win_H << "\twin_H: " << win_H << std::endl;
 	
-	//eq1 = Equipe(1, bat_id);//, sprites, bat_sp);
-	bat_id += 3;
-	std::cout << bat_id << std::endl;
-	std::cout << eq1.getTourHp() << std::endl;
-	
-	//eq2 = Equipe(2, bat_id);
-	bat_id += 3;
-	std::cout << bat_id << std::endl;
-	
 	tourG_W = textures["tourG"].getSize().x;
 	tourG_H = textures["tourG"].getSize().y;
 	
@@ -49,6 +40,21 @@ Jeu::Jeu(tx_map& textures, sp_map& sprites){
 	
 	vie_jg.setPosition(0, win_H - GROUND_H + 5);
 	vie_jd.setPosition(1500-VIE_W, win_H - GROUND_H + 5);
+	
+	popG = sf::Vector2f(TOUR_POSX, win_H - GROUND_H - U_RECT_H * U_SCALE);
+	popD = sf::Vector2f(win_W - TOUR_POSX - U_RECT_W * U_SCALE, win_H - GROUND_H - U_RECT_H * U_SCALE);
+	
+	
+	/*eq1 = *new Equipe(1, bat_id, tourG_W, tourG_H);//, sprites, bat_sp);
+	bat_id += 3;
+	std::cout << bat_id;*/
+	//std::cout << "\ttour.lvl: " << eq1.getTourLvl() << std::endl;
+	//std::cout << eq1.getTourHp() << std::endl;
+	
+	/*eq2 = *new Equipe(2, bat_id, tourD_W, tourD_H);
+	bat_id += 3;
+	std::cout << bat_id;*/
+	//std::cout << "\ttour.lvl: " << eq2.getTourLvl() << std::endl;
 }
 
 Jeu::~Jeu(){
@@ -589,11 +595,15 @@ void Jeu::game_setup(sp_map& sprites, const sf::Font& font){
 	bat_sp.push_back(sprites["tourelle"]);
 	bat_sp[(bat_sp.size())-1].rotate(180.f);*/
 	
+	eq1.tour_setup_dim(tourG_W, tourG_H);
+	eq2.tour_setup_dim(tourD_W, tourD_H);
+	
 	tour_timer.restart();
+	anim_timer.restart();
 }
 
 /* Gestion des evenement de la fenêtre lors du jeu */
-void Jeu::game_Event(sf::Event& event){
+void Jeu::game_Event(sf::Event& event, sp_map& sprites){
 	if (event.type == sf::Event::Closed){
 		window.close();
 	}
@@ -604,13 +614,22 @@ void Jeu::game_Event(sf::Event& event){
 		
 		// evenement claviers de l'équipe 1
 		if (event.key.code == sf::Keyboard::A){
-			eq1.tourLvlUp();
+			if(eq1.tourLvlUp()){
+				bandeau_sp[2].setColor(sf::Color::Black);
+				bandeau_txt[1].setFillColor(sf::Color::Black);
+			}
 		}
 		if (event.key.code == sf::Keyboard::Q){
-			eq1.tourDomageUp();
+			if(eq1.tourDomageUp()){
+				bandeau_sp[3].setColor(sf::Color::Black);
+				bandeau_txt[2].setFillColor(sf::Color::Black);
+			}
 		}
 		if (event.key.code == sf::Keyboard::S){
-			eq1.tourPorteeUp();
+			if(eq1.tourPorteeUp()){
+				bandeau_sp[4].setColor(sf::Color::Black);
+				bandeau_txt[3].setFillColor(sf::Color::Black);
+			}
 		}
 		if (event.key.code == sf::Keyboard::Z){
 			if(eq1.habitationUp()){		// on test si on peut effectivement monter le niveau de l'habitaion
@@ -620,20 +639,92 @@ void Jeu::game_Event(sf::Event& event){
 					bandeau_txt[5].setString(std::to_string(SOLDAT_PRIX));
 				}
 				if (h1 == 3){
+					bandeau_sp[5].setColor(sf::Color::Black);
+					bandeau_txt[4].setFillColor(sf::Color::Black);
 					bandeau_txt[5].setString(std::to_string(CYBORG_PRIX));
 				}
 			}
 		}
+		if (event.key.code == sf::Keyboard::E){
+			//std::cout << "unit_id: " << unit_id << std::endl;
+			int h1 = eq1.getHabLvl();
+			
+			if(id_libre.empty()){	// il n'y a aucune place dispo dans le vector de sprite actuel
+				if (eq1.creerCombattant(unit_id, popG)){
+					/*sp_paysan.setColor(eq1.getCol());
+					sp_paysan.setPosition(popG);//10, window.getSize().y-tx_ground.getSize().y-spriteH*gros);*/
+					switch (h1){
+						case 1:
+							unite_sp.push_back(sprites["paysan"]);
+							break;
+							
+						case 2:
+							unite_sp.push_back(sprites["soldat"]);
+							break;
+							
+						case 3:
+							unite_sp.push_back(sprites["cyborg"]);
+							break;
+					}
+					
+					unite_sp[unit_id].setColor(eq1.getCol());
+					unite_sp[unit_id].scale(U_SCALE, U_SCALE);
+					unite_sp[unit_id].setPosition(popG);
+					anim_sp.push_back(sf::Vector2i(0,WalkR));
+					
+					unit_id++;
+				}else{
+					std::cout << "---> Combattant non généré\n" << std::endl;
+				}
+			}
+			else{	// il existe au moins une place libre dans le vector des sprites d'unite
+				std::cout << "il y a une place libre dans le vector de sprite" << std::endl;
+				std::list<int>::iterator it = id_libre.begin();
+				if (eq1.creerCombattant(*it, popG)){
+					
+					switch(h1){
+						case 1:
+							unite_sp[*it] = sprites["paysan"];
+							break;
+							
+						case 2:
+							unite_sp[*it] = sprites["soldat"];
+							break;
+							
+						case 3:
+							unite_sp[*it] = sprites["cyborg"];
+							break;
+					}
+					
+					unite_sp[*it].setColor(eq1.getCol());
+					unite_sp[*it].scale(U_SCALE, U_SCALE);
+					unite_sp[*it].setPosition(popG);
+					anim_sp[*it] = sf::Vector2i(0,WalkR);//.push_back(sf::Vector2i(0,WalkR));
+				}else{
+					std::cout << "---> Combattant non généré\n" << std::endl;
+				}
+			}
+			std::cout << "popG: [" << popG.x << ":" << popG.y << "]\tpopD: [" << popD.x << ":" << popD.y << "]" << std::endl;
+		}
 		
 		// evenement claviers de l'équipe 2
 		if (event.key.code == sf::Keyboard::Numpad1){
-			eq2.tourLvlUp();
+			if(eq2.tourLvlUp()){
+				bandeau_sp[8].setColor(sf::Color::Black);
+				bandeau_txt[7].setFillColor(sf::Color::Black);
+			}
 		}
 		if (event.key.code == sf::Keyboard::Numpad4){
-			eq2.tourDomageUp();
+			if(eq2.tourDomageUp()){
+				bandeau_sp[9].setColor(sf::Color::Black);
+				bandeau_txt[8].setFillColor(sf::Color::Black);
+			}
 		}
 		if (event.key.code == sf::Keyboard::Numpad5){
-			eq2.tourPorteeUp();
+			if(eq2.tourPorteeUp()){
+				bandeau_sp[10].setColor(sf::Color::Black);
+				bandeau_txt[9].setFillColor(sf::Color::Black);
+			}
 		}
 		if (event.key.code == sf::Keyboard::Numpad2){
 			if(eq2.habitationUp()){		// on test si on peut effectivement monter le niveau de l'habitaion
@@ -643,9 +734,14 @@ void Jeu::game_Event(sf::Event& event){
 					bandeau_txt[11].setString(std::to_string(SOLDAT_PRIX));
 				}
 				if (h2 == 3){
+					bandeau_sp[11].setColor(sf::Color::Black);
+					bandeau_txt[10].setFillColor(sf::Color::Black);
 					bandeau_txt[11].setString(std::to_string(CYBORG_PRIX));
 				}
 			}
+		}
+		if (event.key.code == sf::Keyboard::Numpad3){
+			std::cout << "unit_id: " << unit_id << std::endl;
 		}
 	}
 }
@@ -689,6 +785,56 @@ void Jeu::game_update(){
 	
 }
 
+/* gestion des unites et de leurs animation */
+void Jeu::gestion_unites(){
+	if (unite_sp.size() != anim_sp.size()){
+		/*std::cerr << "ERROR: mauvaise initialisation des vectors de unite_sp et anim_sp" << std::endl;
+		return 0;*/
+		throw JeuException("***ERROR: mauvaise initialisation des vectors de unite_sp et anim_sp");
+	}
+	
+	/* Deplacement */
+	Unite* pu;
+	int id_sp;
+	/* Equipe 1 */
+	for(std::list<Unite*>::iterator it = eq1.getUnites().begin() ; it != eq1.getUnites().end() ; ++it ){
+		pu = *it;
+		id_sp = pu->getIndice();
+		unite_sp[id_sp].setTextureRect(sf::IntRect(anim_sp[id_sp].x * U_RECT_W, anim_sp[id_sp].y * U_RECT_H, U_RECT_W, U_RECT_H));
+		if (pu->getPos().x <= win_W-U_SP_W-10 && anim_sp[id_sp].y<=1){
+			pu->move(U_MOVE_R);
+			unite_sp[id_sp].move(U_MOVE_R);
+		}else{
+			anim_sp[id_sp].x = 0;
+		}
+	}
+	
+	/* Equipe 2 */
+	for(std::list<Unite*>::iterator it = eq2.getUnites().begin() ; it != eq2.getUnites().end() ; ++it ){
+		pu = *it;
+		id_sp = pu->getIndice();
+		unite_sp[id_sp].setTextureRect(sf::IntRect(anim_sp[id_sp].x * U_RECT_W, anim_sp[id_sp].y * U_RECT_H, U_RECT_W, U_RECT_H));
+		if (pu->getPos().x >= 10 && anim_sp[id_sp].y<=1){
+			pu->move(U_MOVE_L);
+			unite_sp[id_sp].move(U_MOVE_L);
+		}else{
+			anim_sp[id_sp].x = 0;
+		}
+	}
+	
+	/* Animation */
+	if (anim_timer.getElapsedTime().asMilliseconds() >= 20){
+		for (int i=0 ; i<unite_sp.size() ; i++){
+			//std::cout << "anim_sp[" << i << "] :\t[" << anim_sp[i].x << " : " << anim_sp[i].y << "]" << std::endl;
+			anim_sp[i].x++;
+			if (anim_sp[i].x * U_RECT_W >= U_RECT_W*6){
+				anim_sp[i].x = 0;
+			}
+		}
+		anim_timer.restart();
+	}
+}
+
 /* Dessine sur la fenetre du jeu les éléments du terrain */
 void Jeu::show_terrain(){
 	for (int i=0 ; i<terrain_sp.size() ; i++){
@@ -702,40 +848,40 @@ void Jeu::show_bandeau(){
 	int t1 = eq1.getTourLvl();	// niveau de la tour de l'équipe 1
 	int t2 = eq2.getTourLvl();	// niveau de la tour de l'équipe 2
 	
-	int h1 = eq1.getHabLvl();
-	int h2 = eq2.getHabLvl();
+	//int h1 = eq1.getHabLvl();
+	//int h2 = eq2.getHabLvl();
 	
 	for (int i=0 ; i<bandeau_sp.size() ; i++){
-		if ( i == 2 && t1 > 1){
+		/*if ( i == 2 && t1 > 1){	// tour au niveau 2, donc plus besoin d'upgrade
+			continue;
+		}*/
+		if ( (i == 3 || i == 4) && t1 < 2 ){	// tour au niveau 1, donc pas encore débloqué
 			continue;
 		}
-		if ( (i == 3 || i == 4) && t1 < 2 ){
+		/*if( i == 5 && h1 == 3){	// hab niveau 3, donc plus besoin d'upgrade
 			continue;
-		}
-		if( i == 5 && h1 == 3){
+		}*/
+		/*if ( i == 8 && t2 > 1){
 			continue;
-		}
-		if ( i == 8 && t2 > 1){
-			continue;
-		}
+		}*/
 		if ( (i == 9 || i == 10) && t2 < 2 ){
 			continue;
 		}
-		if( i == 11 && h2 == 3){
+		/*if( i == 11 && h2 == 3){
 			continue;
-		}
+		}*/
 		window.draw(bandeau_sp[i]);
 	}
 	for (int i=0 ; i<bandeau_txt.size() ; i++){
-		if ( i == 1 && t1 > 1){
+		/*if ( i == 1 && t1 > 1){	// tour au niveau 2, donc plus besoin d'upgrade (text)
+			continue;
+		}*/
+		if ( (i == 2 || i == 3) && t1 < 2 ){	// tour au niveau 1, donc pas encore débloqué
 			continue;
 		}
-		if ( (i == 2 || i == 3) && t1 < 2 ){
+		/*if ( i == 7 && t2 > 1){
 			continue;
-		}
-		if ( i == 7 && t2 > 1){
-			continue;
-		}
+		}*/
 		if ( (i == 8 || i == 9) && t2 < 2 ){
 			continue;
 		}
@@ -763,6 +909,10 @@ void Jeu::show_game(){
 			continue;
 		}
 		window.draw(bat_sp[i]);
+	}
+	
+	for (int i=0 ; i<unite_sp.size() ; i++){
+		window.draw(unite_sp[i]);
 	}
 	
 	window.display();
@@ -840,9 +990,15 @@ int main(void){
 			/* Jeu */
 			case 1:
 				while (jeu.window.pollEvent(event)){
-					jeu.game_Event(event);
+					jeu.game_Event(event, sprites);
 				}
 				jeu.game_update();
+				try{
+					jeu.gestion_unites();
+				}catch (const JeuException& e){
+					std::cerr << e.what() << std::endl;
+					return 0;
+				}
 				jeu.show_game();
 				break;
 			

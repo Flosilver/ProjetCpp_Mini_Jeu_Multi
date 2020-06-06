@@ -3,10 +3,12 @@ background|tiles/background.jpg
 bk_menu|tiles/bk_menu.png
 casqueD|tiles/casqueD.png
 casqueG|tiles/casqueG.png
+cyborg|tiles/cyborg.png
 ground|tiles/ground.png
 habitation|tiles/habitation.png
 paysan|tiles/paysan.png
 but_play|tiles/play_bouton.png
+soldat|tiles/pretre.png
 metal_bar|tiles/texture_metal_sized.png
 tourD|tiles/TOUR_D.png
 tourG|tiles/TOUR_G.png

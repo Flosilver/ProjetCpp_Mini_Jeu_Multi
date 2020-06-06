@@ -10,6 +10,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <list>
 #include <map>
 #include <cstdlib>
 #include <ctime>
@@ -23,8 +24,8 @@ class Jeu
 {
 	private:
 		
-		Equipe eq1 = Equipe(1, 0);;
-		Equipe eq2 = Equipe(2, 3);;
+		Equipe eq1 = Equipe(1, 0);
+		Equipe eq2 = Equipe(2, 3);
 		
 		/* attributs du menu */
 		sprite_v menu_sp;	// vector des sprites du menu
@@ -65,6 +66,7 @@ class Jeu
 		
 		int bat_id = 0;				// indice pour le prohain batiment créé
 		int unit_id = 0;			// indice pour la prochaine unité créée
+		std::list<int> id_libre;
 		
 		int tourG_W;				// largeur de la tour de gauche
 		int tourG_H;				// hauteur de la tour de gauche
@@ -80,6 +82,10 @@ class Jeu
 		sf::IntRect rect_vie_jd = sf::IntRect(0,0,VIE_W,VIE_H);
 		
 		sf::Clock tour_timer;
+		sf::Clock anim_timer;
+		
+		sf::Vector2f popG;		// position d'apparition des unites de l'equipe1
+		sf::Vector2f popD;		// position d'apparition des unites de l'equipe2
 	
 	public:
 		Jeu(tx_map& textures, sp_map& sprites);			// Constructeur
@@ -117,9 +123,10 @@ class Jeu
 		void bandeau_update();
 		void show_bandeau();
 		
+		void gestion_unites();
 		
 		void game_setup(sp_map& sprites, const sf::Font& font);
-		void game_Event(sf::Event& event);
+		void game_Event(sf::Event& event, sp_map& sprites);
 		void game_update();
 		void show_game();
 				
