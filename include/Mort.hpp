@@ -9,10 +9,10 @@
 class Mort : public Action
 {
 	protected:
-		
+		int equipe;
 	
 	public:
-		Mort(Unite* u) : Action(u) {}
+		Mort(Unite* u) : Action(u) {equipe = ((u->getEquipe())%2) + 1;}
 		~Mort() { std::cout << "\tdest_Mort"; }
 		Mort& operator=(const Mort& m){
 			unite = m.unite;
@@ -23,8 +23,8 @@ class Mort : public Action
 };
 
 int gereAction(){
-	int unite->getIndice();
-	
+	unite->meurt();	
+	return 1;		// SUCCESS
 }
 
 #endif

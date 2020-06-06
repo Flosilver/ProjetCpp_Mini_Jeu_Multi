@@ -6,7 +6,8 @@
 #include <iostream>
 
 #include "Element.hpp"
-#include "Unite.hpp"
+//#include "Unite.hpp"
+class Unite;
 
 class Batiment : public Element
 {
@@ -24,7 +25,7 @@ class Batiment : public Element
 			niveau = b.niveau;
 			return *this;
 		}
-		virtual Unite* genereUnite(int id) = 0;
+		virtual Unite* genereUnite(int id, const sf::Vector2f& posU) = 0;
 		
 		/* méthodes du jeu */
 		void levelUp() { niveau++; }

@@ -52,29 +52,108 @@ Equipe& Equipe::operator=(const Equipe& e){
 	numero = e.numero;
 	bourse = e.bourse;
 	hab = e.hab;
+	tour = e.tour;
+	
+	if(!e.unites.empty()){
+		for( std::list<Unite*>::const_iterator it = e.unites.begin() ; it != e.unites.end() ; ++it ){
+			unites.push_back(*it);
+		}
+	}
+	if(!e.listAttUni.empty()){
+		for( std::list<Unite*>::const_iterator it = e.listAttUni.begin() ; it != e.listAttUni.end() ; ++it ){
+			listAttUni.push_back(*it);
+		}
+	}
+	
+	return *this;
 	
 	// a completer: remplir les tableaux de l'unite et listAttUnite si non vides
 }
 
+/* renvoie l'ensemble des éléments IAttaquable que possède l'équipe dans un vecteur, avec la tour en 1ere position */
+std::vector<IAttaquable*>&  Equipe::getIAttaquables(){
+	
+}
+
 /* Ajoute une somme d'argent spécifée en argument à la bourse de l'équipe */
-void Equipe::ajoutMonaie(int argent){
-	bourse += argent;
+void Equipe::ajoutMonaie(const int& argent){
+	//bourse += argent;
+	bourse = (bourse + argent) < ARGENT_MAX ? (bourse + argent) : ARGENT_MAX;
 }
 
 /* Améliore le batiment Habitation */
 const int Equipe::habitationUp(){
 	if( hab.getNiveau() < 3 ){
-		hab.levelUp();
-		return 1;		// SUCCESS
+		if( hab.getNiveau() == 1 && (bourse-HAB_1TO2) >= 0 ){
+			ajoutMonaie(-HAB_1TO2);
+			hab.levelUp();
+			return 1;		// SUCCESS
+		}
+		if( hab.getNiveau() == 2 && (bourse-HAB_2TO3) >= 0 ){
+			ajoutMonaie(-HAB_2TO3);
+			hab.levelUp();
+			return 1;		// SUCCESS
+		}
+		std::cout << "***MESSAGE: Equipe " << numero << ": pas assez d'argent pour habitationUp" << std::endl;
+		return 0;
 	}
 	else{
-		std::cout << "***MESSAGE: habitation déjà lvl max" << std::endl;
+		std::cout << "***MESSAGE: Equipe " << numero << ": habitation déjà lvl max" << std::endl;
+		return 0;		// FAIL
+	}
+}
+
+/* Améliore le niveau de la tour */
+const int Equipe::tourLvlUp(){
+	if ( tour.getLvl() == 1){
+		if ( (bourse-TOUR_1TO2) >= 0 ){
+			ajoutMonaie(-TOUR_1TO2);
+			tour.levelUp();
+			return 1; 		// SUCCESS
+		}
+		std::cout << "***MESSAGE: Equipe " << numero << ": pas assez d'argent pour tourLvlUp" << std::endl;
+		return 0;
+	}
+	else{
+		std::cout << "***MESSAGE: Equipe " << numero << ": tour déjà lvl max" << std::endl;
+		return 0;		// FAIL
+	}
+}
+
+/* augmente les dégats de la tourelle */
+const int Equipe::tourDomageUp(){
+	if ( tour.getLvl() == 2){
+		if ( (bourse-TOUR_DMG_1TO2) >= 0 ){
+			ajoutMonaie(-TOUR_DMG_1TO2);
+			return tour.damageUp();
+		}
+		std::cout << "***MESSAGE: Equipe " << numero << ": pas assez d'argent pour tourDomageUp" << std::endl;
+		return 0;		// FAIL
+	}
+	else{
+		std::cout << "***MESSAGE: Equipe " << numero << ": tourelle non débloquée" << std::endl;
+		return 0;		// FAIL
+	}
+}
+
+/* Augmente la portee de la tourelle */
+const int Equipe::tourPorteeUp(){
+	if ( tour.getLvl() == 2){
+		if ( (bourse-TOUR_PORTEE_1TO2) >= 0 ){
+			ajoutMonaie(-TOUR_PORTEE_1TO2);
+			return tour.porteeUp();
+		}
+		std::cout << "***MESSAGE: Equipe " << numero << ": pas assez d'argent pour tourPorteeUp" << std::endl;
+		return 0;		// FAIL
+	}
+	else{
+		std::cout << "***MESSAGE: Equipe " << numero << ": tourelle non débloquée" << std::endl;
 		return 0;		// FAIL
 	}
 }
 
 /* demande la création d'une unité de combat */
-const int Equipe::creerCombattant(int id){
+const int Equipe::creerCombattant(int id, const sf::Vector2f& posU){
 	//int prixPaysan = -4;
 	//int prixSoldat = -8;
 	//int prixCyborg = -12;
@@ -112,18 +191,18 @@ const int Equipe::creerCombattant(int id){
 			}
 			break;
 		default:
-			std::cout << "***ERROR: Equipe::creerCombattant(int id): niveau habitation erroné" << std::endl;
+			std::cerr << "***ERROR: Equipe::creerCombattant(int id): niveau habitation erroné" << std::endl;
 	}
 	
-	unites.push_back(hab.genereUnite(id));			// on demande à l'habitation de générer l'unité
+	unites.push_back(hab.genereUnite(id, posU));			// on demande à l'habitation de générer l'unité
 				
 	return 1;	// SUCCESS
 	
 }
 
-const int Equipe::tireFleche(int id){
+const int Equipe::tireFleche(int id, const sf::Vector2f& posU){
 	try{
-		unites.push_back(tour.tire(id));
+		unites.push_back(tour.tire(id, posU));
 		return 1;	// SUCCESS
 	}
 	catch(const int& e){
@@ -136,4 +215,19 @@ void Equipe::setColor(sf::Color c){
 	this->couleur = c;
 	this->hab.setColor(c);
 	this->tour.setColor(c);
+}
+
+
+void Equipe::positionneHab(const sf::Vector2f& aPos){
+	hab.setPosition(aPos);
+}
+
+void Equipe::positionneTour(const sf::Vector2f& aPos, const sf::Vector2f& tourellePos){
+	tour.setPosition(aPos);
+	tour.positionneTourelle(tourellePos);
+}
+
+void Equipe::tour_setup_dim(int aW, int aH){
+	tour.setW(aW);
+	tour.setH(aH);
 }

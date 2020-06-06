@@ -10,6 +10,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <list>
 #include <map>
 #include <cstdlib>
 #include <ctime>
@@ -22,19 +23,15 @@
 class Jeu
 {
 	private:
-		int bat_id = 0;				// indice pour le prohain batiment créé
-		int unit_id = 0;			// indice pour la prochaine unité créée
 		
-		Equipe eq1;
-		Equipe eq2;
-		
-		int tourG_W;				// largeur de la tour de gauche
-		int tourG_H;				// hauteur de la tour de gauche
-		int tourD_W;				// largeur de la tour de droite
-		int tourD_H;				// hauteur de la tour de droite
+		Equipe eq1 = Equipe(1, 0);
+		Equipe eq2 = Equipe(2, 3);
 		
 		/* attributs du menu */
-		std::array<sf::Color, 4> couleurs_joueurs{ {sf::Color::Red, sf::Color::Blue, sf::Color::Yellow, sf::Color::Green} };
+		sprite_v menu_sp;	// vector des sprites du menu
+		txt_v menu_txt;		// vector des textes du menu
+		
+		std::array<sf::Color, NB_COL> couleurs_joueurs{ {sf::Color::Red, sf::Color::Blue, sf::Color::Yellow, sf::Color::Green} };
 		sf::Color bout_play_col;
 		int r,g,b;
 		int rotation = 0;
@@ -56,6 +53,39 @@ class Jeu
 		
 		int bk_menu_W;
 		int bk_menu_H;
+		
+		/* attributs du jeu */
+		sprite_v bandeau_sp;	// vector des sprites du bandeau de commande du jeu
+		txt_v bandeau_txt;		// vector des textes du bandeau de commande du jeu
+		
+		sprite_v terrain_sp;	// vector des sprites du terrain de jeu
+		
+		sprite_v bat_sp;	// vector des sprites des batiments présents sur le jeux
+		sprite_v unite_sp;	// vector des sprites des unitées du jeux
+		vec2i_v anim_sp;	// vector des animations de chaque sprite d'unitée
+		
+		int bat_id = 0;				// indice pour le prohain batiment créé
+		int unit_id = 0;			// indice pour la prochaine unité créée
+		std::list<int> id_libre;
+		
+		int tourG_W;				// largeur de la tour de gauche
+		int tourG_H;				// hauteur de la tour de gauche
+		int tourD_W;				// largeur de la tour de droite
+		int tourD_H;				// hauteur de la tour de droite
+			
+		int tourelle_W;				// largeur de la tourelle
+		int tourelle_H;				// hauteur de la tourelle
+		
+		sf::Sprite vie_jg;
+		sf::Sprite vie_jd;
+		sf::IntRect rect_vie_jg = sf::IntRect(0,0,VIE_W,VIE_H);
+		sf::IntRect rect_vie_jd = sf::IntRect(0,0,VIE_W,VIE_H);
+		
+		sf::Clock tour_timer;
+		sf::Clock anim_timer;
+		
+		sf::Vector2f popG;		// position d'apparition des unites de l'equipe1
+		sf::Vector2f popD;		// position d'apparition des unites de l'equipe2
 	
 	public:
 		Jeu(tx_map& textures, sp_map& sprites);			// Constructeur
@@ -73,21 +103,32 @@ class Jeu
 		//tx_map textures;
 		//sp_map sprites;
 		
+		/* Menu */
 		
-		sprite_v menu_sp;	// vector des sprites du menu
-		txt_v menu_txt;		// vector des textes du menu
-		
-		sprite_v bat_sp;	// vector des sprites des batiments présents sur le jeux
-		sprite_v unite_sp;	// vector des sprites des unitées du jeux
-		vec2i_v anim_sp;	// vector des animations de chaque sprite d'unitée
+		/* Game */
 		
 		void getWinSize();
 		
 		/* Menu */
 		void menu_setup(sp_map& sprites, const sf::Font& font);
-		void menu_Event(sf::Event& event);
+		void menu_Event(sf::Event& event, sp_map& sprites, const sf::Font& font);
 		void menu_update();
 		void show_menu();
+		
+		/* Game */
+		void terrain_setup(sp_map& sprites);
+		void show_terrain();
+		
+		void bandeau_setup(sp_map& sprites, const sf::Font& font);
+		void bandeau_update();
+		void show_bandeau();
+		
+		void gestion_unites();
+		
+		void game_setup(sp_map& sprites, const sf::Font& font);
+		void game_Event(sf::Event& event, sp_map& sprites);
+		void game_update();
+		void show_game();
 				
 		/* Méthodes static */
 		static void Initialise(const char* list_file, tx_map& textures, sp_map& sprites);		// Initailise le jeu de manière static. Renvoie false si échoué, true sinon

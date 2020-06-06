@@ -5,15 +5,19 @@
 
 #include "Action.hpp"
 #include "Unite.hpp"
+#include "IAttaquable.hpp"
 
 class Attaque : public Action
 {
 	protected:
-		Unite* cible;
+		IAttaquable* cible;
 		
 	public:
-		Attaque(Unite* u, Unite* aCible): Action(u), cible(aCible) {}
-		~Attaque() { std::cout << "\tdest_Attaque";}
+		Attaque(Unite* u, IAttaquable* aCible): Action(u), cible(aCible) {}
+		~Attaque() { 
+			delete cible;
+			std::cout << "\tdest_Attaque";
+		}
 		Attaque& operator=(const Attaque& a){
 			unite = a.unite;
 			cible = a.cible;
@@ -22,7 +26,7 @@ class Attaque : public Action
 		
 		int gereAction();
 		
-		Unite* getCible() {return cible;}
+		IAttaquable* getCible() {return cible;}
 };
 
 int Attaque::gereAction(){
