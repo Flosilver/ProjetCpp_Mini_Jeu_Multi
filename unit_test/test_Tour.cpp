@@ -6,7 +6,7 @@
 TEST_CASE( "creation Tour", "[Tour]" ) {
 	Tour T = Tour(1,2);
 	REQUIRE( T.getLvl() == 1 );
-	REQUIRE( T.getHp() == 200 );
+	REQUIRE( T.getHP() == 200 );
 	Tourelle To = T.getTourelle();
 	REQUIRE( To.getCoolDown() == 100 );
 	REQUIRE( To.getNiveau() == 1 );
@@ -19,7 +19,7 @@ TEST_CASE( "creation Tour", "[Tour]" ) {
 	SECTION("Copie"){
 		Tour T2 = T;
 		REQUIRE( T2.getLvl() == 1 );
-		REQUIRE( T2.getHp() == 200 );
+		REQUIRE( T2.getHP() == 200 );
 		Tourelle To2 = T.getTourelle();
 		REQUIRE( To2.getCoolDown() == 100 );
 		REQUIRE( To2.getNiveau() == 1 );

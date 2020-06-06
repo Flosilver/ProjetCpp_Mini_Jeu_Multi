@@ -4,7 +4,7 @@
 
 
 TEST_CASE( "creation Cyborg", "[Cyborg]" ) {
-	Cyborg C = Cyborg(sf::Color::Blue, 1, 2);
+	Cyborg C = Cyborg(sf::Color::Blue, 1, 2, sf::Vector2f (-1,-1));
     REQUIRE( C.getHP() == 30);
     REQUIRE( C.getDMG() == 12);
     REQUIRE( C.getPos() == sf::Vector2f(-1,-1));

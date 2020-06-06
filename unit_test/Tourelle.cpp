@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "Tourelle.hpp"
+#include "Fleche.hpp"
 
 Tourelle& Tourelle::operator=(const Tourelle& t){
 	pos = t.pos;
@@ -16,10 +17,10 @@ Tourelle& Tourelle::operator=(const Tourelle& t){
 }
 
 /* Factory d'Unite: Fleche */
-Unite* Tourelle::genereUnite(int id) {
+Unite* Tourelle::genereUnite(int id, const sf::Vector2f& posU) {
 	if (coolDown == 100){
 		coolDown = 0;
-		return new Fleche(couleur, equipe, id, degats);
+		return new Fleche(couleur, equipe, id, posU, degats);
 	}
 	/*else if (coolDown == 0){
 		coolDown == 100;

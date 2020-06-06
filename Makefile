@@ -15,7 +15,7 @@ TEST_DIR := unit_test
 TEST_OBJ_DIR := obj_test
 
 SRC_TEST := $(wildcard $(TEST_DIR)/*.cpp)
-OBJ_TEST := $(addprefix $(TEST_OBJ_DIR)/, $(notdir $(patsubst %.cpp, %.o, $(SRC_TEST))))
+OBJ_TEST := $(addprefix $(TEST_OBJ_DIR)/, $(notdir $(patsubst %.cpp, %.o, $(SRC_TEST)))) #$(addprefix $(TEST_OBJ_DIR)/, $(notdir $(patsubst %.cpp, %.o, $(SRC))))
 
 
 # dependances
@@ -60,7 +60,8 @@ $(TEST_OBJ_DIR):
 
 
 clean:
-	rm -rf $(OBJ) $(OBJ_TEST)
+	rm -rf $(OBJ)
+	rm -rf $(OBJ_TEST)
 	
 mrproper: clean
 	rm -rf $(EXE) $(TEST)
