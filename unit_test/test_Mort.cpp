@@ -1,9 +1,17 @@
 #include "catch.hpp"
+#include "config.hpp"
+
 #include "Mort.hpp"
+#include "Paysan.hpp"
 
 
 TEST_CASE( "test Mort", "[Mort]" ) {
-	Unite U = Unite(sf::Color::White, 1, 2 ,sf::Vector2f (-1,-1) ,4 ,5 ,6,7);
+	Unite* pu = new Paysan(sf::Color::White, 1, 0, sf::Vector2f());
+	Unite& ru = *pu;
+	Mort m(ru);
+	
+	REQUIRE(m.getUnite().getIndice() == 0);
+	
 	//Mort M = Mort(&U);
 	}
 	
