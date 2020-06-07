@@ -95,6 +95,18 @@ void Equipe::getIAttaquables(std::vector<IAttaquable*>& eq_iAtt){
 	//return res;
 }
 
+/* renvoie la référence vers une unité de la liste d'unité de l'équipe grâce à son identifiant */
+/*Unite& findUnite(int id){
+	Unite* pu;
+	for(std::list<Unite*>::iterator it = unites.begin() ; it != unites.end() ; ++it){
+		pu = *it;
+		if(pu->getIndice() == id){
+			return *pu,
+		}
+	}
+	throw std::string("Unite introuvable");
+}*/
+
 /* Ajoute une somme d'argent spécifée en argument à la bourse de l'équipe */
 void Equipe::ajoutMonaie(const int& argent){
 	//bourse += argent;
@@ -178,55 +190,69 @@ const int Equipe::creerCombattant(int id, const sf::Vector2f& posU){
 	//int prixSoldat = -8;
 	//int prixCyborg = -12;
 	
-	// On enleve la bonne quantité d'argent à l'équipe en fonction du niveau de l'habitation
-	switch(hab.getNiveau()){
-		case 1:
-			/* on vérifie si l'équipe a assez d'argent */
-			if( bourse >= -U_PRIX_P ){	
-				ajoutMonaie(U_PRIX_P);	// on enleve l'argent a l'équipe
-				//unites.push_back(hab.genereUnite(id));			// on demande à l'habitation de générer l'unité
-			}else{
-				std::cout << "***MESSAGE: Equipe " << numero << ": pas assez d'argent pour paysan" << std::endl;
-				return 0;		// FAIL
-			}
-			break;
-		case 2:
-			/* on vérifie si l'équipe a assez d'argent */
-			if( bourse >= -U_PRIX_S ){
-				ajoutMonaie(U_PRIX_S);	// on enleve l'argent a l'équipe
-				//unites.push_back(hab.genereUnite(id));			// on demande à l'habitation de générer l'unité
-			}else{
-				std::cout << "***MESSAGE: Equipe " << numero << ": pas assez d'argent pour soldat" << std::endl;
-				return 0;		// FAIL
-			}
-			break;
-		case 3:
-			/* on vérifie si l'équipe a assez d'argent */
-			if( bourse >= -U_PRIX_C ){
-				ajoutMonaie(U_PRIX_C);	// on enleve l'argent a l'équipe
-				//unites.push_back(hab.genereUnite(id));			// on demande à l'habitation de générer l'unité
-			}else{
-				std::cout << "***MESSAGE: Equipe " << numero << ": pas assez d'argent pour cyborg" << std::endl;
-				return 0;		// FAIL
-			}
-			break;
-		default:
-			std::cerr << "***ERROR: Equipe::creerCombattant(int id): niveau habitation erroné" << std::endl;
+	if(hab.checkTimer()){
+		
+		// On enleve la bonne quantité d'argent à l'équipe en fonction du niveau de l'habitation
+		switch(hab.getNiveau()){
+			case 1:
+				/* on vérifie si l'équipe a assez d'argent */
+				if( bourse >= -U_PRIX_P ){	
+					ajoutMonaie(U_PRIX_P);	// on enleve l'argent a l'équipe
+					//unites.push_back(hab.genereUnite(id));			// on demande à l'habitation de générer l'unité
+				}else{
+					std::cout << "***MESSAGE: Equipe " << numero << ": pas assez d'argent pour paysan" << std::endl;
+					return 0;		// FAIL
+				}
+				break;
+			case 2:
+				/* on vérifie si l'équipe a assez d'argent */
+				if( bourse >= -U_PRIX_S ){
+					ajoutMonaie(U_PRIX_S);	// on enleve l'argent a l'équipe
+					//unites.push_back(hab.genereUnite(id));			// on demande à l'habitation de générer l'unité
+				}else{
+					std::cout << "***MESSAGE: Equipe " << numero << ": pas assez d'argent pour soldat" << std::endl;
+					return 0;		// FAIL
+				}
+				break;
+			case 3:
+				/* on vérifie si l'équipe a assez d'argent */
+				if( bourse >= -U_PRIX_C ){
+					ajoutMonaie(U_PRIX_C);	// on enleve l'argent a l'équipe
+					//unites.push_back(hab.genereUnite(id));			// on demande à l'habitation de générer l'unité
+				}else{
+					std::cout << "***MESSAGE: Equipe " << numero << ": pas assez d'argent pour cyborg" << std::endl;
+					return 0;		// FAIL
+				}
+				break;
+			default:
+				std::cerr << "***ERROR: Equipe::creerCombattant(int id): niveau habitation erroné" << std::endl;
+		}
+		
+		unites.push_back(hab.genereUnite(id, posU));			// on demande à l'habitation de générer l'unité
+		hab.restartTimer();
+		return 1;	// SUCCESS
 	}
-	
-	unites.push_back(hab.genereUnite(id, posU));			// on demande à l'habitation de générer l'unité
-				
-	return 1;	// SUCCESS
+	else{
+		return 0;	// FAIL (trop tot)
+	}
 	
 }
 
 const int Equipe::tireFleche(int id, const sf::Vector2f& posU){
-	try{
+	/*try{
 		unites.push_back(tour.tire(id, posU));
 		return 1;	// SUCCESS
 	}
 	catch(const int& e){
 		// cooldown de la tourelle en cours
+		return 0;	// FAIL
+	}*/
+	if(tour.checkTourelleTimer()){
+		unites.push_back(tour.tire(id, posU));
+		tour.restartTourelleTimer();
+		return 1;	// SUCCESS
+	}
+	else{
 		return 0;	// FAIL
 	}
 }

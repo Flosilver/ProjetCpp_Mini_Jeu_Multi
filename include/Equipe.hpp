@@ -38,6 +38,7 @@ public:
 	Equipe& operator=(const Equipe& e);
 	std::list<Unite*>& getUnites() { return unites; }
 	void getIAttaquables(std::vector<IAttaquable*>& eq_iAtt);	// renvoie l'ensemble des éléments IAttaquable que possède l'équipe dans un vecteur dans le vector mis en argument, avec la tour en 1ere position
+	//Unite& findUnite(int id);
 	
 	// fonction linkées au jeu
 	void ajoutMonaie(const int& argent);							// donne ou enleve de l'argent à l'équipe en fonction du signe de l'argument: >0 : ajout / <0 : retrait

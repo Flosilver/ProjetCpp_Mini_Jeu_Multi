@@ -27,10 +27,15 @@ class Fleche : public Unite
 			portee = f.portee;
 			return *this;
 		}
-		//virtual *Action agit() = 0;
-		const sf::IntRect getHitZone(); /*{
-			return sf::IntRect(pos.x - U_SP_H / 2, pos.y, );
-		}*/
+		
+		const sf::IntRect getHitZone();
+		
+		/* méthodes de IPeriodique */
+		bool checkTimer(){
+			sf::Time tps = timer.getElapsedTime();
+			int check = tps.asMilliseconds();
+			return check >= FLECHE_DELAI;
+		}
 		
 		/* accesseurs */
 		void rotate(float a) { angle += a;}

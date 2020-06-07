@@ -18,7 +18,7 @@ class Element
 		//void setPosition(const sf::Vector2f aPos) {pos = aPos;}
 
 	public:
-		Element(int eq, int id) : pos(-1, -1), couleur(), equipe(eq), indice(id) {}
+		Element(int eq, int id) : pos(-1, -1), couleur(sf::Color()), equipe(eq), indice(id) {}
 		Element(const sf::Color& c, int eq, int id) : couleur(c), pos(-1, -1), equipe(eq), indice(id) {}	// A faire: modifier la position en fonction de l'identifiant lors de la créartion
 		Element(const sf::Color& c, int eq, int id, const sf::Vector2f& aPos) : couleur(c), pos(aPos), equipe(eq), indice(id) {}
 		Element(){}

@@ -4,8 +4,8 @@
 //#include <iostream>
 
 #include "Action.hpp"
-#include "Unite.hpp"
 #include "IAttaquable.hpp"
+#include "Mort.hpp"
 
 class Attaque : public Action
 {
@@ -16,7 +16,7 @@ class Attaque : public Action
 		Attaque(Unite& u, IAttaquable& aCible): Action(u), cible(aCible) {}
 		~Attaque() { 
 			//delete cible;
-			std::cout << "\tdest_Attaque";
+			//std::cout << "\tdest_Attaque";
 		}
 		Attaque& operator=(const Attaque& a){
 			unite = a.unite;

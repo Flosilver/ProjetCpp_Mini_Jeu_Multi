@@ -17,6 +17,8 @@
 #include <ctime>
 
 #include "IAttaquable.hpp"
+#include "IPeriodique.hpp"
+
 
 
 typedef std::map<std::string, std::string> path_map;
@@ -39,6 +41,8 @@ typedef std::vector<sf::Text> txt_v;
 #define SCA_SELECT 0.7f	// scale up des casque de selection de couleur
 #define D_TIME 0.001		// intervalde temps entre chaque variation de couleur du bouton play
 #define NB_COL 4		// nombre de couleurs pour les couleurs de équipes
+#define TITRE_W 800
+#define TITRE_H 240
 
 
 /* Jeu */
@@ -74,7 +78,6 @@ typedef std::vector<sf::Text> txt_v;
 
 #define TOUR1_MONNAIE 2		// argent généré par la tour de niveau 1 donné à l'équipe à intervalle de temps régulier
 #define TOUR2_MONNAIE 5		// argent généré par la tour de niveau 2 donné à l'équipe à intervalle de temps régulier
-#define MONEY_TIME 2		// intervalle de temps où les tours génèrent de l'argent
 
 #define ARGENT_MAX 999		// argent max que peut posséder une équipe
 
@@ -92,9 +95,9 @@ typedef std::vector<sf::Text> txt_v;
 //#define U_POS_L sf::Vector2f(10, WIN_H - GROUND_H - U_SCALE * U_SP_H)	// Position d'apparition des unités à gauche
 //#define U_POS_R sf::Vector2f(1910, WIN_H - GROUND_H - U_SCALE * U_SP_H)	// Position d'apparition des unités à droite
 
-#define VIE_PAYSAN 10
-#define VIE_SOLDAT 20
-#define VIE_CYBORG 30
+#define VIE_PAYSAN 100
+#define VIE_SOLDAT 200
+#define VIE_CYBORG 300
 
 #define DMG_PAYSAN 1
 #define DMG_SOLDAT 6
@@ -106,10 +109,9 @@ typedef std::vector<sf::Text> txt_v;
 
 /* Animation et déplacement */
 typedef enum {WalkR, WalkL, AttR, AttL, DieR, DieL} move_t;
-#define U_MOVE_R sf::Vector2f(2,0)	// déplacement des unitées vers la droite
-#define U_MOVE_L sf::Vector2f(-2,0)	// déplacement des unitées vers la gauche
+#define U_MOVE_R sf::Vector2f(5,0)	// déplacement des unitées vers la droite
+#define U_MOVE_L sf::Vector2f(-5,0)	// déplacement des unitées vers la gauche
 #define FRAC_FLECHE 1000			// division du mouvement des fleches
-#define ANIMATION_TIME 60 			// temps en milisecondes
 
 /* Tour */
 #define HP_MAX 10000		// nombre de point de vie max de la tour
@@ -122,6 +124,18 @@ typedef enum {WalkR, WalkL, AttR, AttL, DieR, DieL} move_t;
 #define MORT_ID 0
 #define ATT_ID 1
 #define DEP_ID 2
+
+/* Temps */
+#define ACOMB_DELAI 50		// delai entre chaque action d'un ACombattant (en ms)
+#define FLECHE_DELAI 0		// delai entre chaque action d'une Fleche (en ms)
+#define HAB_DELAI 800			// delai minimum entre chaque génération d'unité avec l'habitation (en ms)
+#define TOURELLE_DELAI 500	// delai minimum entre chaque génération d'unité avec la tourelle (en ms)
+#define ANIMATION_TIME 60 	// delai entre chaque animation des Unite (en ms)
+#define MONEY_TIME 1000		// intervalle de temps où les tours génèrent de l'argent (en ms)
+
+
+/* End */
+#define TROPHY_SIZE 300
 
 /*class config
 {

@@ -18,6 +18,8 @@
 #include "config.hpp"
 
 #include "Equipe.hpp"
+#include "Attaque.hpp"
+#include "Deplacement.hpp"
 #include "Mort.hpp"
 
 
@@ -90,6 +92,8 @@ class Jeu
 		
 		/* End */
 		int winner = 0;
+		sprite_v end_sp;
+		sf::Text fin;
 	
 	public:
 		Jeu(tx_map& textures, sp_map& sprites);			// Constructeur
@@ -133,8 +137,12 @@ class Jeu
 		
 		void game_setup(sp_map& sprites, const sf::Font& font);
 		void game_Event(sf::Event& event, sp_map& sprites);
-		void game_update();
+		void game_update(sp_map& sprites, const sf::Font& font);
 		void show_game();
+		
+		void end_setup(sp_map& sprites, const sf::Font& font, int eq);
+		void end_Event(sf::Event& event);
+		void show_end();
 				
 		/* Méthodes static */
 		static void Initialise(const char* list_file, tx_map& textures, sp_map& sprites);		// Initailise le jeu de manière static. Renvoie false si échoué, true sinon

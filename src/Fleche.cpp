@@ -3,6 +3,7 @@
 
 const sf::IntRect Fleche::getHitZone(){
 	sf::RectangleShape rectShape(sf::Vector2f(U_SP_W, U_SP_W));
+	rectShape.setOrigin(U_SP_W/2, U_SP_W/2);
 	rectShape.setPosition(pos);
 	rectShape.setRotation(angle);
 	sf::FloatRect temp = rectShape.getGlobalBounds();

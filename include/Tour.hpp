@@ -47,6 +47,7 @@ class Tour : public Element, public IAttaquable
 		const int porteeUp() {return tourelle.porteeUp();}		// augmente la portée de la tourelle si possible
 		
 		/* getters */
+		const int getIndice() const {return indice;}
 		const int getW() const {return w;}
 		const int getH() const {return h;}
 		const int getLvl() const {return lvl;}
@@ -64,8 +65,16 @@ class Tour : public Element, public IAttaquable
 			return sf::IntRect(pos.x, pos.y, w, h);
 		}
 		void subiAtt(int degats) {hp -= degats;}	// enleve le montant des dégats aux points de vie de la Tour
+		void meurt() {vivant = false;}
+		const bool estVivant() const {return vivant;}
+		const int getEquipe() const {return equipe;}
+		const int getPrix() const {return 0;}
 		
 		void positionneTourelle(const sf::Vector2f& aPos) {tourelle.setPosition(aPos);}
+		
+		/* méthodes pour IPeriodique */
+		bool checkTourelleTimer() {return tourelle.checkTimer();}
+		void restartTourelleTimer() {tourelle.restartTimer();}
 		
 		
 	protected:
@@ -74,6 +83,7 @@ class Tour : public Element, public IAttaquable
 		Tourelle tourelle;
 		int w = 0;
 		int h = 0;
+		bool vivant = true;
 };
 
 #endif

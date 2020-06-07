@@ -8,6 +8,7 @@ int Deplacement::gereAction(){
 	
 	if (pos.x < -10 || pos.x > 1510 || pos.y < -10 || pos.y > (RW_H-GROUND_H)){
 		std::cerr << "**ERROR : Déplacement éronné -> MORT unité: " << unite.getIndice() << std::endl;
+		throw Mort(unite);
 		return MORT_ID;	// Déplacement éronné -> MORT
 	}
 	

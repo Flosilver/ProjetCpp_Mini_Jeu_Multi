@@ -51,3 +51,8 @@ Unite* Habitation::genereUnite(int id, const sf::Vector2f& posU){
 		return pu;
 }
 
+bool Habitation::checkTimer(){
+	sf::Time tps = timer.getElapsedTime();
+	int check = tps.asMilliseconds();
+	return check >= HAB_DELAI;
+}

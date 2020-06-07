@@ -32,6 +32,21 @@ class ACombattant : public Unite, public IAttaquable
 		const int getHP() const {return hp;}
 		/* enleve le montant des dégats aux points de vie du ACombattant */
 		void subiAtt(int degats) {hp -= degats;}
+		const bool estVivant() const {return vivant;}
+		void meurt() {
+			//std::cout << "mise a mort" << std::endl;
+			vivant = false;}
+		const int getEquipe() const {return equipe;}
+		
+		const int getIndice() const {return indice;}
+		const int getPrix() const {return prix;}
+		
+		/* méthodes de IPeriodique */
+		bool checkTimer(){
+			sf::Time tps = timer.getElapsedTime();
+			int check = tps.asMilliseconds();
+			return check >= ACOMB_DELAI;
+		}
 };
 
 #endif

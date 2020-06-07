@@ -17,7 +17,7 @@ public:
 	Action(Unite& u): unite(u){}
 	virtual ~Action(){ 
 		//delete unite;	// lol fo l'anlevé
-		std::cout << "\tdest_Action" << std::endl; 
+		//std::cout << "\tdest_Action" << std::endl; 
 	}
 	Action& operator=(const Action& a){
 		unite = a.unite;
