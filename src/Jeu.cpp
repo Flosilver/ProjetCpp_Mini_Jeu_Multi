@@ -80,6 +80,10 @@ Jeu::~Jeu(){
 	std::cout << "dest sprites des unites\t";
 	anim_sp.clear();
 	std::cout << "dest vecteurs d'animation des sprites\tdest_Jeu" << std::endl;
+	
+	id_libre.clear();
+	
+	end_sp.clear();
 }
 
 Jeu& Jeu::operator=(const Jeu& j){
@@ -684,7 +688,7 @@ void Jeu::game_Event(sf::Event& event, sp_map& sprites){
 			}
 			else{	// il existe au moins une place libre dans le vector des sprites d'unite
 				std::cout << "il y a une place libre dans le vector de sprite: "; // << std::endl;
-				std::list<int>::iterator it = id_libre.begin();
+				std::set<int>::iterator it = id_libre.begin();
 				std::cout << *it << "\tid_libre.size: " << id_libre.size() << std::endl;
 				if (eq1.creerCombattant(*it, popG)){
 					
@@ -782,7 +786,7 @@ void Jeu::game_Event(sf::Event& event, sp_map& sprites){
 			}
 			else{	// il existe au moins une place libre dans le vector des sprites d'unite
 				std::cout << "il y a une place libre dans le vector de sprite: ";// << std::endl;
-				std::list<int>::iterator it = id_libre.begin();
+				std::set<int>::iterator it = id_libre.begin();
 				std::cout << *it << "\tid_libre.size: " << id_libre.size() << std::endl;
 				if (eq2.creerCombattant(*it, popD)){
 					
@@ -857,6 +861,84 @@ void Jeu::game_update(sp_map& sprites, const sf::Font& font){
 			break;
 	}
 	
+	//sf::Vector2f popF = sf::Vector2f(TOUR_POSX,TOURELLE_POSY + U_SP_H/2);
+	
+	/* tentative de création de fleches eq1 */
+	/*if(id_libre.empty()){	// il n'y a aucune place dispo dans le vector de sprite actuel
+		if (eq1.tireFleche(unit_id, popF)){
+			unite_sp.push_back(sprites["fleche"]);
+			
+			//unite_sp[unit_id].setColor(eq1.getCol());
+			unite_sp[unit_id].setPosition(U_RECT_W/2, U_RECT_H/2);
+			unite_sp[unit_id].scale(U_SCALE, U_SCALE);
+			unite_sp[unit_id].setRotation(90);
+			unite_sp[unit_id].setPosition(popF);
+			anim_sp.push_back(sf::Vector2i());
+			
+			unit_id++;
+		}else{
+			//std::cout << "---> Combattant non généré\n" << std::endl;
+		}
+	}
+	else{	// il existe au moins une place libre dans le vector des sprites d'unite
+		//std::cout << "il y a une place libre dans le vector de sprite: "; // << std::endl;
+		std::set<int>::iterator it = id_libre.begin();
+		//std::cout << *it << "\tid_libre.size: " << id_libre.size() << std::endl;
+		if (eq1.tireFleche(*it, popF)){
+			
+			unite_sp[*it] = sprites["fleche"];
+			
+			//unite_sp[*it].setColor(eq1.getCol());
+			unite_sp[*it].setPosition(U_RECT_W/2, U_RECT_H/2);
+			unite_sp[*it].scale(U_SCALE, U_SCALE);
+			unite_sp[unit_id].setRotation(90);
+			unite_sp[*it].setPosition(popF);
+			anim_sp[*it] = sf::Vector2i();//.push_back(sf::Vector2i(0,WalkR));
+			
+			id_libre.erase(it);
+		}else{
+			//std::cout << "---> Combattant non généré\n" << std::endl;
+		}
+	}
+	
+	popF = sf::Vector2f(win_W - TOUR_POSX, TOURELLE_POSY + U_SP_H/2);*/
+	/* tentative de création de fleches eq2 */
+	/*if(id_libre.empty()){	// il n'y a aucune place dispo dans le vector de sprite actuel
+		if (eq2.tireFleche(unit_id, popF)){
+			unite_sp.push_back(sprites["fleche"]);
+			
+			//unite_sp[unit_id].setColor(eq1.getCol());
+			unite_sp[unit_id].setPosition(U_RECT_W/2, U_RECT_H/2);
+			unite_sp[unit_id].scale(U_SCALE, U_SCALE);
+			unite_sp[unit_id].setRotation(-90);
+			unite_sp[unit_id].setPosition(popF);
+			anim_sp.push_back(sf::Vector2i());
+			
+			unit_id++;
+		}else{
+			//std::cout << "---> Combattant non généré\n" << std::endl;
+		}
+	}
+	else{	// il existe au moins une place libre dans le vector des sprites d'unite
+		//std::cout << "il y a une place libre dans le vector de sprite: "; // << std::endl;
+		std::set<int>::iterator it = id_libre.begin();
+		//std::cout << *it << "\tid_libre.size: " << id_libre.size() << std::endl;
+		if (eq2.tireFleche(*it, popF)){
+			
+			unite_sp[*it] = sprites["fleche"];
+			
+			//unite_sp[*it].setColor(eq1.getCol());
+			unite_sp[*it].setPosition(U_RECT_W/2, U_RECT_H/2);
+			unite_sp[*it].scale(U_SCALE, U_SCALE);
+			unite_sp[unit_id].setRotation(-90);
+			unite_sp[*it].setPosition(popF);
+			anim_sp[*it] = sf::Vector2i();//.push_back(sf::Vector2i(0,WalkR));
+			
+			id_libre.erase(it);
+		}else{
+			//std::cout << "---> Combattant non généré\n" << std::endl;
+		}
+	}*/
 	
 	// update de la vie
 	int vie_g = eq1.getTourHp() * 100 / HP_MAX * VIE_H;
@@ -1003,7 +1085,11 @@ void Jeu::action_update(std::list<Action*>& actions){
 void Jeu::action_gestion(std::list<Action*>& actions){
 	/* Initialisation des variables nécessaires */
 	Action* pa;
-	int move, id_u, id_m, gain, eq;
+	int move = 0;
+	int id_u = 0;
+	int id_m = 0;
+	int gain = 0;
+	int eq =0;
 	
 	for (std::list<Action*>::iterator it = actions.begin() ; it != actions.end() ; ++it){
 		pa = *it;
@@ -1041,7 +1127,7 @@ void Jeu::action_gestion(std::list<Action*>& actions){
 			
 			// C'est une Unite ou un IAttaquable
 			id_m = m.getUnite().getIndice() > m.getIAtt().getIndice() ? m.getUnite().getIndice() : m.getIAtt().getIndice();
-			id_libre.push_back(id_m);					// on ajoute cet indice à la liste des indices disponibles pour les futures unites créées
+			id_libre.insert(id_m);//push_back(id_m);					// on ajoute cet indice à la liste des indices disponibles pour les futures unites créées
 			eq = m.getEquipe();							// on récupère l'équipe qui est sensé récupérer l'argent
 			if (eq != 0){	// c'est l'IAttaquable qui meurt
 				anim_sp[id_m].y = DieR + eq%2 ;

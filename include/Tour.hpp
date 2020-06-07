@@ -31,7 +31,8 @@ class Tour : public Element, public IAttaquable
 		/* méthodes du jeu */
 		void levelUp(){ 
 			std::cout << "tour.lvlup" << std::endl;
-			lvl++; }		// equipe la tour d'une tourelle  ----const int
+			lvl++;
+		}		// equipe la tour d'une tourelle  ----const int
 			 /*if (lvl < 2){
 				 lvl++;
 				 return 1;	// SUCCESS
