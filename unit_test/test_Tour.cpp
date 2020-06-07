@@ -12,9 +12,18 @@ TEST_CASE( "creation Tour", "[Tour]" ) {
 	REQUIRE( To.getNiveau() == 1 );
 	T.damageUp();
 	T.porteeUp();
-	/*
-	REQUIRE( T.getPortee() == 200 );
-	REQUIRE( T.getDegats) == 2 );*/
+	To = T.getTourelle();
+	REQUIRE( T.getTourelle().getPortee() == 300 );
+	REQUIRE( T.getTourelle().getDegats() == 2 );
+	REQUIRE( To.getCoolDown() == 100 );
+	REQUIRE( To.getNiveau() == 2 );
+	T.damageUp();
+	T.porteeUp();
+	To = T.getTourelle();
+	REQUIRE( T.getTourelle().getPortee() == 400 );
+	REQUIRE( T.getTourelle().getDegats() == 3 );
+	REQUIRE( To.getCoolDown() == 100 );
+	REQUIRE( To.getNiveau() == 3 );
 	
 	SECTION("Copie"){
 		Tour T2 = T;
