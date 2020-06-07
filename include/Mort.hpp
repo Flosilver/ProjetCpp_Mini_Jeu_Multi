@@ -12,7 +12,7 @@ class Mort : public Action
 		int equipe;
 	
 	public:
-		Mort(Unite* u) : Action(u) {equipe = ((u->getEquipe())%2) + 1;}
+		Mort(Unite& u) : Action(u) {equipe = ((u.getEquipe())%2) + 1;}
 		~Mort() { std::cout << "\tdest_Mort"; }
 		Mort& operator=(const Mort& m){
 			unite = m.unite;

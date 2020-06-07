@@ -9,6 +9,14 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <list>
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <cstddef>
+#include <ctime>
+
+#include "IAttaquable.hpp"
 
 
 typedef std::map<std::string, std::string> path_map;
@@ -64,8 +72,8 @@ typedef std::vector<sf::Text> txt_v;
 #define TOUR_POSX 200
 #define TOURELLE_POSY 500
 
-#define TOUR1_MONNAIE 10		// argent généré par la tour de niveau 1 donné à l'équipe à intervalle de temps régulier
-#define TOUR2_MONNAIE 15		// argent généré par la tour de niveau 2 donné à l'équipe à intervalle de temps régulier
+#define TOUR1_MONNAIE 2		// argent généré par la tour de niveau 1 donné à l'équipe à intervalle de temps régulier
+#define TOUR2_MONNAIE 5		// argent généré par la tour de niveau 2 donné à l'équipe à intervalle de temps régulier
 #define MONEY_TIME 2		// intervalle de temps où les tours génèrent de l'argent
 
 #define ARGENT_MAX 999		// argent max que peut posséder une équipe
@@ -84,17 +92,36 @@ typedef std::vector<sf::Text> txt_v;
 //#define U_POS_L sf::Vector2f(10, WIN_H - GROUND_H - U_SCALE * U_SP_H)	// Position d'apparition des unités à gauche
 //#define U_POS_R sf::Vector2f(1910, WIN_H - GROUND_H - U_SCALE * U_SP_H)	// Position d'apparition des unités à droite
 
+#define VIE_PAYSAN 10
+#define VIE_SOLDAT 20
+#define VIE_CYBORG 30
+
+#define DMG_PAYSAN 1
+#define DMG_SOLDAT 6
+#define DMG_CYBORG 12
+
+#define GAIN_PAYSAN 6
+#define GAIN_SOLDAT 12
+#define GAIN_CYBORG 18
+
 /* Animation et déplacement */
 typedef enum {WalkR, WalkL, AttR, AttL, DieR, DieL} move_t;
 #define U_MOVE_R sf::Vector2f(2,0)	// déplacement des unitées vers la droite
 #define U_MOVE_L sf::Vector2f(-2,0)	// déplacement des unitées vers la gauche
+#define FRAC_FLECHE 1000			// division du mouvement des fleches
+#define ANIMATION_TIME 60 			// temps en milisecondes
 
 /* Tour */
-#define HP_MAX 200		// nombre de point de vie max de la tour
+#define HP_MAX 10000		// nombre de point de vie max de la tour
 /*#define TOUR_W 100
 #define TOUR_H 500
 #define TOUR_G_POS sf::Vector2f(10, TOUR_H - GROUND_H)
 #define TOUR_D_POS sf::Vector2f(10 + TOUR_W, TOUR_H - GROUND_H)*/
+
+/* Action */
+#define MORT_ID 0
+#define ATT_ID 1
+#define DEP_ID 2
 
 /*class config
 {

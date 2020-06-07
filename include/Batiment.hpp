@@ -1,9 +1,10 @@
 #ifndef BATIMENT_HPP
 #define BATIMENT_HPP
 
-#include <SFML/Graphics.hpp>
+/*#include <SFML/Graphics.hpp>
 #include <string>
-#include <iostream>
+#include <iostream>*/
+#include "config.hpp"
 
 #include "Element.hpp"
 //#include "Unite.hpp"

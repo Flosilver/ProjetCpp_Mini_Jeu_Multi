@@ -12,6 +12,8 @@ class IAttaquable
 		virtual const sf::IntRect getHitBox() = 0;
 		virtual const int getHP() const = 0;
 		virtual void subiAtt(int degats) = 0; // {hp -= degats;}
+		/*virtual void meurt() =0;
+		virtual const bool estVivant() = 0;*/
 };
 
 #endif

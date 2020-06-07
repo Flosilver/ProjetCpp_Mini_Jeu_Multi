@@ -59,13 +59,11 @@ class Tour : public Element, public IAttaquable
 		void setW(int aW) {w = aW;}
 		void setH(int aH) {h = aH;}
 		
-		/* Renvoie le rectangle représentant la zone où on peut toucher la Tour */
-		const sf::IntRect getHitBox(){
+		
+		const sf::IntRect getHitBox(){				// Renvoie le rectangle représentant la zone où on peut toucher la Tour
 			return sf::IntRect(pos.x, pos.y, w, h);
 		}
-		
-		/* enleve le montant des dégats aux points de vie de la Tour */
-		void subiAtt(int degats) {hp -= degats;}
+		void subiAtt(int degats) {hp -= degats;}	// enleve le montant des dégats aux points de vie de la Tour
 		
 		void positionneTourelle(const sf::Vector2f& aPos) {tourelle.setPosition(aPos);}
 		

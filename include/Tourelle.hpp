@@ -1,8 +1,8 @@
 #ifndef TOURELLE_HPP
 #define TOURELLE_HPP
 
-#include <SFML/Graphics.hpp>
-#include <iostream>
+/*#include <SFML/Graphics.hpp>
+#include <iostream>*/
 
 #include "config.hpp"
 

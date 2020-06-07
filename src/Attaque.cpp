@@ -1,14 +1,17 @@
+#include "config.hpp"
+
 #include "Attaque.hpp"
 
 int Attaque::gereAction(){
-	int dmg = unite->getDMG();
-	int hp = cible->getHP();
+	int dmg = unite.getDMG();
+	int hp = cible.getHP();
+	
+	cible.subiAtt(dmg);
 	
 	if ( hp - dmg > 0){
-		cible->subiAtt(dmg);
-		return 1;	// SUCCES
+		return ATT_ID;	// SUCCES
 	}
 	else{
-		return 0;	// FAIL -> décès de la cible
+		return MORT_ID;	// FAIL -> décès de la cible
 	}
 }

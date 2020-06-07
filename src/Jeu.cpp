@@ -1,4 +1,5 @@
 #include "config.hpp"
+
 #include "Jeu.hpp"
 #include "JeuException.hpp"
 
@@ -41,8 +42,8 @@ Jeu::Jeu(tx_map& textures, sp_map& sprites){
 	vie_jg.setPosition(0, win_H - GROUND_H + 5);
 	vie_jd.setPosition(1500-VIE_W, win_H - GROUND_H + 5);
 	
-	popG = sf::Vector2f(TOUR_POSX, win_H - GROUND_H - U_RECT_H * U_SCALE);
-	popD = sf::Vector2f(win_W - TOUR_POSX - U_RECT_W * U_SCALE, win_H - GROUND_H - U_RECT_H * U_SCALE);
+	popG = sf::Vector2f(TOUR_POSX - tourG_W, win_H - GROUND_H - U_SP_H);
+	popD = sf::Vector2f(win_W - TOUR_POSX + (tourD_W - U_SP_W), win_H - GROUND_H - U_SP_H);
 	
 	
 	/*eq1 = *new Equipe(1, bat_id, tourG_W, tourG_H);//, sprites, bat_sp);
@@ -645,7 +646,7 @@ void Jeu::game_Event(sf::Event& event, sp_map& sprites){
 				}
 			}
 		}
-		if (event.key.code == sf::Keyboard::E){
+		if (event.key.code == sf::Keyboard::E){						// génération d'unité pour l'équipe de gauche
 			//std::cout << "unit_id: " << unit_id << std::endl;
 			int h1 = eq1.getHabLvl();
 			
@@ -700,6 +701,8 @@ void Jeu::game_Event(sf::Event& event, sp_map& sprites){
 					unite_sp[*it].scale(U_SCALE, U_SCALE);
 					unite_sp[*it].setPosition(popG);
 					anim_sp[*it] = sf::Vector2i(0,WalkR);//.push_back(sf::Vector2i(0,WalkR));
+					
+					id_libre.erase(it);
 				}else{
 					std::cout << "---> Combattant non généré\n" << std::endl;
 				}
@@ -740,8 +743,67 @@ void Jeu::game_Event(sf::Event& event, sp_map& sprites){
 				}
 			}
 		}
-		if (event.key.code == sf::Keyboard::Numpad3){
+		if (event.key.code == sf::Keyboard::Numpad3){						// génération d'unité pour l'équipe de droite
 			std::cout << "unit_id: " << unit_id << std::endl;
+			int h2 = eq2.getHabLvl();
+			
+			if(id_libre.empty()){	// il n'y a aucune place dispo dans le vector de sprite actuel
+				if (eq2.creerCombattant(unit_id, popD)){
+					/*sp_paysan.setColor(eq1.getCol());
+					sp_paysan.setPosition(popG);//10, window.getSize().y-tx_ground.getSize().y-spriteH*gros);*/
+					switch (h2){
+						case 1:
+							unite_sp.push_back(sprites["paysan"]);
+							break;
+							
+						case 2:
+							unite_sp.push_back(sprites["soldat"]);
+							break;
+							
+						case 3:
+							unite_sp.push_back(sprites["cyborg"]);
+							break;
+					}
+					
+					unite_sp[unit_id].setColor(eq2.getCol());
+					unite_sp[unit_id].scale(U_SCALE, U_SCALE);
+					unite_sp[unit_id].setPosition(popD);
+					anim_sp.push_back(sf::Vector2i(0,WalkL));
+					
+					unit_id++;
+				}else{
+					std::cout << "---> Combattant non généré\n" << std::endl;
+				}
+			}
+			else{	// il existe au moins une place libre dans le vector des sprites d'unite
+				std::cout << "il y a une place libre dans le vector de sprite" << std::endl;
+				std::list<int>::iterator it = id_libre.begin();
+				if (eq2.creerCombattant(*it, popD)){
+					
+					switch(h2){
+						case 1:
+							unite_sp[*it] = sprites["paysan"];
+							break;
+							
+						case 2:
+							unite_sp[*it] = sprites["soldat"];
+							break;
+							
+						case 3:
+							unite_sp[*it] = sprites["cyborg"];
+							break;
+					}
+					
+					unite_sp[*it].setColor(eq2.getCol());
+					unite_sp[*it].scale(U_SCALE, U_SCALE);
+					unite_sp[*it].setPosition(popD);
+					anim_sp[*it] = sf::Vector2i(0,WalkL);//.push_back(sf::Vector2i(0,WalkR));
+					
+					id_libre.erase(it);
+				}else{
+					std::cout << "---> Combattant non généré\n" << std::endl;
+				}
+			}
 		}
 	}
 }
@@ -755,8 +817,17 @@ void Jeu::bandeau_update(){
 /* méthode d'update du jeu à chaque itération de la boucle while */
 void Jeu::game_update(){
 	// update de la vie
-	rect_vie_jg.top = VIE_H * 100 - VIE_H * (eq1.getTourHp() / HP_MAX) * 100;
-	rect_vie_jd.top = VIE_H * 100 - VIE_H * (eq2.getTourHp() / HP_MAX) * 100;
+	//rect_vie_jg.top = VIE_H * 100 - VIE_H * (eq1.getTourHp() / HP_MAX) * 100;
+	//rect_vie_jd.top = VIE_H * 100 - VIE_H * (eq2.getTourHp() / HP_MAX) * 100;
+	int vie_g = eq1.getTourHp() * 100 / HP_MAX * VIE_H;
+	if (vie_g == 1500){ vie_g -= VIE_H;}
+	if (vie_g <= 0) { vie_g = 0; }
+	int vie_d = eq2.getTourHp() * 100 / HP_MAX * VIE_H;
+	if (vie_d == 1500){ vie_d -= VIE_H;}
+	if (vie_d <= 0) { vie_d = 0; }
+	
+	rect_vie_jg = sf::IntRect(0, vie_g, VIE_W, VIE_H);
+	rect_vie_jd = sf::IntRect(0, vie_d, VIE_W, VIE_H);
 	
 	vie_jg.setTextureRect(rect_vie_jg);
 	vie_jd.setTextureRect(rect_vie_jd);
@@ -781,37 +852,229 @@ void Jeu::game_update(){
 		tour_timer.restart();
 	}
 	
+	/* Animation */
+	if (anim_timer.getElapsedTime().asMilliseconds() >= ANIMATION_TIME){
+		for (int i=0 ; i<unite_sp.size() ; i++){
+			if (anim_sp[i].y <= AttL){
+				anim_sp[i].x = (anim_sp[i].x + 1) % 6;
+			}
+			else{
+				anim_sp[i].x = (anim_sp[i].x + 1) < 5 ? anim_sp[i].x + 1 : 5;
+			}
+			unite_sp[i].setTextureRect(sf::IntRect(anim_sp[i].x * U_RECT_W, anim_sp[i].y * U_RECT_H, U_RECT_W, U_RECT_H));
+		}
+		anim_timer.restart();
+	}
+	
+	
 	this->bandeau_update();
 	
 }
 
+void Jeu::action_update(std::list<Action*>& actions){
+	std::cout << "\n----------- action_gestion" << std::endl;
+	std::cout << "---- action_update" << std::endl;
+	std::vector<IAttaquable*> eq1_iAtt;// = eq1.getIAttaquables();
+	std::vector<IAttaquable*> eq2_iAtt;// = eq2.getIAttaquables();
+	eq1.getIAttaquables(eq1_iAtt);
+	eq2.getIAttaquables(eq2_iAtt);
+	
+	std::cout << "eq1_iAtt.size = " << eq1_iAtt.size() << "\teq2_iAtt.size = " << eq2_iAtt.size() << std::endl;
+	
+	std::list<Unite*>& eq1_u = eq1.getUnites();
+	std::list<Unite*>& eq2_u = eq2.getUnites();
+	
+	//std::list<Action*> actions;
+	/* nettoyage des actions à chaque itération si la list d'actions n'est pas vide*/
+	if (!actions.empty()){
+		std::list<Action*>::iterator it = actions.begin();
+		while (it != actions.end()){
+			delete *it;
+			it = actions.erase(it);
+		}
+	}
+	
+	std::cout << "ensemble des vector IAttaquable et unites récupérés" << std::endl;
+	std::cout << "\nequipe1: nb.unites = " << eq1_u.size() << std::endl;
+	IAttaquable* pia;
+	Unite* pu;
+	for (std::list<Unite*>::iterator it = eq1_u.begin() ; it != eq1_u.end() ; ++it){
+		pu = *it;
+		//std::cout << "récupération de Unite*" << std::endl;
+		// On vérifie d'abord si l'unité est morte au tour précédent
+		if( !pu->estVivant() ){
+			std::cout << "1 Unite est morte\t";
+			it = eq1_u.erase(it);	// on enlève l'unité de la liste d'unité de l'équipe
+			--it;					// on revient à l'unité d'avant pour que la boucle for passe effectivement à prochaine unité
+			continue;
+		}
+		
+		//std::cout << "Unite* est vivante" << std::endl;
+		// Si elle est vivante, on continue
+		pia = dynamic_cast<IAttaquable*> (pu);
+		//std::cout << "oskour" << std::endl;
+		if( pia != NULL ){	// on test si ce n'est pas une flèche pour le vecteur de mouvement
+			//std::cout << "oskour2" << std::endl;
+			//std::cout << "pu->hp: " << pu->getHP() << std::endl;
+			actions.push_back(pu->agit(eq2_iAtt, U_MOVE_R));
+		}
+		else{
+			//std::cout << "oskour3" << std::endl;
+			actions.push_back(pu->agit(eq2_iAtt, sf::Vector2f(eq1.getTourPortee()/FRAC_FLECHE, (win_H - GROUND_H - TOURELLE_POSY) / FRAC_FLECHE)));
+		}
+	}
+	std::cout << "Equipe 1 à fini de générer des actions: " << actions.size() << " actions générées" << std::endl;
+	std::cout << "\nequipe2: nb.unites = " << eq2_u.size() << std::endl;
+		
+	for (std::list<Unite*>::iterator it = eq2_u.begin() ; it != eq2_u.end() ; ++it){
+		pu = *it;
+		// On vérifie d'abord si l'unité est morte au tour précédent
+		if( !pu->estVivant() ){
+			std::cout << "1 Unite est morte\t";
+			it = eq2_u.erase(it);	// on enlève l'unité de la liste d'unité de l'équipe
+			--it;					// on revient à l'unité d'avant pour que la boucle for passe effectivement à la prochaine unité
+			continue;
+		}
+		
+		// Si elle est vivante, on continue
+		pia = dynamic_cast<IAttaquable*> (pu);
+		if( pia != NULL ){	// on test si ce n'est pas une flèche pour le vecteur de mouvement
+			actions.push_back(pu->agit(eq1_iAtt, U_MOVE_L));
+		}
+		else{
+			actions.push_back(pu->agit(eq1_iAtt, sf::Vector2f(-eq2.getTourPortee()/FRAC_FLECHE, (win_H - GROUND_H - TOURELLE_POSY - U_SP_W) / FRAC_FLECHE)));
+		}
+	}
+	std::cout << "Equipe 2 à fini de générer des actions: " << actions.size() << " actions générées au total" << std::endl;
+}
+
+void Jeu::action_gestion(std::list<Action*>& actions){
+	
+	std::cout << "\n----début gestion" << std::endl;
+	
+	//std::cout << "actions vide? " << actions.empty() << std::endl;
+	//std::list<Action*>::iterator it = actions.begin();
+	//std::cout << "je passe ici" << std::endl;
+	
+	Action* pa;// = *it;
+	//Unite pu;// = pa->getUnite();
+	int id_u;// = pu->getIndice();
+	//Mort m(pu);
+	
+	std::cout << "première initialisation: OK" << std::endl;
+	std::cout << "nb actions é gérer: " << actions.size() << std::endl;
+	std::cout << "début for" << std::endl;
+	
+	int move;
+	
+	//while( it != actions.end() ){
+	for (std::list<Action*>::iterator it = actions.begin() ; it != actions.end() ; ++it){
+		pa = *it;					// on récupère l'action
+		//std::cout << "ici" << std::endl;
+		Unite& pu = pa->getUnite();		// on récupère l'unité qui fait l'action
+		//std::cout << "pu.hp: " << pu->getHP() << std::endl;
+		id_u = pu.getIndice();		// on récupère l'indice de l'unite qui fait l'action
+		Mort m(pu);					// dans le doute on créer la mort de l'unité qui sera gérée que si nécessaire					
+	
+		switch(pa->gereAction()){
+			case MORT_ID:
+				if (eq1.getTourHp() <= 0){			// la tour de l'équipe 1 était la cible d'une attaque et a perdu toute sa vie
+					winner = 2;
+					break;
+				}
+				if (eq2.getTourHp() <= 0){		// la tour de l'équipe 2 était la cible d'une attaque et a perdu toute sa vie
+					winner = 1;
+					break;
+				}
+				
+				// c'est une Unite qui est morte
+				id_libre.push_back(id_u);					// on ajoute cet indice à la liste des indices disponibles pour les futures unites créées
+				anim_sp[id_u].y = DieR + (pu.getEquipe()+1)%2;
+				anim_sp[id_u].x = 0;
+				m.gereAction();
+				break;
+				
+			case ATT_ID:
+				move = anim_sp[id_u].y;
+				anim_sp[id_u].y = AttR + (pu.getEquipe()+1)%2;
+				if (move != anim_sp[id_u].y) { anim_sp[id_u].x = 0;}	// si l'unité change de mouvement, on redémarre l'animation à 0
+				break;
+				
+			case DEP_ID:
+				move = anim_sp[id_u].y;
+				anim_sp[id_u].y = WalkR + (pu.getEquipe()+1)%2;
+				if (move != anim_sp[id_u].y) { anim_sp[id_u].x = 0;}	// si l'unité change de mouvement, on redémarre l'animation à 0
+				break;
+				
+			default:
+				std::cerr << "***ERROR: Jeu::action_gestion: traitement d'une Action inconnue" << std::endl;
+				break;
+		}
+		/*delete *it;
+		std::cout << "oskour la" << std::endl;
+		it = actions.erase(it);
+		std::cout << "nb actions à gérer: " << actions.size() << std::endl;*/
+	}
+	std::cout << "fin for" << std::endl;
+	std::cout << "gestion des actions finie" << std::endl;
+}
+
 /* gestion des unites et de leurs animation */
 void Jeu::gestion_unites(){
+	
+	std::list<Action*> actions;
+	action_update(actions);
+	action_gestion(actions);
+	
 	if (unite_sp.size() != anim_sp.size()){
 		/*std::cerr << "ERROR: mauvaise initialisation des vectors de unite_sp et anim_sp" << std::endl;
 		return 0;*/
 		throw JeuException("***ERROR: mauvaise initialisation des vectors de unite_sp et anim_sp");
 	}
-	
+	std::cout << "c'est parti!" << std::endl;
 	/* Deplacement */
 	Unite* pu;
 	int id_sp;
+	IAttaquable* pia;
 	/* Equipe 1 */
 	for(std::list<Unite*>::iterator it = eq1.getUnites().begin() ; it != eq1.getUnites().end() ; ++it ){
 		pu = *it;
+		pia = dynamic_cast<IAttaquable*> (pu);	// on vérifie si l'Unite est un IAttaquabe (= tout sauf fleche)
 		id_sp = pu->getIndice();
-		unite_sp[id_sp].setTextureRect(sf::IntRect(anim_sp[id_sp].x * U_RECT_W, anim_sp[id_sp].y * U_RECT_H, U_RECT_W, U_RECT_H));
+		
+		if (pia != nullptr){
+			// ce n'est pas une fleche ->animation
+			unite_sp[id_sp].setTextureRect(sf::IntRect(anim_sp[id_sp].x * U_RECT_W, anim_sp[id_sp].y * U_RECT_H, U_RECT_W, U_RECT_H));
+		}
+		// on position le sprite à la position de l'unite
+		unite_sp[id_sp].setPosition(pu->getPos());
+		
+		
+		/*unite_sp[id_sp].setTextureRect(sf::IntRect(anim_sp[id_sp].x * U_RECT_W, anim_sp[id_sp].y * U_RECT_H, U_RECT_W, U_RECT_H));
 		if (pu->getPos().x <= win_W-U_SP_W-10 && anim_sp[id_sp].y<=1){
 			pu->move(U_MOVE_R);
 			unite_sp[id_sp].move(U_MOVE_R);
 		}else{
 			anim_sp[id_sp].x = 0;
-		}
+		}*/
 	}
 	
 	/* Equipe 2 */
 	for(std::list<Unite*>::iterator it = eq2.getUnites().begin() ; it != eq2.getUnites().end() ; ++it ){
 		pu = *it;
+		pia = dynamic_cast<IAttaquable*> (pu);	// on vérifie si l'Unite est un IAttaquabe (= tout sauf fleche)
+		id_sp = pu->getIndice();
+		
+		if (pia != nullptr){
+			// ce n'est pas une fleche ->animation
+			unite_sp[id_sp].setTextureRect(sf::IntRect(anim_sp[id_sp].x * U_RECT_W, anim_sp[id_sp].y * U_RECT_H, U_RECT_W, U_RECT_H));
+		}
+		// on position le sprite à la position de l'unite
+		unite_sp[id_sp].setPosition(pu->getPos());
+		
+		
+		
+		/*pu = *it;
 		id_sp = pu->getIndice();
 		unite_sp[id_sp].setTextureRect(sf::IntRect(anim_sp[id_sp].x * U_RECT_W, anim_sp[id_sp].y * U_RECT_H, U_RECT_W, U_RECT_H));
 		if (pu->getPos().x >= 10 && anim_sp[id_sp].y<=1){
@@ -819,20 +1082,9 @@ void Jeu::gestion_unites(){
 			unite_sp[id_sp].move(U_MOVE_L);
 		}else{
 			anim_sp[id_sp].x = 0;
-		}
+		}*/
 	}
 	
-	/* Animation */
-	if (anim_timer.getElapsedTime().asMilliseconds() >= 20){
-		for (int i=0 ; i<unite_sp.size() ; i++){
-			//std::cout << "anim_sp[" << i << "] :\t[" << anim_sp[i].x << " : " << anim_sp[i].y << "]" << std::endl;
-			anim_sp[i].x++;
-			if (anim_sp[i].x * U_RECT_W >= U_RECT_W*6){
-				anim_sp[i].x = 0;
-			}
-		}
-		anim_timer.restart();
-	}
 }
 
 /* Dessine sur la fenetre du jeu les éléments du terrain */

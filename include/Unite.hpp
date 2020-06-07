@@ -3,9 +3,9 @@
 
 #include "Element.hpp"
 //#include "Action.hpp"
-#include <SFML/Graphics.hpp>
+/*#include <SFML/Graphics.hpp>
 #include <iostream>
-#include <vector>
+#include <vector>*/
 
 #include "config.hpp"
 

@@ -1,9 +1,12 @@
 #ifndef HABITATION_HPP
 #define HABITATION_HPP
 
-#include <SFML/Graphics.hpp>
+/*#include <SFML/Graphics.hpp>
 #include <string>
-#include <iostream>
+#include <iostream>*/
+
+#include "config.hpp"
+
 #include "Batiment.hpp"
 #include "Unite.hpp"
 

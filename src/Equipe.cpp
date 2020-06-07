@@ -72,26 +72,27 @@ Equipe& Equipe::operator=(const Equipe& e){
 }
 
 /* renvoie l'ensemble des éléments IAttaquable que possède l'équipe dans un vecteur, avec la tour en 1ere position */
-std::vector<IAttaquable*>  Equipe::getIAttaquables(){
-	std::vector<IAttaquable*> res;
+void Equipe::getIAttaquables(std::vector<IAttaquable*>& eq_iAtt){
+	//std::vector<IAttaquable*> res = * new std::vector<IAttaquable*>;
 	IAttaquable* test;
 	
 	/* Ajout de la Tour en 1er élément */
 	test = static_cast<IAttaquable*> (&tour);
 	if (test != nullptr ){
-		res.push_back(test);
+		//std::cout << "il y a la tour" << std::endl;
+		eq_iAtt.push_back(test);
 	}
 	
 	if(!unites.empty()){
 		for( std::list<Unite*>::iterator it = unites.begin() ; it != unites.end() ; ++it ){
 			test = dynamic_cast<IAttaquable*> (*it);
 			if ( test != nullptr ){
-				res.push_back(test);
+				eq_iAtt.push_back(test);
 			}
 		}
 	}
 	
-	return res;
+	//return res;
 }
 
 /* Ajoute une somme d'argent spécifée en argument à la bourse de l'équipe */
