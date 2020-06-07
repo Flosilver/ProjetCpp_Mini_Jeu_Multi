@@ -1,4 +1,5 @@
 #include "config.hpp"
+
 #include "Jeu.hpp"
 #include "JeuException.hpp"
 
@@ -41,8 +42,8 @@ Jeu::Jeu(tx_map& textures, sp_map& sprites){
 	vie_jg.setPosition(0, win_H - GROUND_H + 5);
 	vie_jd.setPosition(1500-VIE_W, win_H - GROUND_H + 5);
 	
-	popG = sf::Vector2f(TOUR_POSX, win_H - GROUND_H - U_RECT_H * U_SCALE);
-	popD = sf::Vector2f(win_W - TOUR_POSX - U_RECT_W * U_SCALE, win_H - GROUND_H - U_RECT_H * U_SCALE);
+	popG = sf::Vector2f(TOUR_POSX - tourG_W, win_H - GROUND_H - U_SP_H);
+	popD = sf::Vector2f(win_W - TOUR_POSX + (tourD_W - U_SP_W), win_H - GROUND_H - U_SP_H);
 	
 	
 	/*eq1 = *new Equipe(1, bat_id, tourG_W, tourG_H);//, sprites, bat_sp);
@@ -238,6 +239,10 @@ void Jeu::menu_setup(sp_map& sprites, const sf::Font& font){
 	menu_sp[3].scale(SCA_SELECT,SCA_SELECT);
 	menu_sp[3].setPosition(3 * win_W / 4 - (casqueD_W / 4), 5 * win_H / 8);
 	menu_sp[3].setColor(couleurs_joueurs[col_jd]);
+	
+	// titre
+	menu_sp.push_back(sprites["titre"]);
+	menu_sp[4].setPosition(win_W/2 - TITRE_W/2, 60);
 
 	
 	// bouton play txt: indice 0
@@ -608,9 +613,9 @@ void Jeu::game_Event(sf::Event& event, sp_map& sprites){
 		window.close();
 	}
 	if (event.type == sf::Event::KeyPressed){
-		if (event.key.code == sf::Keyboard::Escape){
+		/*if (event.key.code == sf::Keyboard::Escape){
 			window.close();
-		}
+		}*/
 		
 		// evenement claviers de l'équipe 1
 		if (event.key.code == sf::Keyboard::A){
@@ -645,8 +650,8 @@ void Jeu::game_Event(sf::Event& event, sp_map& sprites){
 				}
 			}
 		}
-		if (event.key.code == sf::Keyboard::E){
-			//std::cout << "unit_id: " << unit_id << std::endl;
+		if (event.key.code == sf::Keyboard::E){						// génération d'unité pour l'équipe de gauche
+			std::cout << "----\nunit_id: " << unit_id << std::endl;
 			int h1 = eq1.getHabLvl();
 			
 			if(id_libre.empty()){	// il n'y a aucune place dispo dans le vector de sprite actuel
@@ -678,8 +683,9 @@ void Jeu::game_Event(sf::Event& event, sp_map& sprites){
 				}
 			}
 			else{	// il existe au moins une place libre dans le vector des sprites d'unite
-				std::cout << "il y a une place libre dans le vector de sprite" << std::endl;
+				std::cout << "il y a une place libre dans le vector de sprite: "; // << std::endl;
 				std::list<int>::iterator it = id_libre.begin();
+				std::cout << *it << "\tid_libre.size: " << id_libre.size() << std::endl;
 				if (eq1.creerCombattant(*it, popG)){
 					
 					switch(h1){
@@ -700,11 +706,13 @@ void Jeu::game_Event(sf::Event& event, sp_map& sprites){
 					unite_sp[*it].scale(U_SCALE, U_SCALE);
 					unite_sp[*it].setPosition(popG);
 					anim_sp[*it] = sf::Vector2i(0,WalkR);//.push_back(sf::Vector2i(0,WalkR));
+					
+					id_libre.erase(it);
 				}else{
 					std::cout << "---> Combattant non généré\n" << std::endl;
 				}
 			}
-			std::cout << "popG: [" << popG.x << ":" << popG.y << "]\tpopD: [" << popD.x << ":" << popD.y << "]" << std::endl;
+			//std::cout << "popG: [" << popG.x << ":" << popG.y << "]\tpopD: [" << popD.x << ":" << popD.y << "]" << std::endl;
 		}
 		
 		// evenement claviers de l'équipe 2
@@ -740,8 +748,68 @@ void Jeu::game_Event(sf::Event& event, sp_map& sprites){
 				}
 			}
 		}
-		if (event.key.code == sf::Keyboard::Numpad3){
-			std::cout << "unit_id: " << unit_id << std::endl;
+		if (event.key.code == sf::Keyboard::Numpad3){						// génération d'unité pour l'équipe de droite
+			std::cout << "----\nunit_id: " << unit_id << std::endl;
+			int h2 = eq2.getHabLvl();
+			
+			if(id_libre.empty()){	// il n'y a aucune place dispo dans le vector de sprite actuel
+				if (eq2.creerCombattant(unit_id, popD)){
+					/*sp_paysan.setColor(eq1.getCol());
+					sp_paysan.setPosition(popG);//10, window.getSize().y-tx_ground.getSize().y-spriteH*gros);*/
+					switch (h2){
+						case 1:
+							unite_sp.push_back(sprites["paysan"]);
+							break;
+							
+						case 2:
+							unite_sp.push_back(sprites["soldat"]);
+							break;
+							
+						case 3:
+							unite_sp.push_back(sprites["cyborg"]);
+							break;
+					}
+					
+					unite_sp[unit_id].setColor(eq2.getCol());
+					unite_sp[unit_id].scale(U_SCALE, U_SCALE);
+					unite_sp[unit_id].setPosition(popD);
+					anim_sp.push_back(sf::Vector2i(0,WalkL));
+					
+					unit_id++;
+				}else{
+					std::cout << "---> Combattant non généré\n" << std::endl;
+				}
+			}
+			else{	// il existe au moins une place libre dans le vector des sprites d'unite
+				std::cout << "il y a une place libre dans le vector de sprite: ";// << std::endl;
+				std::list<int>::iterator it = id_libre.begin();
+				std::cout << *it << "\tid_libre.size: " << id_libre.size() << std::endl;
+				if (eq2.creerCombattant(*it, popD)){
+					
+					switch(h2){
+						case 1:
+							unite_sp[*it] = sprites["paysan"];
+							break;
+							
+						case 2:
+							unite_sp[*it] = sprites["soldat"];
+							break;
+							
+						case 3:
+							unite_sp[*it] = sprites["cyborg"];
+							break;
+					}
+					
+					unite_sp[*it].setColor(eq2.getCol());
+					unite_sp[*it].scale(U_SCALE, U_SCALE);
+					unite_sp[*it].setPosition(popD);
+					anim_sp[*it] = sf::Vector2i(0,WalkL);//.push_back(sf::Vector2i(0,WalkR));
+					
+					id_libre.erase(it);
+				}else{
+					std::cout << "---> Combattant non généré\n" << std::endl;
+				}
+			}
 		}
 	}
 }
@@ -753,10 +821,53 @@ void Jeu::bandeau_update(){
 }
 
 /* méthode d'update du jeu à chaque itération de la boucle while */
-void Jeu::game_update(){
+void Jeu::game_update(sp_map& sprites, const sf::Font& font){
+	
+	switch(winner){
+		case 0:		// pas de vainqueur
+			break;
+			
+		case 1:
+			end_setup(sprites, font, 1);
+			bandeau_sp.clear();
+			bandeau_txt.clear();
+			terrain_sp.clear();
+			bat_sp.clear();
+			unite_sp.clear();
+			anim_sp.clear();
+			id_libre.clear();
+			
+			etat = 2;
+			return;
+			
+		case 2:
+			end_setup(sprites, font, 2);
+			bandeau_sp.clear();
+			bandeau_txt.clear();
+			terrain_sp.clear();
+			bat_sp.clear();
+			unite_sp.clear();
+			anim_sp.clear();
+			id_libre.clear();
+			
+			etat = 2;
+			return;
+			
+		default:
+			break;
+	}
+	
+	
 	// update de la vie
-	rect_vie_jg.top = VIE_H * 100 - VIE_H * (eq1.getTourHp() / HP_MAX) * 100;
-	rect_vie_jd.top = VIE_H * 100 - VIE_H * (eq2.getTourHp() / HP_MAX) * 100;
+	int vie_g = eq1.getTourHp() * 100 / HP_MAX * VIE_H;
+	if (vie_g == 1500){ vie_g -= VIE_H;}
+	if (vie_g <= 0) { vie_g = 0; }
+	int vie_d = eq2.getTourHp() * 100 / HP_MAX * VIE_H;
+	if (vie_d == 1500){ vie_d -= VIE_H;}
+	if (vie_d <= 0) { vie_d = 0; }
+	
+	rect_vie_jg = sf::IntRect(0, vie_g, VIE_W, VIE_H);
+	rect_vie_jd = sf::IntRect(0, vie_d, VIE_W, VIE_H);
 	
 	vie_jg.setTextureRect(rect_vie_jg);
 	vie_jd.setTextureRect(rect_vie_jd);
@@ -765,7 +876,7 @@ void Jeu::game_update(){
 	int t2 = eq2.getTourLvl();
 	
 	sf::Time time = tour_timer.getElapsedTime();
-	float sec = time.asSeconds();
+	int sec = time.asMilliseconds();
 	if (sec >= MONEY_TIME){
 		if (t1 == 1){
 			eq1.ajoutMonaie(TOUR1_MONNAIE);
@@ -781,37 +892,230 @@ void Jeu::game_update(){
 		tour_timer.restart();
 	}
 	
+	/* Animation */
+	if (anim_timer.getElapsedTime().asMilliseconds() >= ANIMATION_TIME){
+		for (int i=0 ; i<unite_sp.size() ; i++){
+			if (anim_sp[i].y <= AttL){
+				anim_sp[i].x = (anim_sp[i].x + 1) % 6;
+			}
+			else{
+				anim_sp[i].x = (anim_sp[i].x + 1) < 5 ? anim_sp[i].x + 1 : 5;
+			}
+			unite_sp[i].setTextureRect(sf::IntRect(anim_sp[i].x * U_RECT_W, anim_sp[i].y * U_RECT_H, U_RECT_W, U_RECT_H));
+		}
+		anim_timer.restart();
+	}
+	
+	
 	this->bandeau_update();
 	
 }
 
+void Jeu::action_update(std::list<Action*>& actions){
+	//std::cout << "\n----------- action_gestion" << std::endl;
+	//std::cout << "---- action_update" << std::endl;
+	std::vector<IAttaquable*> eq1_iAtt;// = eq1.getIAttaquables();
+	std::vector<IAttaquable*> eq2_iAtt;// = eq2.getIAttaquables();
+	eq1.getIAttaquables(eq1_iAtt);
+	eq2.getIAttaquables(eq2_iAtt);
+	
+	//std::cout << "eq1_iAtt.size = " << eq1_iAtt.size() << "\teq2_iAtt.size = " << eq2_iAtt.size() << std::endl;
+	
+	std::list<Unite*>& eq1_u = eq1.getUnites();
+	std::list<Unite*>& eq2_u = eq2.getUnites();
+	
+	//std::list<Action*> actions;
+	/* nettoyage des actions à chaque itération si la list d'actions n'est pas vide*/
+	if (!actions.empty()){
+		std::list<Action*>::iterator it = actions.begin();
+		while (it != actions.end()){
+			delete *it;
+			it = actions.erase(it);
+		}
+	}
+	
+	//std::cout << "ensemble des vector IAttaquable et unites récupérés" << std::endl;
+	//std::cout << "\nequipe1: nb.unites = " << eq1_u.size() << std::endl;
+	IAttaquable* pia;
+	Unite* pu;
+	for (std::list<Unite*>::iterator it = eq1_u.begin() ; it != eq1_u.end() ; ++it){
+		pu = *it;
+		//std::cout << "récupération de Unite*" << std::endl;
+		// On vérifie d'abord si l'unité est morte au tour précédent
+		if( !pu->estVivant() ){
+			//std::cout << "1 Unite est morte\t";
+			it = eq1_u.erase(it);	// on enlève l'unité de la liste d'unité de l'équipe
+			--it;					// on revient à l'unité d'avant pour que la boucle for passe effectivement à prochaine unité
+			continue;
+		}
+		
+		//std::cout << "\thp: " << pu->getHP() << " dmg: " << pu->getDMG();
+		
+		if(!pu->checkTimer()){continue;}	// on vérifie si l'unité peut effectivement générer une action
+		else{pu->restartTimer();}			// on restart son timer personel
+		
+		//std::cout << "Unite* est vivante" << std::endl;
+		// Si elle est vivante, on continue
+		pia = dynamic_cast<IAttaquable*> (pu);
+		//std::cout << "oskour" << std::endl;
+		if( pia != NULL ){	// on test si ce n'est pas une flèche pour le vecteur de mouvement
+			//std::cout << "oskour2" << std::endl;
+			//std::cout << "pu->hp: " << pu->getHP() << std::endl;
+			actions.push_back(pu->agit(eq2_iAtt, U_MOVE_R));
+		}
+		else{
+			//std::cout << "oskour3" << std::endl;
+			actions.push_back(pu->agit(eq2_iAtt, sf::Vector2f(eq1.getTourPortee()/FRAC_FLECHE, (win_H - GROUND_H - TOURELLE_POSY) / FRAC_FLECHE)));
+		}
+	}
+	//std::cout << std::endl;
+	//std::cout << "Equipe 1 à fini de générer des actions: " << actions.size() << " actions générées" << std::endl;
+	//std::cout << "\nequipe2: nb.unites = " << eq2_u.size() << std::endl;
+		
+	for (std::list<Unite*>::iterator it = eq2_u.begin() ; it != eq2_u.end() ; ++it){
+		pu = *it;
+		// On vérifie d'abord si l'unité est morte au tour précédent
+		if( !pu->estVivant() ){
+			//std::cout << "1 Unite est morte\t";
+			it = eq2_u.erase(it);	// on enlève l'unité de la liste d'unité de l'équipe
+			--it;					// on revient à l'unité d'avant pour que la boucle for passe effectivement à la prochaine unité
+			continue;
+		}
+		
+		//std::cout << "\thp: " << pu->getHP() << " dmg: " <<  pu->getDMG();
+		
+		if(!pu->checkTimer()){continue;}	// on vérifie si l'unité peut effectivement générer une action
+		else{pu->restartTimer();}			// on restart son timer personel
+		
+		// Si elle est vivante, on continue
+		pia = dynamic_cast<IAttaquable*> (pu);
+		if( pia != NULL ){	// on test si ce n'est pas une flèche pour le vecteur de mouvement
+			actions.push_back(pu->agit(eq1_iAtt, U_MOVE_L));
+		}
+		else{
+			actions.push_back(pu->agit(eq1_iAtt, sf::Vector2f(-eq2.getTourPortee()/FRAC_FLECHE, (win_H - GROUND_H - TOURELLE_POSY - U_SP_W) / FRAC_FLECHE)));
+		}
+	}
+	//std::cout << std::endl;
+	//std::cout << "Equipe 2 à fini de générer des actions: " << actions.size() << " actions générées au total" << std::endl;
+}
+
+void Jeu::action_gestion(std::list<Action*>& actions){
+	/* Initialisation des variables nécessaires */
+	Action* pa;
+	int move, id_u, id_m, gain, eq;
+	
+	for (std::list<Action*>::iterator it = actions.begin() ; it != actions.end() ; ++it){
+		pa = *it;
+		Unite& ru = pa->getUnite();
+		id_u = ru.getIndice();
+		
+		try{
+			switch(pa->gereAction()){
+				case ATT_ID:
+					move = anim_sp[id_u].y;
+					anim_sp[id_u].y = AttR + (ru.getEquipe()+1)%2;
+					if (move != anim_sp[id_u].y) { anim_sp[id_u].x = 0;}	// si l'unité change de mouvement, on redémarre l'animation à 0
+					break;
+					
+				case DEP_ID:
+					move = anim_sp[id_u].y;
+					anim_sp[id_u].y = WalkR + (ru.getEquipe()+1)%2;
+					if (move != anim_sp[id_u].y) { anim_sp[id_u].x = 0;}	// si l'unité change de mouvement, on redémarre l'animation à 0
+					break;
+					
+				default:
+					std::cout << "oskour normalement c'est géré" << std::endl;
+			}
+		}
+		catch(Mort& m){
+			// on test si l'une des tours n'a plus de HP
+			if (eq1.getTourHp() <= 0){			// la tour de l'équipe 1 était la cible d'une attaque et a perdu toute sa vie
+				winner = 2;
+				return;
+			}
+			if (eq2.getTourHp() <= 0){		// la tour de l'équipe 2 était la cible d'une attaque et a perdu toute sa vie
+				winner = 1;
+				return;
+			}
+			
+			// C'est une Unite ou un IAttaquable
+			id_m = m.getUnite().getIndice() > m.getIAtt().getIndice() ? m.getUnite().getIndice() : m.getIAtt().getIndice();
+			id_libre.push_back(id_m);					// on ajoute cet indice à la liste des indices disponibles pour les futures unites créées
+			eq = m.getEquipe();							// on récupère l'équipe qui est sensé récupérer l'argent
+			if (eq != 0){	// c'est l'IAttaquable qui meurt
+				anim_sp[id_m].y = DieR + eq%2 ;
+				anim_sp[id_m].x = 0;
+				gain = m.getIAtt().getPrix();
+				if(eq == 1){
+					eq1.ajoutMonaie(gain);
+				}
+				if(eq == 2){
+					eq2.ajoutMonaie(gain);
+				}
+			}
+			m.gereAction();
+		}
+	}
+		
+}
+
 /* gestion des unites et de leurs animation */
 void Jeu::gestion_unites(){
+	
+	std::list<Action*> actions;
+	action_update(actions);
+	action_gestion(actions);
+	
 	if (unite_sp.size() != anim_sp.size()){
 		/*std::cerr << "ERROR: mauvaise initialisation des vectors de unite_sp et anim_sp" << std::endl;
 		return 0;*/
 		throw JeuException("***ERROR: mauvaise initialisation des vectors de unite_sp et anim_sp");
 	}
-	
+	//std::cout << "c'est parti!" << std::endl;
 	/* Deplacement */
 	Unite* pu;
 	int id_sp;
+	IAttaquable* pia;
 	/* Equipe 1 */
 	for(std::list<Unite*>::iterator it = eq1.getUnites().begin() ; it != eq1.getUnites().end() ; ++it ){
 		pu = *it;
+		pia = dynamic_cast<IAttaquable*> (pu);	// on vérifie si l'Unite est un IAttaquabe (= tout sauf fleche)
 		id_sp = pu->getIndice();
-		unite_sp[id_sp].setTextureRect(sf::IntRect(anim_sp[id_sp].x * U_RECT_W, anim_sp[id_sp].y * U_RECT_H, U_RECT_W, U_RECT_H));
+		
+		if (pia != nullptr){
+			// ce n'est pas une fleche ->animation
+			unite_sp[id_sp].setTextureRect(sf::IntRect(anim_sp[id_sp].x * U_RECT_W, anim_sp[id_sp].y * U_RECT_H, U_RECT_W, U_RECT_H));
+		}
+		// on position le sprite à la position de l'unite
+		unite_sp[id_sp].setPosition(pu->getPos());
+		
+		
+		/*unite_sp[id_sp].setTextureRect(sf::IntRect(anim_sp[id_sp].x * U_RECT_W, anim_sp[id_sp].y * U_RECT_H, U_RECT_W, U_RECT_H));
 		if (pu->getPos().x <= win_W-U_SP_W-10 && anim_sp[id_sp].y<=1){
 			pu->move(U_MOVE_R);
 			unite_sp[id_sp].move(U_MOVE_R);
 		}else{
 			anim_sp[id_sp].x = 0;
-		}
+		}*/
 	}
 	
 	/* Equipe 2 */
 	for(std::list<Unite*>::iterator it = eq2.getUnites().begin() ; it != eq2.getUnites().end() ; ++it ){
 		pu = *it;
+		pia = dynamic_cast<IAttaquable*> (pu);	// on vérifie si l'Unite est un IAttaquabe (= tout sauf fleche)
+		id_sp = pu->getIndice();
+		
+		if (pia != nullptr){
+			// ce n'est pas une fleche ->animation
+			unite_sp[id_sp].setTextureRect(sf::IntRect(anim_sp[id_sp].x * U_RECT_W, anim_sp[id_sp].y * U_RECT_H, U_RECT_W, U_RECT_H));
+		}
+		// on position le sprite à la position de l'unite
+		unite_sp[id_sp].setPosition(pu->getPos());
+		
+		
+		
+		/*pu = *it;
 		id_sp = pu->getIndice();
 		unite_sp[id_sp].setTextureRect(sf::IntRect(anim_sp[id_sp].x * U_RECT_W, anim_sp[id_sp].y * U_RECT_H, U_RECT_W, U_RECT_H));
 		if (pu->getPos().x >= 10 && anim_sp[id_sp].y<=1){
@@ -819,21 +1123,49 @@ void Jeu::gestion_unites(){
 			unite_sp[id_sp].move(U_MOVE_L);
 		}else{
 			anim_sp[id_sp].x = 0;
-		}
+		}*/
 	}
 	
-	/* Animation */
-	if (anim_timer.getElapsedTime().asMilliseconds() >= 20){
-		for (int i=0 ; i<unite_sp.size() ; i++){
-			//std::cout << "anim_sp[" << i << "] :\t[" << anim_sp[i].x << " : " << anim_sp[i].y << "]" << std::endl;
-			anim_sp[i].x++;
-			if (anim_sp[i].x * U_RECT_W >= U_RECT_W*6){
-				anim_sp[i].x = 0;
-			}
+}
+
+void Jeu::end_setup(sp_map& sprites, const sf::Font& font, int eq){
+	
+	// backgroung: indice 0
+	end_sp.push_back(sprites["background"]);
+	
+	// fda: indice 1
+	end_sp.push_back(sprites["fda"]);
+	
+	// coupe: indice 2
+	end_sp.push_back(sprites["trophy"]);
+	if (eq == 1){
+		end_sp[2].setColor(eq1.getCol());
+	}
+	if (eq == 2){
+		end_sp[2].setColor(eq2.getCol());
+	}
+	end_sp[2].setPosition(win_W/2 - TROPHY_SIZE/2, win_H/2 - TROPHY_SIZE/2 + 100);
+	
+	fin.setFont(font);
+	fin.setString("BRAVO - WELL DONE - GG");
+	fin.setFillColor(sf::Color::Black);
+	fin.setCharacterSize(100);
+	fin.setPosition(100, win_H/2 - TROPHY_SIZE/2 - 200);
+}
+
+void Jeu::end_Event(sf::Event& event){
+	if (event.type == sf::Event::Closed){
+		window.close();
+	}
+	if (event.type == sf::Event::KeyPressed){
+		if (event.key.code == sf::Keyboard::Escape){
+			window.close();
 		}
-		anim_timer.restart();
 	}
 }
+
+
+/* Gestion de l'affachage sur la fenêtre */
 
 /* Dessine sur la fenetre du jeu les éléments du terrain */
 void Jeu::show_terrain(){
@@ -918,6 +1250,17 @@ void Jeu::show_game(){
 	window.display();
 }
 
+/* Dessine les éléments de la fin du jeu et les affiche sur la fenetre */
+void Jeu::show_end(){
+	for (int i=0 ; i<end_sp.size() ; i++){
+		window.draw(end_sp[i]);
+	}
+	
+	window.draw(fin);
+	
+	window.display();
+}
+
 
 
 /*------------------------------------------------MAIN------------------------------------------------------*/
@@ -992,7 +1335,6 @@ int main(void){
 				while (jeu.window.pollEvent(event)){
 					jeu.game_Event(event, sprites);
 				}
-				jeu.game_update();
 				try{
 					jeu.gestion_unites();
 				}catch (const JeuException& e){
@@ -1000,13 +1342,15 @@ int main(void){
 					return 0;
 				}
 				jeu.show_game();
+				jeu.game_update(sprites, menu_font);
 				break;
 			
 			/* Ecran de victoire */
 			case 2:
-				textures.clear();
-				sprites.clear();
-				exit(1);
+				while (jeu.window.pollEvent(event)){
+					jeu.end_Event(event);
+				}
+				jeu.show_end();
 				break;
 				
 			/* Erreur d'état */

@@ -6,18 +6,21 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>*/
 
-#include <iostream>
+/*#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
 #include <list>
 #include <map>
 #include <cstdlib>
-#include <ctime>
+#include <ctime>*/
 
 #include "config.hpp"
 
 #include "Equipe.hpp"
+#include "Attaque.hpp"
+#include "Deplacement.hpp"
+#include "Mort.hpp"
 
 
 class Jeu
@@ -81,11 +84,16 @@ class Jeu
 		sf::IntRect rect_vie_jg = sf::IntRect(0,0,VIE_W,VIE_H);
 		sf::IntRect rect_vie_jd = sf::IntRect(0,0,VIE_W,VIE_H);
 		
-		sf::Clock tour_timer;
-		sf::Clock anim_timer;
+		sf::Clock tour_timer;	// timer pour l'ajout de monaie
+		sf::Clock anim_timer;	// timer pour l'animation des sprites des unites
 		
 		sf::Vector2f popG;		// position d'apparition des unites de l'equipe1
 		sf::Vector2f popD;		// position d'apparition des unites de l'equipe2
+		
+		/* End */
+		int winner = 0;
+		sprite_v end_sp;
+		sf::Text fin;
 	
 	public:
 		Jeu(tx_map& textures, sp_map& sprites);			// Constructeur
@@ -123,12 +131,18 @@ class Jeu
 		void bandeau_update();
 		void show_bandeau();
 		
+		void action_update(std::list<Action*>& actions);
+		void action_gestion(std::list<Action*>& actions);
 		void gestion_unites();
 		
 		void game_setup(sp_map& sprites, const sf::Font& font);
 		void game_Event(sf::Event& event, sp_map& sprites);
-		void game_update();
+		void game_update(sp_map& sprites, const sf::Font& font);
 		void show_game();
+		
+		void end_setup(sp_map& sprites, const sf::Font& font, int eq);
+		void end_Event(sf::Event& event);
+		void show_end();
 				
 		/* Méthodes static */
 		static void Initialise(const char* list_file, tx_map& textures, sp_map& sprites);		// Initailise le jeu de manière static. Renvoie false si échoué, true sinon

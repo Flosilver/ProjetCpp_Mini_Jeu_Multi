@@ -1,22 +1,22 @@
 #ifndef ATTAQUE_HPP
 #define ATTAQUE_HPP
 
-#include <iostream>
+//#include <iostream>
 
 #include "Action.hpp"
-#include "Unite.hpp"
 #include "IAttaquable.hpp"
+#include "Mort.hpp"
 
 class Attaque : public Action
 {
 	protected:
-		IAttaquable* cible;
+		IAttaquable& cible;
 		
 	public:
-		Attaque(Unite* u, IAttaquable* aCible): Action(u), cible(aCible) {}
+		Attaque(Unite& u, IAttaquable& aCible): Action(u), cible(aCible) {}
 		~Attaque() { 
-			delete cible;
-			std::cout << "\tdest_Attaque";
+			//delete cible;
+			//std::cout << "\tdest_Attaque";
 		}
 		Attaque& operator=(const Attaque& a){
 			unite = a.unite;
@@ -26,7 +26,7 @@ class Attaque : public Action
 		
 		int gereAction();
 		
-		IAttaquable* getCible() {return cible;}
+		IAttaquable& getCible() {return cible;}
 };
 
 #endif

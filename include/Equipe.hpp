@@ -1,12 +1,12 @@
 #ifndef EQUIPE_HPP
 #define EQUIPE_HPP
 
-#include <SFML/Graphics.hpp>
+/*#include <SFML/Graphics.hpp>
 #include <vector>
 #include <list>
 #include <iostream>
 #include <string>
-#include <cstdlib>
+#include <cstdlib>*/
 
 #include "config.hpp"
 
@@ -37,7 +37,8 @@ public:
 	~Equipe();
 	Equipe& operator=(const Equipe& e);
 	std::list<Unite*>& getUnites() { return unites; }
-	std::vector<IAttaquable*>  getIAttaquables();				// renvoie l'ensemble des éléments IAttaquable que possède l'équipe dans un vecteur, avec la tour en 1ere position
+	void getIAttaquables(std::vector<IAttaquable*>& eq_iAtt);	// renvoie l'ensemble des éléments IAttaquable que possède l'équipe dans un vecteur dans le vector mis en argument, avec la tour en 1ere position
+	//Unite& findUnite(int id);
 	
 	// fonction linkées au jeu
 	void ajoutMonaie(const int& argent);							// donne ou enleve de l'argent à l'équipe en fonction du signe de l'argument: >0 : ajout / <0 : retrait
@@ -47,7 +48,6 @@ public:
 	const int tourPorteeUp();// { return tour.porteeUp(); }		// augmente la portée de la tourelle de la tour si elle est construite
 	const int creerCombattant(int id, const sf::Vector2f& posU);// argument = indice de la nouvelle unité dans le tableau de sprite du jeux  / retourne 1 si l'unité est créée, 0 sinon
 	const int tireFleche(int id, const sf::Vector2f& posU);		// permet la création des fleches
-	const std::list<Mort> genereAction();
 	
 	/* eccesseurs de l'habitation */
 	const int getHabLvl() const {return hab.getNiveau();};
@@ -58,6 +58,7 @@ public:
 	const int getTourHp() const {return tour.getHP();}		// renvoie les HP de la Tour de l'esuipe
 	void positionneTour(const sf::Vector2f& aPos, const sf::Vector2f& tourellePos);				// place la tour sur le terrain et la tourelle aussi
 	void tour_setup_dim(int aW, int aH);
+	const int getTourPortee() const {return tour.getTourelle().getPortee();}
 	
 	// getters et setters
 	const int getNum() const {return numero;}

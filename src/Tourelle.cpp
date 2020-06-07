@@ -9,7 +9,7 @@ Tourelle& Tourelle::operator=(const Tourelle& t){
 	couleur = t.couleur;
 	equipe = t.equipe;
 	indice = t.indice;
-	coolDown = t.coolDown;
+	//coolDown = t.coolDown;
 	niveau = t.niveau;
 	degats = t.degats;
 	portee = t.portee;
@@ -18,18 +18,19 @@ Tourelle& Tourelle::operator=(const Tourelle& t){
 
 /* Factory d'Unite: Fleche */
 Unite* Tourelle::genereUnite(int id, const sf::Vector2f& posU) {
-	if (coolDown == 100){
-		coolDown = 0;
+	//if (checkTimer()){
+		//coolDown = 0;
+		//restartTimer();
 		return new Fleche(couleur, equipe, id, posU, degats);
-	}
+	//}
 	/*else if (coolDown == 0){
 		coolDown == 100;
 		throw 0;	//Fin du coolDown
 	}*/
-	else{
+	/*else{
 		coolDown++;
 		throw 1;	//coolDown en cours
-	}
+	}*/
 }
 
 /* augmente les dégats des flèches tirées par la tourelle */
@@ -54,4 +55,10 @@ const int Tourelle::porteeUp(){
 		std::cout << "MESSAGE: Equipe " << equipe << ": portée de la tourelle déjà au max" << std::endl;
 		return 0;	// FAIL
 	}
+}
+
+bool Tourelle::checkTimer(){
+	sf::Time tps = timer.getElapsedTime();
+	int check = tps.asMilliseconds();
+	return check >= TOURELLE_DELAI;
 }

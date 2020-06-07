@@ -4,14 +4,17 @@ bk_menu|tiles/bk_menu.png
 casqueD|tiles/casqueD.png
 casqueG|tiles/casqueG.png
 cyborg|tiles/cyborg.png
+fda|tiles/feux_dartifice.png
 ground|tiles/ground.png
 habitation|tiles/habitation.png
 paysan|tiles/paysan.png
 but_play|tiles/play_bouton.png
 soldat|tiles/pretre.png
 metal_bar|tiles/texture_metal_sized.png
+titre|tiles/titre.png
 tourD|tiles/TOUR_D.png
 tourG|tiles/TOUR_G.png
+trophy|tiles/trophy.png
 vie|tiles/vie.png
 hab_upD|tiles/icones_jd/but_hab_up.png
 tour_dmg_upD|tiles/icones_jd/but_tDmg_up.png

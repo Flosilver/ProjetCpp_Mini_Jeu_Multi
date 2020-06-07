@@ -9,7 +9,7 @@
 class Paysan : public ACombattant
 {
 public:
-	Paysan(const sf::Color& c, int eq, int id, const sf::Vector2f& aPos) : ACombattant(c, eq, id, aPos, 10, 1, 6){}		// couleur, n° equipe, id dans vector<sprites>, vie, dmg, prix rapportée si tuée
+	Paysan(const sf::Color& c, int eq, int id, const sf::Vector2f& aPos) : ACombattant(c, eq, id, aPos, VIE_PAYSAN, DMG_PAYSAN, GAIN_PAYSAN){}		// couleur, n° equipe, id dans vector<sprites>, vie, dmg, prix rapportée si tuée
 	~Paysan() { std::cout << "\tdest_Paysan"; }
 	Paysan& operator=(const Paysan& p){
 		pos = p.pos;
