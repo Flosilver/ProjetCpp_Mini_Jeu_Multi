@@ -5,11 +5,12 @@ casqueD|tiles/casqueD.png
 casqueG|tiles/casqueG.png
 cyborg|tiles/cyborg.png
 fda|tiles/feux_dartifice.png
+fleche|tiles/fleche.png
 ground|tiles/ground.png
 habitation|tiles/habitation.png
 paysan|tiles/paysan.png
 but_play|tiles/play_bouton.png
-soldat|tiles/pretre.png
+soldat|tiles/soldier.png
 metal_bar|tiles/texture_metal_sized.png
 titre|tiles/titre.png
 tourD|tiles/TOUR_D.png

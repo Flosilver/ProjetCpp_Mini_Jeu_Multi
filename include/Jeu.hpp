@@ -69,7 +69,7 @@ class Jeu
 		
 		int bat_id = 0;				// indice pour le prohain batiment créé
 		int unit_id = 0;			// indice pour la prochaine unité créée
-		std::list<int> id_libre;
+		std::set<int> id_libre;
 		
 		int tourG_W;				// largeur de la tour de gauche
 		int tourG_H;				// hauteur de la tour de gauche

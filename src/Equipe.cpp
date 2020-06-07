@@ -247,7 +247,7 @@ const int Equipe::tireFleche(int id, const sf::Vector2f& posU){
 		// cooldown de la tourelle en cours
 		return 0;	// FAIL
 	}*/
-	if(tour.checkTourelleTimer()){
+	if(tour.checkTourelleTimer() && tour.getLvl()>1){
 		unites.push_back(tour.tire(id, posU));
 		tour.restartTourelleTimer();
 		return 1;	// SUCCESS
