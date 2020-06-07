@@ -1,0 +1,1340 @@
+<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
+  <zoom_level>4</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>796</x>
+      <y>232</y>
+      <w>208</w>
+      <h>216</h>
+    </coordinates>
+    <panel_attributes>/Equipe/
+--
+- couleur : sf::couleur
+- bourse : int
+- numero: int
+- hab: Habitation
+- tour: Tour
+- unites : std::vector&lt;Unite*&gt;
+- listAttUni : std::list&lt;Unite*&gt;
+--
++ Equipe()
++ Equipe(eq: int, id: bat_int)
+/+ ~Equipe()/
+--
++ operator=(e: Equipe&amp;): Equipe&amp;
++ getUnite(): &lt;std::list&lt;Unite*&gt;&amp;
++ getIAttaquable(eq_iAtt: std::vector&lt;IAttaquable*&gt;&amp;)
++ ajoutMonnaie(argent: int&amp;)
++ habitationUp(): int
++ tourLvlUp(): int
++ tourDomageUp(): int
++ tourPorteeUp(): int
++ creerCombattant(id: int,posU: sf::Vector2f&amp;): int
++ tireFleche(id: int, posU: sf::Vector2f&amp;): int
++ getHabLvl(): int
++ positionneHab(aPos: sf::Vector2f&amp;)
++ getTourLvl(): int
++ getTourHp(): int
++ positionneTour(aPos: sf::Vector2f&amp;, tourellePos: sf::Vector2f&amp;)
++ tour_setup_dim(aW: int, aH: int)
++ getTourPortee(): int
++ getNum(): int
++ getBourse(): int
++ setColor(c: sf::Color)
++ getColor(): sf::Color&amp;
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>792</x>
+      <y>472</y>
+      <w>184</w>
+      <h>124</h>
+    </coordinates>
+    <panel_attributes>/Element/
+--
+# pos: sf::Vector2f
+# couleur : sf::Color
+# equipe: int
+# indice: int
+--
++ Element(eq: int, id: int)
++ Element(col : sf::Color&amp; ,eq: int, id: int)
++ Element(aPos: sf::Vector2f&amp;, col : sf::Color&amp; ,eq: int, id: int)
++ Element()
+/+ ~Element()/
+--
++ operator=(e: Element&amp;): Element&amp;
++ getIndice(): int
++ getEquipe(): int
++ getPos(): sf::Vector2f
++ getColor(): sf::Color&amp;
++ setPosition(aPos: Vector2f&amp;)
++ setColor(c: sf::Color&amp;)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>540</x>
+      <y>736</y>
+      <w>156</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>/Unite/
+--
+# hp: int
+# dmg: int
+# prix: int
+# portee: int
+# vivant: bool
+--
++ Unite()
++ Unite(c: sf::Color&amp;, eq; int, id: int, aPos: sf::Vector2f&amp;, aHp, aDmg: int, aPrix: int, aPortee: int)
++ operator=(u: Unite&amp;): Unite&amp;
+/+ ~Unite()/
++ move( aPos: sf::Vector2f)
++ getHitZone(): sf::IntRect
++ meurt()
++ agit(v: std::vector&lt;IAttaquable*&gt;&amp;, aVect: sf::Vector2f&amp;): agit*
++ getHP(): int
++ getDMG(): int
++ getPrix(): int
++ getPortee(): int
++ estVivant(): bool
+/+ checkTimer(): bool/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>8</x>
+      <y>936</y>
+      <w>276</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>/ACombattant/
+--
+--
++ ACombattant( c: sf::Color&amp;, eq: int, id: int, aPos: sf::Vector2f&amp;, aHp: int, aDmg: int, aPrix: int))
+/+~ACombattant/
+--
++ operator=(ac: ACombattant&amp;): ACombattant&amp; 
++getHitBox(): sf::IntRect
++getHP(): int
++subiAtt(degats: int)
++ estVivant(): bool
++ meurt()
++ getEquipe(): int
++ getIndice(): int
++ getPrix(): int
++ checkTimer(): bool
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>1012</y>
+      <w>84</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Paysan
+--
+--
++ Paysan(c : sf::Color, eq : int, id : int, aPos: sf::Vector2f)
++ ~Paysan(): int
+--
++ operator= ( p: Paysan&amp;) : Paysan&amp;
++ getHP()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>96</x>
+      <y>1012</y>
+      <w>84</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Soldat
+--
+--
++ Soldat( c: sf::Color, eq: int, id: int, aPos: sf::Vector2f )
++~Soldat()
+--
++operator=(s: Soldat&amp;):Soldat&amp;
++getHP(): int
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>192</x>
+      <y>1012</y>
+      <w>84</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Cyborg
+--
+--
++ Cyborg( c: sf::Color, eq: int, id: int, aPos: sf::Vector2f )
++~Cyborg()
+--
++operator=(c: Cyborg&amp;):Cyborg&amp;
++getHP(): int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>752</x>
+      <y>944</y>
+      <w>84</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>/ATank/
+--
+--
++ ATank( col : sf::Color )
+
+/+ agit(): Action*/
+
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>656</x>
+      <y>1012</y>
+      <w>84</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Chevalier
+--
+--
++ Chevalier( col : sf::Color )
+
++ agit(): Action*
+
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>752</x>
+      <y>1012</y>
+      <w>84</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Tank
+--
+--
++ Tank( col : sf::Color )
+
++ agit(): Action*
+
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>848</x>
+      <y>1012</y>
+      <w>84</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>ExoArmure
+--
+--
++ ExoArmure( col : sf::Color )
+
++ agit(): Action*
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1044</x>
+      <y>940</y>
+      <w>84</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>/ADistance/
+--
+--
++ ADistance( col : sf::Color )
+
+/+ agit(): Action*/
+
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>948</x>
+      <y>1012</y>
+      <w>84</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>Archer
+--
+--
++ Archer( col : sf::Color )
+
++ agit(): Action*
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1044</x>
+      <y>1012</y>
+      <w>84</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>Artillerie
+--
+--
++ Artillerie( col : sf::Color )
+
++ agit(): Action*
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1140</x>
+      <y>1012</y>
+      <w>84</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>DroneSniper
+--
+--
++ DroneSniper( col : sf::Color )
+
++ agit(): Action*
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>424</x>
+      <y>936</y>
+      <w>84</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>/ASoin/
+--
+--
++ ASoin( col : sf::Color )
+
+/+ agit(): Action*/
+
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>324</x>
+      <y>1012</y>
+      <w>84</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Pretre
+--
+--
++ Pretre( col :sf::Color )
+
++ agit(): Action*
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>424</x>
+      <y>1012</y>
+      <w>84</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Infirmier
+--
+--
++ Infirmier( col : sf::Color )
+
++ agit(): Action*
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>704</x>
+      <y>724</y>
+      <w>148</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Habitation
+--
+--
++ Habitation(eq: int, id: int)
++ Habitation()
++ ~Habitation()
+--
++ operator=(h: Habitation&amp;): Habitation&amp;
++ genereUnite(id: int, posU: sf::Vector2f&amp;) : Unite*
++ checkTimer(): bool
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>528</x>
+      <y>1012</y>
+      <w>84</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Medic
+--
+--
++ Medic( col : sf::Color )
+
++ agit(): Action*
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>804</x>
+      <y>616</y>
+      <w>164</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>/Batiment/
+--
+# niveau: int
+# coolDown: int
+--
++ Batiment(eq: int, id: int, lvl: int, cd: int)
++ Batiment()
++ Batiment(aCol: sf::Color, eq: int, id: int, lvl: int, cd: int) 
+--
+/+ genereUnite(id: int, posU: Vector2f&amp;) : Unite*/
++ getNiveau() : int
++ levelUp()
+/+checkTimer(): bool/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>888</x>
+      <y>728</y>
+      <w>84</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Caserne
+--
+--
++ Caserne( col : sf::Color )
+
++ genereUnite() : Unite
+
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>980</x>
+      <y>732</y>
+      <w>84</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Archerie
+--
+--
++ Archerie( col : sf::Color )
++ genereUnite() : Unite
+
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>800</x>
+      <y>784</y>
+      <w>84</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Eglise
+--
+--
++ Eglise( col : sf::Color )
+
++ genereUnite() : Unite
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1192</x>
+      <y>612</y>
+      <w>128</w>
+      <h>188</h>
+    </coordinates>
+    <panel_attributes>Tour
+--
+# tourelle : Tourelle
+# hp : int
+# lvl : int
+# w : int
+# h : int
+# vivant: bool
+--
++ Tour(eq: int, id: int)
++ Tour()
++ ~Tour()
++ operator=(t Tour&amp;): Tour&amp;
++ levelUp()
++ tire(id: int, posU: sf::Vector2f&amp;): Unite*
++ damageUp(): int
++ porteeUp(): int
++ getW(): int
++ getH(): int
++ getLvl(): int
++ getHP(): int
++ getTourelle(): Tourelle&amp;
++ setColor(c: sf::Color)
++ setW(aW: int)
++ setW(aH: int)
++ getHitBox(degats: int):sf::IntRect
++ subiAtt(degat: int)
++ positionneTourelle(aPos: sf::Vector2f&amp;)
++ checkTourelleTimer(): bool
++ restartTourelleTimer()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1036</x>
+      <y>636</y>
+      <w>84</w>
+      <h>92</h>
+    </coordinates>
+    <panel_attributes>Tourelle
+--
+# degats : int
+# portee : int
+--
++ Tourelle()
++ Tourelle(eq: int, id: int)
++ ~Tourelle()
+--
++ operator=(t: Tourelle&amp;)
++ genereUnite(id: int, posU: sf::Vector2f&amp;)
++ damageUp(): int
++ porteeUp(): int
++ getDegats(): int
++ getPortee(): int
++ checkTimer(): bool
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>880</x>
+      <y>444</y>
+      <w>20</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=0..n
+bg=black</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>876</x>
+      <y>592</y>
+      <w>12</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>892</x>
+      <y>592</y>
+      <w>360</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;30.0;880.0;30.0;880.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>624</x>
+      <y>592</y>
+      <w>248</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>600.0;10.0;600.0;30.0;10.0;30.0;10.0;360.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>908</x>
+      <y>688</y>
+      <w>120</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0;280.0;50.0;280.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>892</x>
+      <y>688</y>
+      <w>48</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;100.0;60.0;100.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>828</x>
+      <y>688</y>
+      <w>52</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>110.0;10.0;110.0;60.0;10.0;60.0;10.0;240.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>740</x>
+      <y>688</y>
+      <w>128</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>300.0;10.0;300.0;50.0;10.0;50.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1072</x>
+      <y>620</y>
+      <w>128</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1
+</panel_attributes>
+    <additional_attributes>300.0;20.0;10.0;20.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>464</x>
+      <y>872</y>
+      <w>164</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>390.0;10.0;390.0;150.0;10.0;150.0;10.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>648</x>
+      <y>872</y>
+      <w>452</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0;1110.0;130.0;1110.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>136</x>
+      <y>872</y>
+      <w>472</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1160.0;10.0;1160.0;130.0;10.0;130.0;10.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>136</x>
+      <y>988</y>
+      <w>12</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>156</x>
+      <y>988</y>
+      <w>84</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;30.0;190.0;30.0;190.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>36</x>
+      <y>988</y>
+      <w>92</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>210.0;10.0;210.0;30.0;10.0;30.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>464</x>
+      <y>980</y>
+      <w>12</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>484</x>
+      <y>980</y>
+      <w>96</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;220.0;40.0;220.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>980</y>
+      <w>96</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>220.0;10.0;220.0;40.0;10.0;40.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>788</x>
+      <y>988</y>
+      <w>12</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>808</x>
+      <y>988</y>
+      <w>92</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;210.0;40.0;210.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>692</x>
+      <y>988</y>
+      <w>92</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>210.0;10.0;210.0;40.0;10.0;40.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>984</x>
+      <y>984</y>
+      <w>92</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>210.0;10.0;210.0;30.0;10.0;30.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1084</x>
+      <y>984</y>
+      <w>12</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1104</x>
+      <y>984</y>
+      <w>88</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;30.0;200.0;30.0;200.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>628</x>
+      <y>872</y>
+      <w>172</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0;410.0;150.0;410.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>776</y>
+      <w>600</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;400.0;10.0;90.0;1480.0;90.0;1480.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>504</x>
+      <y>828</y>
+      <w>344</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;320.0;510.0;320.0;510.0;160.0;840.0;160.0;840.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>832</x>
+      <y>772</y>
+      <w>104</w>
+      <h>204</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;490.0;240.0;490.0;240.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1016</x>
+      <y>776</y>
+      <w>36</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>70.0;480.0;10.0;480.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>300</x>
+      <y>448</y>
+      <w>100</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>/Action/
+--
+# unite: Unite*
+--
++ Action( u: Unite* )
+/+ ~Action()/
+--
++ operator=(a: Action&amp;): Action&amp;
+/+ gereAction(): int/
++ getUnite(): Unite*</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>420</x>
+      <y>584</y>
+      <w>144</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Deplacement
+--
+# deplacement : sf::Vector2f
+--
++ Deplacement( u: Unite&amp;, aVect: sf::Vector2f&amp;)
++ ~Deplacement()
+--
++ operator=(d: sf::Deplacement&amp;): Deplacement
++ gereAction(): int
++ getDeplacement(): sf::Vector2f</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>304</x>
+      <y>584</y>
+      <w>104</w>
+      <h>68</h>
+    </coordinates>
+    <panel_attributes>Mort
+--
+# equipe: int
+--
++ Mort( u: Unite&amp; )
++ Mort(a: Iattaquable&amp;)
++ ~Mort()
+--
++ operator=(m: Mort&amp;): Mort&amp;
++ gereAction(): int
++ getIAtt(): IAttaquable&amp;
++ getEquipe(): int
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>168</x>
+      <y>584</y>
+      <w>120</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Attaque
+--
+# cible: IAttaquable&amp;
+--
++ Attaque( u: Unite&amp;, aCible: IAttaquable&amp;)
++ ~Attaque()
+--
++ operator=(a: Attaque&amp;): Attaque&amp;
++ gereAction(): int
++ getCible(): IAttaquable&amp;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>964</x>
+      <y>644</y>
+      <w>80</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;180.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>364</x>
+      <y>500</y>
+      <w>88</w>
+      <h>92</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0;200.0;80.0;200.0;210.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>344</x>
+      <y>500</y>
+      <w>12</w>
+      <h>92</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;210.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>220</x>
+      <y>500</y>
+      <w>120</w>
+      <h>92</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>280.0;10.0;280.0;80.0;10.0;80.0;10.0;210.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>464</x>
+      <y>0</y>
+      <w>220</w>
+      <h>520</h>
+    </coordinates>
+    <panel_attributes>Jeu
+--
+- eq1: Equipe
+- eq2: Equipe
+-menu_sp: sprite_v
+- menu_txt: txt_v
+- Couleurs_joueurs: std::array&lt;sf::Color, NB_COL&gt;
+- bout_play_col: sf::Color 
+- r,g,b, rotation: int
+- rect_menu: sf::IntRect
+- menu_timer: sf::clock
+- increment: int
+- casqueG_W: int
+- casqueG_H: int
+- casqueD_W: int
+- casqueD_H: int
+- play_but_W: int
+- play_but_H: int
+- bk_menu_W: int
+- bk_menu_H: int
+- bandeau_sp: sprite_v
+- bandeau_txt: txt_v
+- terrain_sp: sprite_v
+- bat_sp: sprite_v
+- unite_sp: sprite_v
+- anim_sp: vec2i_v
+- bat_id: int
+- unit_id: int
+- id_libre: std::list&lt;int&gt; 
+- tourG_W: int
+- tourG_H: int
+- tourD_W: int
+- tourD_H: int
+- tourelle_W: int
+- tourelle_H: int
+- vie_jg: sf::sprite
+- vie_jd: sf::sprite
+- rect_vie_jg: sf::IntRect
+- rect_vie_jd: sf::IntRect
+- tour_timer: sf::Clock
+- anim_timer: sf::clock
+- popG: sf::Vector2f
+- popD: sf::Vector2f
+- winner: int
+- end_sp: sprite_v
+- fin: sf::Text
++ etat: int
++ win_H: int
++ win_W: int
++ window: sf::RenderWindow
+
+--
++ Jeu(textures: tx_map&amp;, sprites: sp_map&amp;)
++ ~Jeu()
+--
++ getWinSize()
++ menu_setup(sprites: sp_map&amp;, font: sf::Font&amp;)
++ menu_event(event: sf::Event&amp;, sprites: sp_map&amp;, font: sf::Font&amp;)
++ menu_update()
++ show_menu()
++ terrain_setup(sprites: sp_map&amp;)
++ show_terrain()
++ bandeau_setup(sprites: sp_map&amp;, font: sf::Font&amp;)
++ bandeau_update()
++ show_bandeau()
++ action_update(actions: std::list&lt;actions*&gt;&amp;)
++ action_gestion(actions: std::list&lt;actions*&gt;&amp;)
++ gestion_unites()
++ game_setup(sprites: sp_map&amp;, font: sf::Font&amp;)
++ game_event(event: sf::Event&amp;, sprites: sp_map)
++ game_update(sprites: sp_map&amp;, font: sf::Font&amp;)
++ show_game()
++ end_setup(sprites: sp_map&amp;, font: sf::Font&amp;, eq: int)
++ end_Event(event: sf::Event&amp;)
++ show_end()
++ Initialise(list_file: char*, textures: tx_map&amp;, sprite sp_map&amp;): static void
++ LoadNames(names: path_map&amp;, textures: tx_map&amp;): static bool
++ LoadTextures(names path_map&amp;, textures: tx_map&amp;): static bool
++ LoadSprites(textures: tx_map&amp;, sprites: sp_map&amp;): static bool
+
+
+
+
+
+
+
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>680</x>
+      <y>308</y>
+      <w>124</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=2</panel_attributes>
+    <additional_attributes>10.0;330.0;170.0;330.0;170.0;10.0;290.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>396</x>
+      <y>464</y>
+      <w>76</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=0..n</panel_attributes>
+    <additional_attributes>170.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1136</x>
+      <y>828</y>
+      <w>192</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Fleche
+--
+# angle: float
+--
++ Fleche(c: sf::Color, eq: int, id: int, aPos: sf::Vector2f&amp;, dmg: int)
++ ~Fleche()
+--
++ operator=(f Fleche&amp;): Fleche&amp;
++ getHitZone(): sf::IntRect
++ chekTimer(): bool
++ rotate(a: float)
++ setAngle(aAngle: float)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>692</x>
+      <y>844</y>
+      <w>452</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;1110.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1100</x>
+      <y>724</y>
+      <w>52</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>110.0;260.0;110.0;50.0;10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>8</x>
+      <y>788</y>
+      <w>132</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>/IAttaquable/
+--
+--
++IAttaquable()
+/+~IAttaquable/
+--
+/+getHitBox(): sf::IntRect/
+/+getHP(): int/
+/+subiAtt(degats: int)/
+/+ meurt()/
+/+ estVivant(): bool/
+/+ getIndice(): int/
+/+ getEquipe(): int/
+/+ getPrix(): int/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>656</x>
+      <y>636</y>
+      <w>100</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>/IPeriodique/
+--
+# timer: sf::Clock
+--
++IPeriodique()
+/+~IPeriodique/
+--
+/+ checkTimer(): bool/
+restartTimer(): si::Time</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>292</x>
+      <y>292</y>
+      <w>84</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>/JeuException/
+--
+--
++ JeuException(message: std::string&amp;)
+/+ ~JeuException()/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>368</x>
+      <y>700</y>
+      <w>100</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>SandBag
+--
++ SandBag()
++ ~SandBag()
+--
++ getHitBox(): sf::IntRect
++ getHP(): int
++ subiAtt(degats: int)
++ meurt()
++ estVivant(): bool
++ getIndice(): int
++ getEquipe(): int
++ getPrix(): int
++ checkTimer(): bool</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>60</x>
+      <y>864</y>
+      <w>12</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>136</x>
+      <y>796</y>
+      <w>1116</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>2770.0;10.0;2770.0;70.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>672</x>
+      <y>684</y>
+      <w>12</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>752</x>
+      <y>652</y>
+      <w>60</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>136</x>
+      <y>760</y>
+      <w>240</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;120.0;380.0;120.0;380.0;10.0;580.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>464</x>
+      <y>752</y>
+      <w>84</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>190.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>

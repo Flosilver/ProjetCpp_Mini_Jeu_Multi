@@ -18,8 +18,9 @@ class Element
 		//void setPosition(const sf::Vector2f aPos) {pos = aPos;}
 
 	public:
-		Element(int eq, int id) : pos(-1, -1), equipe(eq), indice(id) {}
-		Element(sf::Color c, int eq, int id) : couleur(c), pos(-1, -1), equipe(eq), indice(id) {}	// A faire: modifier la position en fonction de l'identifiant lors de la créartion
+		Element(int eq, int id) : pos(-1, -1), couleur(sf::Color()), equipe(eq), indice(id) {}
+		Element(const sf::Color& c, int eq, int id) : couleur(c), pos(-1, -1), equipe(eq), indice(id) {}	// A faire: modifier la position en fonction de l'identifiant lors de la créartion
+		Element(const sf::Color& c, int eq, int id, const sf::Vector2f& aPos) : couleur(c), pos(aPos), equipe(eq), indice(id) {}
 		Element(){}
 		virtual ~Element() { std::cout << "\tdest_Element" << std::endl; }
 		Element& operator=(const Element& e){
@@ -32,9 +33,11 @@ class Element
 		
 		/* accesserus */
 		const int getIndice() const {return indice;}
+		const int getEquipe() const {return equipe;}
 		const sf::Vector2f getPos() const {return pos;}
-		void setPosition(sf::Vector2f aPos) {pos = aPos;}
-		void setColor(sf::Color c) {couleur = c;}
+		const sf::Color& getColor() const {return couleur;}
+		void setPosition(const sf::Vector2f& aPos) {pos = aPos;}
+		void setColor(const sf::Color& c) {couleur = c;}
 };
 
 #endif

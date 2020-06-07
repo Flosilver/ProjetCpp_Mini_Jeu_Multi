@@ -1,19 +1,23 @@
 #ifndef ATTAQUE_HPP
 #define ATTAQUE_HPP
 
-#include <iostream>
+//#include <iostream>
 
 #include "Action.hpp"
-#include "Unite.hpp"
+#include "IAttaquable.hpp"
+#include "Mort.hpp"
 
 class Attaque : public Action
 {
 	protected:
-		Unite* cible;
+		IAttaquable& cible;
 		
 	public:
-		Attaque(Unite* u, Unite* aCible): Action(u), cible(aCible) {}
-		~Attaque() { std::cout << "\tdest_Attaque";}
+		Attaque(Unite& u, IAttaquable& aCible): Action(u), cible(aCible) {}
+		~Attaque() { 
+			//delete cible;
+			//std::cout << "\tdest_Attaque";
+		}
 		Attaque& operator=(const Attaque& a){
 			unite = a.unite;
 			cible = a.cible;
@@ -22,20 +26,7 @@ class Attaque : public Action
 		
 		int gereAction();
 		
-		Unite* getCible() {return cible;}
+		IAttaquable& getCible() {return cible;}
 };
-
-int Attaque::gereAction(){
-	int dmg = unite->getDMG();
-	int hp = cible->getHP();
-	
-	if ( hp - dmg > 0){
-		cible->subiAtt(dmg);
-		return 1;	// SUCCES
-	}
-	else{
-		return 0;	// FAIL -> décès de la cible
-	}
-}
 
 #endif

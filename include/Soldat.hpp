@@ -9,7 +9,7 @@
 class Soldat : public ACombattant
 {
 public:
-	Soldat(sf::Color c, int eq, int id) : ACombattant(c, eq, id, 20, 6, 12){}		// couleur, n° equipe, id dans vector<sprites>, vie, dmg, prix rapportée si tuée
+	Soldat(const sf::Color& c, int eq, int id, const sf::Vector2f& aPos) : ACombattant(c, eq, id, aPos, VIE_SOLDAT, DMG_SOLDAT, GAIN_SOLDAT){}		// couleur, n° equipe, id dans vector<sprites>, vie, dmg, prix rapportée si tuée
 	~Soldat() { std::cout << "\tdest_Soldat"; }
 	Soldat& operator=(const Soldat& s){
 		pos = s.pos;
@@ -23,6 +23,7 @@ public:
 		return *this;
 	}
 	//virtual *Action agit() = 0;
+	const int getHP() const {return hp;}
 };
 
 #endif

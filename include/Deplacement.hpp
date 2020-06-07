@@ -1,11 +1,11 @@
 #ifndef DEPLACEMENT_HPP
 #define DEPLACEMENT_HPP
 
-#include <SFML/System.hpp>
-#include <iostream>
+/*#include <SFML/System.hpp>
+#include <iostream>*/
 
 #include "Action.hpp"
-#include "Unite.hpp"
+#include "Mort.hpp"
 
 class Deplacement : public Action
 {
@@ -13,8 +13,8 @@ class Deplacement : public Action
 		sf::Vector2f deplacement;
 		
 	public:
-		Deplacement(Unite* u, sf::Vector2f aVect): Action(u), deplacement(aVect) {}
-		~Deplacement() { std::cout << "\tdest_Deplacement"; }
+		Deplacement(Unite& u, const sf::Vector2f& aVect): Action(u), deplacement(aVect) {}
+		~Deplacement() { }//std::cout << "\tdest_Deplacement"; }
 		Deplacement& operator=(const Deplacement& d){
 			unite = d.unite;
 			deplacement = d.deplacement;
@@ -25,17 +25,5 @@ class Deplacement : public Action
 		
 		const sf::Vector2f getDeplecement() const {return deplacement;}
 };
-
-int Deplacement::gereAction(){
-	unite->move(deplacement);
-	sf::Vector2f pos = unite->getPos;
-	
-	if (pos.x < -10 || pos.x > 2000 || pos.y < -10 || pos.y > 1100){
-		std:cout << "**ERROR : Déplacement éronné -> MORT unité: " unite->getIndice() << std::cout;
-		return 0;	// Déplacement éronné -> MORT
-	}
-	
-	return 1;	// SUCCESS
-}
 
 #endif
