@@ -4,16 +4,19 @@
     <id>UMLClass</id>
     <coordinates>
       <x>1791</x>
-      <y>0</y>
+      <y>522</y>
       <w>468</w>
-      <h>441</h>
+      <h>486</h>
     </coordinates>
     <panel_attributes>/Equipe/
 --
-- couleur : sf::Color
+- couleur : sf::couleur
 - bourse : int
-- elements : std::vector&lt;Elements&gt;
-- listeAttente : std::list&lt;Unite&gt;
+- numero: int
+- hab: Habitation
+- tour: Tour
+- unites : std::vector&lt;Unite*&gt;
+- listAttUni : std::list&lt;Unite*&gt;
 --
 + Equipe()
 + Equipe(eq: int, id: bat_int)
@@ -21,7 +24,7 @@
 --
 + operator=(e: Equipe&amp;): Equipe&amp;
 + getUnite(): &lt;std::list&lt;Unite*&gt;&amp;
-+ getIAttaquable(): std::vector&lt;IAttaquable&gt;
++ getIAttaquable(eq_iAtt: std::vector&lt;IAttaquable*&gt;&amp;)
 + ajoutMonnaie(argent: int&amp;)
 + habitationUp(): int
 + tourLvlUp(): int
@@ -29,13 +32,13 @@
 + tourPorteeUp(): int
 + creerCombattant(id: int,posU: sf::Vector2f&amp;): int
 + tireFleche(id: int, posU: sf::Vector2f&amp;): int
-+ genereAction(): std::list&lt;Mort&gt;
 + getHabLvl(): int
 + positionneHab(aPos: sf::Vector2f&amp;)
 + getTourLvl(): int
 + getTourHp(): int
 + positionneTour(aPos: sf::Vector2f&amp;, tourellePos: sf::Vector2f&amp;)
 + tour_setup_dim(aW: int, aH: int)
++ getTourPortee(): int
 + getNum(): int
 + getBourse(): int
 + setColor(c: sf::Color)
@@ -50,7 +53,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>1782</x>
-      <y>504</y>
+      <y>1062</y>
       <w>414</w>
       <h>279</h>
     </coordinates>
@@ -65,9 +68,9 @@
 + Element(col : sf::Color&amp; ,eq: int, id: int)
 + Element(aPos: sf::Vector2f&amp;, col : sf::Color&amp; ,eq: int, id: int)
 + Element()
-+ operator=(e: Element&amp;): Element&amp;
 /+ ~Element()/
-
+--
++ operator=(e: Element&amp;): Element&amp;
 + getIndice(): int
 + getEquipe(): int
 + getPos(): sf::Vector2f
@@ -81,7 +84,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>1215</x>
-      <y>1116</y>
+      <y>1674</y>
       <w>351</w>
       <h>297</h>
     </coordinates>
@@ -112,7 +115,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>18</x>
-      <y>1548</y>
+      <y>2106</y>
       <w>621</w>
       <h>126</h>
     </coordinates>
@@ -120,11 +123,18 @@
 --
 --
 + ACombattant( c: sf::Color&amp;, eq: int, id: int, aPos: sf::Vector2f&amp;, aHp: int, aDmg: int, aPrix: int))
-+ operator=(ac: ACombattant&amp;): ACombattant&amp; 
 /+~ACombattant/
+--
++ operator=(ac: ACombattant&amp;): ACombattant&amp; 
 +getHitBox(): sf::IntRect
 +getHP(): int
 +subiAtt(degats: int)
++ estVivant(): bool
++ meurt()
++ getEquipe(): int
++ getIndice(): int
++ getPrix(): int
++ checkTimer(): bool
 </panel_attributes>
     <additional_attributes/>
   </element>
@@ -132,7 +142,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>0</x>
-      <y>1719</y>
+      <y>2277</y>
       <w>189</w>
       <h>108</h>
     </coordinates>
@@ -140,8 +150,9 @@
 --
 --
 + Paysan(c : sf::Color, eq : int, id : int, aPos: sf::Vector2f)
-+operator= ( p: Paysan&amp;) : Paysan&amp;
-+~Paysan(): int
++ ~Paysan(): int
+--
++ operator= ( p: Paysan&amp;) : Paysan&amp;
 + getHP()
 </panel_attributes>
     <additional_attributes/>
@@ -150,7 +161,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>216</x>
-      <y>1719</y>
+      <y>2277</y>
       <w>189</w>
       <h>108</h>
     </coordinates>
@@ -158,8 +169,9 @@
 --
 --
 + Soldat( c: sf::Color, eq: int, id: int, aPos: sf::Vector2f )
-+operator=(s: Soldat&amp;):Soldat&amp;
 +~Soldat()
+--
++operator=(s: Soldat&amp;):Soldat&amp;
 +getHP(): int
 </panel_attributes>
     <additional_attributes/>
@@ -168,7 +180,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>432</x>
-      <y>1719</y>
+      <y>2277</y>
       <w>189</w>
       <h>108</h>
     </coordinates>
@@ -176,8 +188,9 @@
 --
 --
 + Cyborg( c: sf::Color, eq: int, id: int, aPos: sf::Vector2f )
-+operator=(c: Cyborg&amp;):Cyborg&amp;
 +~Cyborg()
+--
++operator=(c: Cyborg&amp;):Cyborg&amp;
 +getHP(): int</panel_attributes>
     <additional_attributes/>
   </element>
@@ -185,7 +198,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>1692</x>
-      <y>1566</y>
+      <y>2124</y>
       <w>189</w>
       <h>108</h>
     </coordinates>
@@ -195,14 +208,15 @@
 + ATank( col : sf::Color )
 
 /+ agit(): Action*/
-</panel_attributes>
+
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>1476</x>
-      <y>1719</y>
+      <y>2277</y>
       <w>189</w>
       <h>108</h>
     </coordinates>
@@ -212,14 +226,15 @@
 + Chevalier( col : sf::Color )
 
 + agit(): Action*
-</panel_attributes>
+
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>1692</x>
-      <y>1719</y>
+      <y>2277</y>
       <w>189</w>
       <h>108</h>
     </coordinates>
@@ -229,14 +244,15 @@
 + Tank( col : sf::Color )
 
 + agit(): Action*
-</panel_attributes>
+
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>1908</x>
-      <y>1719</y>
+      <y>2277</y>
       <w>189</w>
       <h>108</h>
     </coordinates>
@@ -245,14 +261,15 @@
 --
 + ExoArmure( col : sf::Color )
 
-+ agit(): Action*</panel_attributes>
++ agit(): Action*
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>2349</x>
-      <y>1557</y>
+      <y>2115</y>
       <w>189</w>
       <h>108</h>
     </coordinates>
@@ -262,14 +279,15 @@
 + ADistance( col : sf::Color )
 
 /+ agit(): Action*/
-</panel_attributes>
+
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>2133</x>
-      <y>1719</y>
+      <y>2277</y>
       <w>189</w>
       <h>99</h>
     </coordinates>
@@ -278,14 +296,15 @@
 --
 + Archer( col : sf::Color )
 
-+ agit(): Action*</panel_attributes>
++ agit(): Action*
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>2349</x>
-      <y>1719</y>
+      <y>2277</y>
       <w>189</w>
       <h>99</h>
     </coordinates>
@@ -294,14 +313,15 @@
 --
 + Artillerie( col : sf::Color )
 
-+ agit(): Action*</panel_attributes>
++ agit(): Action*
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>2565</x>
-      <y>1719</y>
+      <y>2277</y>
       <w>189</w>
       <h>99</h>
     </coordinates>
@@ -310,14 +330,15 @@
 --
 + DroneSniper( col : sf::Color )
 
-+ agit(): Action*</panel_attributes>
++ agit(): Action*
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>954</x>
-      <y>1548</y>
+      <y>2106</y>
       <w>189</w>
       <h>108</h>
     </coordinates>
@@ -327,14 +348,15 @@
 + ASoin( col : sf::Color )
 
 /+ agit(): Action*/
-</panel_attributes>
+
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>729</x>
-      <y>1719</y>
+      <y>2277</y>
       <w>189</w>
       <h>108</h>
     </coordinates>
@@ -343,14 +365,15 @@
 --
 + Pretre( col :sf::Color )
 
-+ agit(): Action*</panel_attributes>
++ agit(): Action*
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>954</x>
-      <y>1719</y>
+      <y>2277</y>
       <w>189</w>
       <h>108</h>
     </coordinates>
@@ -359,16 +382,17 @@
 --
 + Infirmier( col : sf::Color )
 
-+ agit(): Action*</panel_attributes>
++ agit(): Action*
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>1584</x>
-      <y>1080</y>
-      <w>288</w>
-      <h>108</h>
+      <y>1629</y>
+      <w>333</w>
+      <h>126</h>
     </coordinates>
     <panel_attributes>Habitation
 --
@@ -376,8 +400,10 @@
 + Habitation(eq: int, id: int)
 + Habitation()
 + ~Habitation()
+--
 + operator=(h: Habitation&amp;): Habitation&amp;
 + genereUnite(id: int, posU: sf::Vector2f&amp;) : Unite*
++ checkTimer(): bool
 </panel_attributes>
     <additional_attributes/>
   </element>
@@ -385,7 +411,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>1188</x>
-      <y>1719</y>
+      <y>2277</y>
       <w>189</w>
       <h>108</h>
     </coordinates>
@@ -394,16 +420,17 @@
 --
 + Medic( col : sf::Color )
 
-+ agit(): Action*</panel_attributes>
++ agit(): Action*
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>1809</x>
-      <y>828</y>
+      <y>1386</y>
       <w>369</w>
-      <h>162</h>
+      <h>171</h>
     </coordinates>
     <panel_attributes>/Batiment/
 --
@@ -413,17 +440,18 @@
 + Batiment(eq: int, id: int, lvl: int, cd: int)
 + Batiment()
 + Batiment(aCol: sf::Color, eq: int, id: int, lvl: int, cd: int) 
-/+ genereUnite() : Unite/
+--
+/+ genereUnite(id: int, posU: Vector2f&amp;) : Unite*/
 + getNiveau() : int
-+ getCoolDown() : int
-+ levelUp()</panel_attributes>
++ levelUp()
+/+checkTimer(): bool/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>1998</x>
-      <y>1080</y>
+      <y>1638</y>
       <w>189</w>
       <h>108</h>
     </coordinates>
@@ -433,14 +461,15 @@
 + Caserne( col : sf::Color )
 
 + genereUnite() : Unite
-</panel_attributes>
+
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>2205</x>
-      <y>1080</y>
+      <y>1638</y>
       <w>189</w>
       <h>108</h>
     </coordinates>
@@ -449,14 +478,15 @@
 --
 + Archerie( col : sf::Color )
 + genereUnite() : Unite
-</panel_attributes>
+
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1791</x>
-      <y>1080</y>
+      <x>1800</x>
+      <y>1764</y>
       <w>189</w>
       <h>108</h>
     </coordinates>
@@ -465,14 +495,15 @@
 --
 + Eglise( col : sf::Color )
 
-+ genereUnite() : Unite</panel_attributes>
++ genereUnite() : Unite
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>2682</x>
-      <y>846</y>
+      <y>1404</y>
       <w>288</w>
       <h>387</h>
     </coordinates>
@@ -509,7 +540,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>2331</x>
-      <y>873</y>
+      <y>1431</y>
       <w>189</w>
       <h>180</h>
     </coordinates>
@@ -533,21 +564,21 @@
     <id>Relation</id>
     <coordinates>
       <x>1980</x>
-      <y>432</y>
+      <y>999</y>
       <w>45</w>
-      <h>90</h>
+      <h>81</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m1=1
 m2=0..n
 bg=black</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1971</x>
-      <y>774</y>
+      <y>1332</y>
       <w>27</w>
       <h>72</h>
     </coordinates>
@@ -558,7 +589,7 @@ bg=black</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>2007</x>
-      <y>774</y>
+      <y>1332</y>
       <w>810</w>
       <h>90</h>
     </coordinates>
@@ -569,7 +600,7 @@ bg=black</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>1404</x>
-      <y>774</y>
+      <y>1332</y>
       <w>558</w>
       <h>378</h>
     </coordinates>
@@ -580,51 +611,51 @@ bg=black</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>2043</x>
-      <y>981</y>
+      <y>1548</y>
       <w>270</w>
-      <h>117</h>
+      <h>108</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;60.0;280.0;60.0;280.0;110.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0;280.0;50.0;280.0;100.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>2007</x>
-      <y>981</y>
+      <y>1548</y>
       <w>108</w>
-      <h>117</h>
+      <h>108</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;70.0;100.0;70.0;100.0;110.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;100.0;60.0;100.0;100.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1863</x>
-      <y>981</y>
+      <y>1548</y>
       <w>117</w>
-      <h>117</h>
+      <h>234</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>110.0;10.0;110.0;70.0;10.0;70.0;10.0;110.0</additional_attributes>
+    <additional_attributes>110.0;10.0;110.0;60.0;10.0;60.0;10.0;240.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1665</x>
-      <y>981</y>
+      <y>1548</y>
       <w>288</w>
-      <h>117</h>
+      <h>99</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>300.0;10.0;300.0;60.0;10.0;60.0;10.0;110.0</additional_attributes>
+    <additional_attributes>300.0;10.0;300.0;50.0;10.0;50.0;10.0;90.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>2412</x>
-      <y>837</y>
+      <y>1395</y>
       <w>288</w>
       <h>54</h>
     </coordinates>
@@ -638,7 +669,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>1044</x>
-      <y>1404</y>
+      <y>1962</y>
       <w>369</w>
       <h>162</h>
     </coordinates>
@@ -649,7 +680,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>1458</x>
-      <y>1404</y>
+      <y>1962</y>
       <w>1017</w>
       <h>171</h>
     </coordinates>
@@ -660,7 +691,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>306</x>
-      <y>1404</y>
+      <y>1962</y>
       <w>1062</w>
       <h>162</h>
     </coordinates>
@@ -671,7 +702,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>306</x>
-      <y>1665</y>
+      <y>2223</y>
       <w>27</w>
       <h>72</h>
     </coordinates>
@@ -682,7 +713,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>351</x>
-      <y>1665</y>
+      <y>2223</y>
       <w>189</w>
       <h>72</h>
     </coordinates>
@@ -693,7 +724,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>81</x>
-      <y>1665</y>
+      <y>2223</y>
       <w>207</w>
       <h>72</h>
     </coordinates>
@@ -704,7 +735,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>1044</x>
-      <y>1647</y>
+      <y>2205</y>
       <w>27</w>
       <h>90</h>
     </coordinates>
@@ -715,7 +746,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>1089</x>
-      <y>1647</y>
+      <y>2205</y>
       <w>216</w>
       <h>90</h>
     </coordinates>
@@ -726,7 +757,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>810</x>
-      <y>1647</y>
+      <y>2205</y>
       <w>216</w>
       <h>90</h>
     </coordinates>
@@ -737,7 +768,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>1773</x>
-      <y>1665</y>
+      <y>2223</y>
       <w>27</w>
       <h>72</h>
     </coordinates>
@@ -748,7 +779,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>1818</x>
-      <y>1665</y>
+      <y>2223</y>
       <w>207</w>
       <h>72</h>
     </coordinates>
@@ -759,7 +790,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>1557</x>
-      <y>1665</y>
+      <y>2223</y>
       <w>207</w>
       <h>72</h>
     </coordinates>
@@ -770,7 +801,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>2214</x>
-      <y>1656</y>
+      <y>2214</y>
       <w>207</w>
       <h>81</h>
     </coordinates>
@@ -781,7 +812,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>2439</x>
-      <y>1656</y>
+      <y>2214</y>
       <w>27</w>
       <h>81</h>
     </coordinates>
@@ -792,7 +823,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>2484</x>
-      <y>1656</y>
+      <y>2214</y>
       <w>198</w>
       <h>81</h>
     </coordinates>
@@ -803,7 +834,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>1413</x>
-      <y>1404</y>
+      <y>1962</y>
       <w>387</w>
       <h>180</h>
     </coordinates>
@@ -814,29 +845,29 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>342</x>
-      <y>1179</y>
+      <y>1746</y>
       <w>1350</w>
-      <h>387</h>
+      <h>378</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;410.0;10.0;100.0;1480.0;100.0;1480.0;10.0</additional_attributes>
+    <additional_attributes>10.0;400.0;10.0;90.0;1480.0;90.0;1480.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1134</x>
-      <y>1179</y>
-      <w>765</w>
-      <h>432</h>
+      <y>1863</y>
+      <w>774</w>
+      <h>306</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
-    <additional_attributes>10.0;460.0;510.0;460.0;510.0;300.0;830.0;300.0;830.0;10.0</additional_attributes>
+    <additional_attributes>10.0;320.0;510.0;320.0;510.0;160.0;840.0;160.0;840.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1872</x>
-      <y>1179</y>
+      <y>1737</y>
       <w>234</w>
       <h>459</h>
     </coordinates>
@@ -847,7 +878,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>2286</x>
-      <y>1179</y>
+      <y>1737</y>
       <w>81</w>
       <h>459</h>
     </coordinates>
@@ -858,7 +889,7 @@ m2=1
     <id>UMLClass</id>
     <coordinates>
       <x>675</x>
-      <y>450</y>
+      <y>1008</y>
       <w>225</w>
       <h>126</h>
     </coordinates>
@@ -867,9 +898,10 @@ m2=1
 # unite: Unite*
 --
 + Action( u: Unite* )
-/+ Action()
+/+ ~Action()/
+--
 + operator=(a: Action&amp;): Action&amp;
-/+ gereAction(): int
+/+ gereAction(): int/
 + getUnite(): Unite*</panel_attributes>
     <additional_attributes/>
   </element>
@@ -877,7 +909,7 @@ m2=1
     <id>UMLClass</id>
     <coordinates>
       <x>945</x>
-      <y>756</y>
+      <y>1314</y>
       <w>324</w>
       <h>126</h>
     </coordinates>
@@ -885,8 +917,9 @@ m2=1
 --
 # deplacement : sf::Vector2f
 --
-+ Deplacement( u: Unite*, aVect: sf::Vector2f&amp;)
++ Deplacement( u: Unite&amp;, aVect: sf::Vector2f&amp;)
 + ~Deplacement()
+--
 + operator=(d: sf::Deplacement&amp;): Deplacement
 + gereAction(): int
 + getDeplacement(): sf::Vector2f</panel_attributes>
@@ -896,44 +929,50 @@ m2=1
     <id>UMLClass</id>
     <coordinates>
       <x>684</x>
-      <y>756</y>
-      <w>216</w>
-      <h>117</h>
+      <y>1314</y>
+      <w>234</w>
+      <h>153</h>
     </coordinates>
     <panel_attributes>Mort
 --
 # equipe: int
 --
-+ Mort( u: Unite* )
++ Mort( u: Unite&amp; )
++ Mort(a: Iattaquable&amp;)
 + ~Mort()
+--
 + operator=(m: Mort&amp;): Mort&amp;
-+ gereAction(): int</panel_attributes>
++ gereAction(): int
++ getIAtt(): IAttaquable&amp;
++ getEquipe(): int
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>378</x>
-      <y>756</y>
+      <y>1314</y>
       <w>270</w>
-      <h>117</h>
+      <h>135</h>
     </coordinates>
     <panel_attributes>Attaque
 --
-# cible: IAttaquable
+# cible: IAttaquable&amp;
 --
-+ Attaque( u: Unite*, cible: IAttaquable)
++ Attaque( u: Unite&amp;, aCible: IAttaquable&amp;)
 + ~Attaque()
+--
 + operator=(a: Attaque&amp;): Attaque&amp;
 + gereAction(): int
-+ getCible(): IAttaquable</panel_attributes>
++ getCible(): IAttaquable&amp;</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>828</x>
-      <y>1989</y>
+      <y>2547</y>
       <w>153</w>
       <h>27</h>
     </coordinates>
@@ -945,7 +984,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>2169</x>
-      <y>891</y>
+      <y>1449</y>
       <w>180</w>
       <h>27</h>
     </coordinates>
@@ -956,7 +995,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>819</x>
-      <y>567</y>
+      <y>1125</y>
       <w>198</w>
       <h>207</h>
     </coordinates>
@@ -967,7 +1006,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>774</x>
-      <y>567</y>
+      <y>1125</y>
       <w>27</w>
       <h>207</h>
     </coordinates>
@@ -978,7 +1017,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>495</x>
-      <y>567</y>
+      <y>1125</y>
       <w>270</w>
       <h>207</h>
     </coordinates>
@@ -988,28 +1027,108 @@ m2=1
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1341</x>
-      <y>369</y>
-      <w>198</w>
-      <h>180</h>
+      <x>1044</x>
+      <y>0</y>
+      <w>495</w>
+      <h>1170</h>
     </coordinates>
     <panel_attributes>Jeu
 --
 - eq1: Equipe
 - eq2: Equipe
-- actions: std::vector&lt;Actions*&gt;
---
-+ Jeu(eq1: Equipe, eq2: Equipe)
+-menu_sp: sprite_v
+- menu_txt: txt_v
+- Couleurs_joueurs: std::array&lt;sf::Color, NB_COL&gt;
+- bout_play_col: sf::Color 
+- r,g,b, rotation: int
+- rect_menu: sf::IntRect
+- menu_timer: sf::clock
+- increment: int
+- casqueG_W: int
+- casqueG_H: int
+- casqueD_W: int
+- casqueD_H: int
+- play_but_W: int
+- play_but_H: int
+- bk_menu_W: int
+- bk_menu_H: int
+- bandeau_sp: sprite_v
+- bandeau_txt: txt_v
+- terrain_sp: sprite_v
+- bat_sp: sprite_v
+- unite_sp: sprite_v
+- anim_sp: vec2i_v
+- bat_id: int
+- unit_id: int
+- id_libre: std::list&lt;int&gt; 
+- tourG_W: int
+- tourG_H: int
+- tourD_W: int
+- tourD_H: int
+- tourelle_W: int
+- tourelle_H: int
+- vie_jg: sf::sprite
+- vie_jd: sf::sprite
+- rect_vie_jg: sf::IntRect
+- rect_vie_jd: sf::IntRect
+- tour_timer: sf::Clock
+- anim_timer: sf::clock
+- popG: sf::Vector2f
+- popD: sf::Vector2f
+- winner: int
+- end_sp: sprite_v
+- fin: sf::Text
++ etat: int
++ win_H: int
++ win_W: int
++ window: sf::RenderWindow
 
-+ update(): void
-+ executeActions();</panel_attributes>
+--
++ Jeu(textures: tx_map&amp;, sprites: sp_map&amp;)
++ ~Jeu()
+--
++ getWinSize()
++ menu_setup(sprites: sp_map&amp;, font: sf::Font&amp;)
++ menu_event(event: sf::Event&amp;, sprites: sp_map&amp;, font: sf::Font&amp;)
++ menu_update()
++ show_menu()
++ terrain_setup(sprites: sp_map&amp;)
++ show_terrain()
++ bandeau_setup(sprites: sp_map&amp;, font: sf::Font&amp;)
++ bandeau_update()
++ show_bandeau()
++ action_update(actions: std::list&lt;actions*&gt;&amp;)
++ action_gestion(actions: std::list&lt;actions*&gt;&amp;)
++ gestion_unites()
++ game_setup(sprites: sp_map&amp;, font: sf::Font&amp;)
++ game_event(event: sf::Event&amp;, sprites: sp_map)
++ game_update(sprites: sp_map&amp;, font: sf::Font&amp;)
++ show_game()
++ end_setup(sprites: sp_map&amp;, font: sf::Font&amp;, eq: int)
++ end_Event(event: sf::Event&amp;)
++ show_end()
++ Initialise(list_file: char*, textures: tx_map&amp;, sprite sp_map&amp;): static void
++ LoadNames(names: path_map&amp;, textures: tx_map&amp;): static bool
++ LoadTextures(names path_map&amp;, textures: tx_map&amp;): static bool
++ LoadSprites(textures: tx_map&amp;, sprites: sp_map&amp;): static bool
+
+
+
+
+
+
+
+
+
+
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1530</x>
-      <y>135</y>
+      <y>693</y>
       <w>279</w>
       <h>324</h>
     </coordinates>
@@ -1022,20 +1141,20 @@ m2=2</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>891</x>
-      <y>486</y>
-      <w>468</w>
+      <y>1044</y>
+      <w>171</w>
       <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 m1=1
 m2=0..n</panel_attributes>
-    <additional_attributes>500.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>170.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>2556</x>
-      <y>1278</y>
+      <y>1836</y>
       <w>432</w>
       <h>135</h>
     </coordinates>
@@ -1045,8 +1164,10 @@ m2=0..n</panel_attributes>
 --
 + Fleche(c: sf::Color, eq: int, id: int, aPos: sf::Vector2f&amp;, dmg: int)
 + ~Fleche()
+--
 + operator=(f Fleche&amp;): Fleche&amp;
 + getHitZone(): sf::IntRect
++ chekTimer(): bool
 + rotate(a: float)
 + setAngle(aAngle: float)</panel_attributes>
     <additional_attributes/>
@@ -1055,7 +1176,7 @@ m2=0..n</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>1557</x>
-      <y>1314</y>
+      <y>1872</y>
       <w>1017</w>
       <h>27</h>
     </coordinates>
@@ -1066,7 +1187,7 @@ m2=0..n</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>2475</x>
-      <y>1044</y>
+      <y>1602</y>
       <w>117</w>
       <h>252</h>
     </coordinates>
@@ -1076,20 +1197,59 @@ m2=0..n</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>387</x>
-      <y>1341</y>
-      <w>216</w>
-      <h>117</h>
+      <x>18</x>
+      <y>1890</y>
+      <w>297</w>
+      <h>180</h>
     </coordinates>
     <panel_attributes>/IAttaquable/
 --
 --
 +IAttaquable()
 /+~IAttaquable/
+--
 /+getHitBox(): sf::IntRect/
 /+getHP(): int/
 /+subiAtt(degats: int)/
-</panel_attributes>
+/+ meurt()/
+/+ estVivant(): bool/
+/+ getIndice(): int/
+/+ getEquipe(): int/
+/+ getPrix(): int/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>36</x>
+      <y>1557</y>
+      <w>225</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>/IPeriodique/
+--
+# timer: sf::Clock
+--
++IPeriodique()
+/+~IPeriodique/
+--
+/+ checkTimer(): bool/
+restartTimer(): si::Time</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>657</x>
+      <y>657</y>
+      <w>189</w>
+      <h>171</h>
+    </coordinates>
+    <panel_attributes>/JeuException/
+--
+--
++ JeuException(message: std::string&amp;)
+/+ ~JeuException()/</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>
