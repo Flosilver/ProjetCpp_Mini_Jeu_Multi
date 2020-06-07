@@ -26,15 +26,16 @@ BATTEZ-VOUS!
 ## Réalisation du projet:
 
 
-Florentin s’est occupé de  la complétion et création des classes, de l’optimisation
-Helene s’est occupé de la gestion graphique du jeu, du design, la création de classes de base, des tests unitaires
+Florentin s’est occupé de la complétion et création des classes et de l’optimisation
+Helene s’est occupé de la gestion graphique du jeu, du design, la création des classes, des tests unitaires
 ---
 ## Le projet
 
 
 
-Dans ce jeu, seulement la classe de base "ACombattant" a été implantée. A l'origine, d'autres classes étaient prévues et pourront être rajoutées par la suite. Les mécanismes du jeu correspondent à ceux que nous souhaitions et nous sommes fier d'avoir réussi à créer un jeu ludique et assez joli, avec les graphismes presque exclusivement réalisés par nos soins.
-
+Dans ce jeu, seulement la classe de base "ACombattant" a été implantée. A l'origine, d'autres classes étaient prévues et pourront être rajoutées par la suite: ces classe sont indiquées en jaune sur l'UML et donc n'ont pas été développées. Les mécanismes du jeu correspondent à ceux que nous souhaitions et nous sommes fier d'avoir réussi à créer un jeu ludique et assez joli, avec les graphismes presque exclusivement réalisés par nos soins.
+Malgré nos efforts, quelques fonctions n'ont pas pu être implémentées. Par exemple, les flèches tirées par les tourelles ont leur structures et un début de fonction qui n'est pas parfaitement opérationnel.
+Pour les tests unitaires: à cause de changements tardifs, certains tests réalisés auparavent ne peuvent plus compiler à cause du changement de certaines structures.
 ---
 ## Compilation et exécution du programme:
 
