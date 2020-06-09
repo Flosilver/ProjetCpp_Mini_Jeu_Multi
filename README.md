@@ -14,10 +14,15 @@ Les commandes sont les suivantes!
 
                                 joueur gauche/joueur droite
 Tour Up:    A/1
+
 Tour dommages Up:	Q/4
+
 Tour portée Up:		S/5
+
 Habitation Up:		Z/2
+
 génération d’unité:	E/3
+
 
 
 BATTEZ-VOUS!
