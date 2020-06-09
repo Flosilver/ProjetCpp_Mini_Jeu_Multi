@@ -13,15 +13,15 @@ Les commandes sont les suivantes!
 
 
                                 joueur gauche/joueur droite
-Tour Up:    A/1 (monte le niveau de la tour et dévérouille la possibilité d'améliorer les dégats et la portée de la tourelle)
+**Tour Up:    A/1** (monte le niveau de la tour et dévérouille la possibilité d'améliorer les dégats et la portée de la tourelle)
 
-Tour dommages Up:	Q/4 (augmente les dégats des projectiles de la tourelle)
+**Tour dommages Up:	Q/4** (augmente les dégats des projectiles de la tourelle)
 
-Tour portée Up:		S/5 (augmente la portee des projectiles de la tourelle)
+**Tour portée Up:		S/5** (augmente la portee des projectiles de la tourelle)
 
-Habitation Up:		Z/2 (augmente le niveau du batiment Habitation qui génère de meilleurs unités)
+**Habitation Up:		Z/2** (augmente le niveau du batiment Habitation qui génère de meilleurs unités)
 
-génération d’unité:	E/3 (génère une unité correspondant au niveau de l'Habitation)
+**génération d’unité:	E/3** (génère une unité correspondant au niveau de l'Habitation)
 
 
 
