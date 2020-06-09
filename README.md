@@ -45,6 +45,7 @@ ce programme se compile avec la commande:
 > "make"
 
 , tout en étant placé dans le répertoire du jeu. 
+
 Il s'exécute avec la commande:
 
 > "./game"
