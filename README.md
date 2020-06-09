@@ -25,7 +25,7 @@ Les commandes sont les suivantes!
 
 
 
-BATTEZ-VOUS!
+**_BATTEZ-VOUS!_**
 
 ---
 ## Réalisation du projet:
